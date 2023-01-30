@@ -84,7 +84,7 @@ def run(argv=None):
         for i in range(10):
             schema += (', P(image==%d) :FLOAT' % i)
             
-        images = p | 'ReadFromBQ' >> beam.io.gcp.bigquery.ReadFromBigQuery(known_args.input)
+        images = p | 'ReadFromBQ' >> beam.io.gcp.bigquery.ReadFromBigQuery(table=known_args.input)
         
         predictions = images | 'Prediction' >> beam.ParDo(PredictDoFn(), known_args.model)
         
