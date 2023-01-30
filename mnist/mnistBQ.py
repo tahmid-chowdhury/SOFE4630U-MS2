@@ -22,8 +22,6 @@ import apache_beam as beam
 import tensorflow as tf
 from apache_beam.options.pipeline_options import PipelineOptions
 from apache_beam.options.pipeline_options import SetupOptions
-from kafka import KafkaProducer
-
 
 def singleton(cls):
   instances = {}
@@ -57,7 +55,7 @@ class PredictDoFn(beam.DoFn):
 
   def process(self, element, checkpoint):
     model = Model(checkpoint)
-    input_key = int(element['key'])
+    input_key = int(element['ID'])
     image = element['image'].split(',')
     output_key, pred = model.sess.run(
         [model.output_key, model.p],
