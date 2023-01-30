@@ -64,7 +64,7 @@ class PredictDoFn(beam.DoFn):
     result = {}
     result['ID'] = (int)(output_key[0])
     for i, val in enumerate(pred[0].tolist()):
-      result['P(image==%d)' % i] = val
+      result['P%d' % i] = val
     return [result]
 
 
@@ -80,14 +80,14 @@ def run(argv=None):
   pipeline_options = PipelineOptions(pipeline_args)
   pipeline_options.view_as(SetupOptions).save_main_session = True;
   with beam.Pipeline(options=pipeline_options) as p:
-        schema = 'ID:INTEGER'
-        for i in range(10):
-            schema += (', P(image==%d) :FLOAT' % i)
-            
+                    
         images = p | 'ReadFromBQ' >> beam.io.gcp.bigquery.ReadFromBigQuery(table=known_args.input)
         
         predictions = images | 'Prediction' >> beam.ParDo(PredictDoFn(), known_args.model)
         
+        schema = 'ID:INTEGER'
+        for i in range(10):
+            schema += (', P%d :FLOAT' % i)
         predictions | 'WriteToBQ' >> beam.io.gcp.bigquery.WriteToBigQuery(
             known_args.output,
             schema=schema,
