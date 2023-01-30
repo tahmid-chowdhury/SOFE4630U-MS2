@@ -66,7 +66,7 @@ class PredictDoFn(beam.DoFn):
     result = {}
     result['ID'] = (int)(output_key[0])
     for i, val in enumerate(pred[0].tolist()):
-      result['P(image==%d') % i] = val
+      result['P(image==%d)' % i] = val
     return [result]
 
 
@@ -86,7 +86,7 @@ def run(argv=None):
   with beam.Pipeline(options=pipeline_options) as p:
         schema = 'ID:INTEGER'
         for i in range(10):
-            schema += (', P(image==%d'):FLOAT' % i)
+            schema += (', P(image==%d) :FLOAT' % i)
             
         images = p | 'ReadFromBQ' >> beam.io.Read(beam.io.BigQuerySource(known_args.input))
         
