@@ -48,8 +48,7 @@ class CustomCommands(setuptools.Command):
       self.RunCustomCommand(command)
 
 
-CUSTOM_COMMANDS = [['pip', 'install','tensorflow-cpu==2.8.0'],
-#['pip', 'install','beam-nuggets'],
+CUSTOM_COMMANDS = [['pip', 'install','tensorflow-cpu==2.8.0']
 ]
 
 REQUIRED_PACKAGES = []
