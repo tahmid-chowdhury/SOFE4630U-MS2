@@ -84,15 +84,15 @@ def run(argv=None):
         for i in range(10):
             schema += (', P(image==%d) :FLOAT' % i)
             
-        images = p | 'ReadFromBQ' >> beam.io.Read(beam.io.BigQuerySource(known_args.input))
+        images = p | 'ReadFromBQ' >> beam.io.Read(beam.io.gcp.bigquery.ReadFromBigQuery(known_args.input))
         
         predictions = images | 'Prediction' >> beam.ParDo(PredictDoFn(), known_args.model)
         
-        predictions | 'WriteToBQ' >> beam.io.Write(beam.io.BigQuerySink(
+        predictions | 'WriteToBQ' >> beam.io.Write(beam.io.gcp.bigquery.WriteToBigQuery(
             known_args.output,
             schema=schema,
-            create_disposition=beam.io.BigQueryDisposition.CREATE_IF_NEEDED,
-            write_disposition=beam.io.BigQueryDisposition.WRITE_TRUNCATE))
+            create_disposition='CREATE_IF_NEEDED',
+            write_disposition='WRITE_TRUNCATE'))
 
 if __name__ == '__main__':
   logging.getLogger().setLevel(logging.INFO)
