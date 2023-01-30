@@ -87,7 +87,7 @@ def run(argv=None):
         
         schema = 'ID:INTEGER'
         for i in range(10):
-            schema += (', P%d :FLOAT' % i)
+            schema += (', P%d:FLOAT' % i)
         predictions | 'WriteToBQ' >> beam.io.gcp.bigquery.WriteToBigQuery(
             known_args.output,
             schema=schema,
