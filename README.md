@@ -52,9 +52,11 @@ In this section, you will learn about Dataflow, MapReduce pattern, and a word co
     ``` cmd
     cp path  ~/wordcount.py
     ```
+    
+    ![](images/df7.jpg)
 3. Open the file using the text editor. Now, let’s try to understand the python code. The user can send arguments to customize the processing. The first step is to parse those arguments. Lines 69 to 73 define the first argument which will be set using the option **--input** . It’s an optional argument and if not given, it will have the default value given in line 72. The second argument is set using **--output** option. It’s required (not optional) and thus, no default value is needed. After describing the arguments, line 79 will parse the arguments and return a dictionary (**known_args**) with two keys named as the **dest** parameter of the parsed arguments (**input** and **output**)   
 
-    ![](images/df7.jpg)
+    ![](images/df8.jpg)
 4.	The pipeline is described from line 87 to 106. It’s instructions that will be given to a worker to execute. 
 * Line 87 defines the root of the processing as a python variable **p**. 
 * The first stage inserted after **p** ( using **|** operator) is given in line 90. It’s called **Read** which run a built-in function to read a text file. Note, when executed,  the output will be a list of lines (strings).  The pipeline till the first stage is saved into a python variable named **line**. 
@@ -66,7 +68,7 @@ In this section, you will learn about Dataflow, MapReduce pattern, and a word co
 * Line 102 append a new stage to the pipeline. The stage implements another Map operation that executes a customized function defined in lines 99 and 100 to convert each tuple to a string.
 * A final stage is used to save the output (list of strings) to a text file.
 
-    ![](images/df8.jpg)
+    ![](images/df9.jpg)
 5.	To check the code, we can execute it locally (at the GCP console) first be running the following command. As no input option is given, it will use the default value while the output will be saved in the home directory (current directory) with a prefix **outputs**
     
     ``` cmd
@@ -94,19 +96,19 @@ In this section, you will learn about Dataflow, MapReduce pattern, and a word co
     
     a) Search for **Buckets**
 
-    ![](images/df9.jpg)
+    ![](images/df10.jpg)
     
     b) Click **create**.
 
-    ![](images/df10.jpg)
+    ![](images/df11.jpg)
     
     c) As the name of the bucket is a unique global identifier, let’s use the project ID as a prefix as **ProjectID-bucket**. Then click **create**.
 
-    ![](images/df11.jpg)
+    ![](images/df12.jpg)
     
     d)	As only the service from our project will access the bucket, enable **public access prevention**.
 
-    ![](images/df12.jpg)
+    ![](images/df13.jpg)
     
     e)	Let’s got the console and create another environment variable for the bucket.
     
@@ -114,6 +116,8 @@ In this section, you will learn about Dataflow, MapReduce pattern, and a word co
     BUCKET=gs://$PROJECT-bucket
     echo $BUCKET
     ```
+
+    ![](images/df14.jpg)
 8.	To run the pipeline using DataFlow, run the following command, 
     
     ``` cmd 
@@ -126,9 +130,27 @@ In this section, you will learn about Dataflow, MapReduce pattern, and a word co
       --output $BUCKET/result/outputs \
       --experiment use_unsupported_python_version
     ```
-    Some of the command arguments are needed by Dataflow to process the pipeline while others as input and output are used by the wordcount code to generate a customized pipeline. It will take minutes for Dataflow to generate worker nodes, configure them, execute the pipeline, and finally it will display **JOB_STATE_DONE**.
     
-    ![](images/df13.jpg)
+    Some of the command arguments are needed by Dataflow to process the pipeline while others as input and output are used by the wordcount code to generate a customized pipeline. It will take minutes for Dataflow to generate worker nodes, configure them, execute the pipeline, and finally it will display **JOB_STATE_DONE**.
+
+    ![](images/df14a.jpg)
 9.	To see the details about Dataflow Job, search for **Dataflow Jobs**, then choose the first one in the list (last job). A diagram of the pipeline will be displayed in which each stage is named as instructed in the python file. Note that, the name is unique and can’t be repeated for different stages. Also, the job info and logs are shown which can be used to debug the job. 
     
-    ![](images/df14.jpg)
+    ![](images/df15.jpg)
+10. Go to the bucket created in step 7 and open the file(s) started by the prefix **outputs** within a folder named **result**. Download the file to read it.
+11.	In the GitHub repository, there is an upgrade to the wordcount script. Clone the repository and run the updated script. Try to understand its function.
+    ```cmd 
+    cd ~
+    git clone https://github.com/GeorgeDaoud3/SOFE4630U-MS2.git
+    cd ~/SOFE4630U-MS2/wordcount
+    python wordcount2.py \
+      --region northamerica-northeast2 \
+      --runner DataflowRunner \
+      --project $PROJECT \
+      --temp_location $BUCKET/tmp/ \
+      --input gs://dataflow-samples/shakespeare/winterstale.txt \
+      --output $BUCKET/result/outputs \
+      --output2 $BUCKET/result/outputs2 \
+      --experiment use_unsupported_python_version
+    ```
+## NMIST dataset
