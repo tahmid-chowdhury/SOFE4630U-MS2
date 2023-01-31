@@ -91,21 +91,44 @@ In this section, you will learn about Dataflow, MapReduce pattern, and a word co
     echo $PROJECT
     ```
 7.	As the input and output pathes should be globally accessed files, a folder created in Google Cloud Storage is needed to be accessed by the Dataflow service. Google Cloud Storage that acts as a File System is called Bucket. The following steps will lead you to create a Bucket.
+    
     a) Search for **Buckets**
 
     ![](images/df9.jpg)
+    
     b) Click **create**.
 
     ![](images/df10.jpg)
+    
     c) As the name of the bucket is a unique global identifier, let’s use the project ID as a prefix as **ProjectID-bucket**. Then click **create**.
 
     ![](images/df11.jpg)
+    
     d)	As only the service from our project will access the bucket, enable **public access prevention**.
 
     ![](images/df12.jpg)
+    
     e)	Let’s got the console and create another environment variable for the bucket.
+    
     ``` cmd
     BUCKET=gs://$PROJECT-bucket
     echo $BUCKET
     ```
-8.
+8.	To run the pipeline using DataFlow, run the following command, 
+    
+    ``` cmd 
+    python wordcount.py \
+      --region northamerica-northeast2 \
+      --runner DataflowRunner \
+      --project $PROJECT \
+      --temp_location $BUCKET/tmp/ \
+      --input gs://dataflow-samples/shakespeare/winterstale.txt \
+      --output $BUCKET/result/outputs \
+      --experiment use_unsupported_python_version
+    ```
+    Some of the command arguments are needed by Dataflow to process the pipeline while others as input and output are used by the wordcount code to generate a customized pipeline. It will take minutes for Dataflow to generate worker nodes, configure them, execute the pipeline, and finally it will display **JOB_STATE_DONE**.
+    
+    ![](images/df13.jpg)
+9.	To see the details about Dataflow Job, search for **Dataflow Jobs**, then choose the first one in the list (last job). A diagram of the pipeline will be displayed in which each stage is named as instructed in the python file. Note that, the name is unique and can’t be repeated for different stages. Also, the job info and logs are shown which can be used to debug the job. 
+    
+    ![](images/df14.jpg)
