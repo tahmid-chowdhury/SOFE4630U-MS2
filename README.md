@@ -37,20 +37,20 @@ In this section, you will learn about Dataflow, MapReduce pattern, and a word co
     ![](images/df6.jpg)
 8. Now, it’s time to install the python library of DataFlow
     ``` cmd
-pip install pip --upgrade
-pip install 'apache-beam[gcp]'
+    pip install pip --upgrade
+    pip install 'apache-beam[gcp]'
     ```
 
 ## Running the wordcount Example
 1.	There already a set of examples exist within the python library folder. The following command will search for the file containg wordcount example within any subdirectory of the home directory (**~**) and print it.
 
     ``` cmd
-find ~ -name 'wordcount.py'
+    find ~ -name 'wordcount.py'
     ```
 2.	The following command will copy the file to the home directory (Replace path with the **path** you got from the previous step).
 
     ``` cmd
-cp path  ~/wordcount.py
+    cp path  ~/wordcount.py
     ```
 3. Open the file using the text editor. Now, let’s try to understand the python code. The user can send arguments to customize the processing. The first step is to parse those arguments. Lines 69 to 73 define the first argument which will be set using the option **--input** . It’s an optional argument and if not given, it will have the default value given in line 72. The second argument is set using **--output** option. It’s required (not optional) and thus, no default value is needed. After describing the arguments, line 79 will parse the arguments and return a dictionary (**known_args**) with two keys named as the **dest** parameter of the parsed arguments (**input** and **output**)   
 
@@ -70,25 +70,25 @@ cp path  ~/wordcount.py
 5.	To check the code, we can execute it locally (at the GCP console) first be running the following command. As no input option is given, it will use the default value while the output will be saved in the home directory (current directory) with a prefix **outputs**
     
     ``` cmd
-python wordcount.py --output outputs
+    python wordcount.py --output outputs
     ```
     
     you can display the output file(s) using
     
     ``` cmd
-ls outputs*
+    ls outputs*
     ```
     
     you can open the output file(s) with the text editor or using the Linux command
     
     ``` cmd
-cat outputs* | more
+    cat outputs* | more
     ```
 6.	Now, let’s run it as a GCP service. First step is to get the project ID using and save it to an environment variable (**$PROJECT**). (Note: the variable is temporally and has to be created if the console/session is terminated)
     
     ``` cmd
-PROJECT=$(gcloud config list project --format "value(core.project)")
-echo $PROJECT
+    PROJECT=$(gcloud config list project --format "value(core.project)")
+    echo $PROJECT
     ```
 7.	As the input and output pathes should be globally accessed files, a folder created in Google Cloud Storage is needed to be accessed by the Dataflow service. Google Cloud Storage that acts as a File System is called Bucket. The following steps will lead you to create a Bucket.
     a) Search for **Buckets**
@@ -105,7 +105,7 @@ echo $PROJECT
     ![](images/df12.jpg)
     e)	Let’s got the console and create another environment variable for the bucket.
     ``` cmd
-BUCKET=gs://$PROJECT-bucket
-echo $BUCKET
+    BUCKET=gs://$PROJECT-bucket
+    echo $BUCKET
     ```
 8.
