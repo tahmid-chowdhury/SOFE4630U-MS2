@@ -259,7 +259,9 @@ In the previous milestone, you have sent the smart meter readings to Google Pub/
 1. **Read from PubSub**: read the measurement reading .
 2. **Filter**: Eliminate records with missing measurements (containing None). 
 3. **Convert**:  convert  the  pressure  from  kPa  to  psi  and  the  temperature  from  Celsius  to  Fahrenheit using the following equations 
+    
     𝑃(𝑝𝑠𝑖) = 𝑃(𝑘𝑃𝑎)/6.895
+    
     𝑇(𝐹) = 𝑇(𝐶)∗1.8+32
 4. **Write to PubSub**: send the measurement back to another topic
  
