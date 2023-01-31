@@ -193,8 +193,50 @@ BigQuery is a cloud-based serverless data warehouse that supports SQL.
     ![](images/df18.jpg)
     
 4.	As shown in the following image, the pipeline consists of 3 stages:
+    
     a.	**ReadFromBQ**: that reads a BigQuery table.
-    b.	**Prediction**: that call the process function defined within the PredictDoFn class to process each record (row) and returns a dictionary that contains the following fields; **ID**, **P0**,…,**P9** where **ID** is the same as the record ID of the input table, **P0** is the probability that the image represent the digit 0,… . Note that the **@singleton** annotation in line 36, will prevent the model creation to just once which will make the process function run fast. Also, the second argument (**known_args.model**) in line 86 will be the last argument send to the process function (**checkpoint**).
+    
+    b.	**Prediction**: that call the process function defined within the PredictDoFn class to process each record (row) and returns a dictionary that contains the following fields; **ID**, **P0**,…,**P9** where **ID** is the same as the record ID of the input table, **P0** is the probability that the image represent the digit 0,… . Note that the **@singleton** annotation in line 36, will prevent the model creation to just once which will make the process function run fast. Also, the second argument (**known_args.model**) in line 86 will be the last argument send to the process function (**checkpoint**) at **Google Pub/Sub**.
+    
     c.	**WriteToBQ**: that writes the prediction output (**ID**, **P0**,…,**P9**) into another BigQuery table. The table will be created if no exist and will be truncated if exist.
     
     ![](images/df19.jpg)
+5.	Now, a new table is created in the MNIST dataset, let’s display its content.
+
+    ![](images/df20.jpg)
+
+## Data flow Processing the MNIST database from Pub/Sub
+ In this example, the data will be read and store into Google Pub/Sub. In the previous milestone, you have already learned how to create a topic in Google Pub/sub, a consumer to read the data, and a producer to send data through the pub/sub. 
+1. Go to the **service account** created before and generate a key in JSON format.
+2. Create two topics **mnist_image**, and **mnist_predict** at **Google Pub/Sub**.
+3. Run the Data flow job that reads JSON objects from the **mnist_image** topic, apply it to the ML model, send the prediction results via **mnist_predict** topic.
+It consists of five stages:
+
+
+    a.	Read from Pub/Sub: that reads messages from the input topic.
+
+    b.	toDict: as Pub/Sub is agnostic to the type of the message. It’s handled as a stream of bytes. To process the message, The toDict stage deserialize the message to its original format (JSON).
+
+    c.	Prediction: the same as the Prediction in the BigQuery example.
+
+    d.	To byte: Serialize the predicted output to bytes.
+    
+    e.	To Pub/sub: send the serialized prediction int the output topic.
+    
+    ``` cmd
+    cd ~/SOFE4630U-MS2/mnist
+    python mnistPubSub.py \
+      --runner DataflowRunner \
+      --project $PROJECT \
+      --staging_location $BUCKET/staging \
+      --temp_location $BUCKET/temp \
+      --model $BUCKET/model \
+      --setup_file ./setup.py \
+      --input projects/$PROJECT/topics/mnist_image	\
+      --output projects/$PROJECT/topics/mnist_predict \
+      --region  northamerica-northeast2 \
+      --experiment use_unsupported_python_version \
+      --streaming
+    ````
+
+    ![](images/df20.jpg)
