@@ -255,7 +255,7 @@ It consists of five stages:
     ![](images/df22.jpg)
 
 ## Design
-In the previous milestone, you have sent the smart meter readings to Google Pub/Sub. It's needed to add a Dataflow job to preprocess the samrt meter measurement that consists of the following stages
+In the previous milestone, you have sent the smart meter readings to Google Pub/Sub. It's needed to add a Dataflow job to preprocess the smart meter measurements. The job consists of the following stages
 1. **Read from PubSub**: read the measurement reading .
 2. **Filter**: Eliminate records with missing measurements (containing None). 
 3. **Convert**:  convert  the  pressure  from  kPa  to  psi  and  the  temperature  from  Celsius  to  Fahrenheit using the following equations 
