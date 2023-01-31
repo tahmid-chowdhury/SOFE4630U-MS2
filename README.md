@@ -223,6 +223,8 @@ It consists of five stages:
     
     e.	To Pub/sub: send the serialized prediction int the output topic.
     
+    ![](images/df21.jpg)
+    
     ``` cmd
     cd ~/SOFE4630U-MS2/mnist
     python mnistPubSub.py \
@@ -238,5 +240,16 @@ It consists of five stages:
       --experiment use_unsupported_python_version \
       --streaming
     ````
+    A new arguement **streaming** is used here to mark the pipeline as streaming process. SO it will run forever until you manually stop it.
 
-    ![](images/df20.jpg)
+4. In your computer, Edit lines 4, 5, and 6 in the file /mnist/data/consumerMnistPubSup.py to have the path of the JSON, Project ID, and mnist_predict subscription id. The file represent a consumer that will read any message from the mnist_predict topic and display it.
+
+6. In your computer, Edit lines 11, 12, and 13 in the file /mnist/data/consumerMnistPubSup.py to have the path of the JSON, Project ID, and the topic id of mnist_image. The file represent a producer that will send any message consists of a single mnist record each second.
+
+    It may take minutes until every things are setup. The whole example can be summarized as:
+    a) The producer will produce to the mnist_image topic.  ( your local machine)
+    b) Data flow job will read messages, process them, and send them to the mnist_predict topic ( over GCP)
+    a) The consumer will consume every result from the mnist_predict topic and display it.  ( your local machine)
+
+7. Note, As the Dataflow job is marked as streaming, it will be still running. To stop it, go to the Dataflow job, and stop it manually.
+    ![](images/df22.jpg)
