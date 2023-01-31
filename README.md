@@ -20,7 +20,6 @@ In this section, you will learn about Dataflow, MapReduce pattern, and a word co
 2. Search for **Dataflow API**.
 
   ![](images/df1.jpg)
-  
 3. Then click **Enable** and Wait until the GCP get the service enabled for you.
   
   ![](images/df2.jpg)
@@ -48,5 +47,16 @@ pip install 'apache-beam[gcp]'
   ```
 
 ## Running the wordcount Example
+1.	There already a set of examples exist within the python library folder. The following command will search for the file within any subdirectory of the home directory (~) and print it.
+  ``` cmd
+find ~ -name 'wordcount.py'
+  ```
+  
+2.	The following command will copy the file to the home directory (Replace path with the path you got from the previous step).
+  ``` cmd
+cp path  ~/wordcount.py
+  ```
+  Open the file using the text editor. Now, let’s try to understand the python code.
+3.	The user can send arguments to customize the processing. The first step is to parse those arguments. Lines 69 to 73 define the first argument which will be set using the option **--input** . It’s an optional argument and if not given, it will have the default value given in line 72. The second argument is set using --output option. It’s required (not optional) and thus, no default value is needed. After describing the arguments, line 79 will parse the arguments and return a dictionary (known_args) with two keys named as the dest parameter of the parsed arguments (input and output)   
 
 
