@@ -138,7 +138,7 @@ In this section, you will learn about Dataflow, MapReduce pattern, and a word co
     
     ![](images/df15.jpg)
 10. Go to the bucket created in step 7 and open the file(s) started by the prefix **outputs** within a folder named **result**. Download the file to read it.
-11.	In the GitHub repository, there is an upgrade to the wordcount script. Clone the repository and run the updated script. Try to understand its function.
+11.	In the GitHub repository, there is an upgrade to the wordcount script. Make sure that the **PROJECT** and **BUCKET** environment variables are still existing. Then, clone the repository and run the updated script. Try to understand its function.
     ```cmd 
     cd ~
     git clone https://github.com/GeorgeDaoud3/SOFE4630U-MS2.git
@@ -154,3 +154,47 @@ In this section, you will learn about Dataflow, MapReduce pattern, and a word co
       --experiment use_unsupported_python_version
     ```
 ## NMIST dataset
+The Modified National Institute of Standards and Technology (**MNIST**) dataset consists of handwritten digits that is commonly used for machine learning and image processing applications. Each digit is represented as a 28*28 gray image. The value of pixels ranges from 0 (white) to 255 (black) as shown in the following image. The values are normalized to 1 and converted from a matrix to a vector and stored as string. The string is fed to a Machine Learning (ML) model that estimate the probability that the image represents one of the ten digits. The ML model is implemented using a python library called TensorFlow. The detail of the model is behind the scope of this course. What you want to know is that the model parameters and the MNIST CSV are saved in a folder **/MNIST/data** in the repository.
+
+![](images/df16.jpg)
+
+## Data flow Processing the MNIST database from BigQuery
+BigQuery is a cloud-based serverless data warehouse that supports SQL. 
+1. Search for **BigQuery**, Within the current project, create a dataset and name it **MNIST**, create a table, name it **Images** and upload the **mnist/data/mnist.csv** file from the repository (you need to download it first to your computer). It may take several minutes to create the dataset and the table.
+    
+    ![](images/df17.jpg)
+2. Go to the bucket created before and upload the model folder from the **/mnist/model** folder from the repository.
+3.	Make sure that the Project and Bucket environment variables are already defined then run the DataFlow job using the following commands. 
+    ``` cmd
+    cd ~/SOFE4630U-MS2/mnist
+    python mnistBQ.py \
+      --runner DataflowRunner \
+      --project $PROJECT \
+      --staging_location $BUCKET/staging \
+      --temp_location $BUCKET/temp \
+      --model $BUCKET/model \
+      --setup_file ./setup.py \
+      --input $PROJECT:MNIST.Images \
+      --output $PROJECT:MNIST.Predict\
+      --region  northamerica-northeast2 \
+      --experiment use_unsupported_python_version
+    ```
+    
+    Three arguments are used by the python code to create a customized pipeline.
+    
+    a)	**input** that specify the table name to read the data from which follows the following pattern, **ProjectID.Dataset.Table**
+    
+    b)	**output** that specifies the table name to be created to store the predicted values.
+    
+    c)	**model** that specifies the path from which the model parameters can be read.
+    
+    Another important argument is **setup_file**. It specifies the libraries needed to be installed on each worker. The lines show in the following figure is the list of commands needed to be executed over each worker. The list contains only one command that will install the **TensorFlow** library needed to run the model.
+    
+    ![](images/df18.jpg)
+    
+4.	As shown in the following image, the pipeline consists of 3 stages:
+    a.	**ReadFromBQ**: that reads a BigQuery table.
+    b.	**Prediction**: that call the process function defined within the PredictDoFn class to process each record (row) and returns a dictionary that contains the following fields; **ID**, **P0**,…,**P9** where **ID** is the same as the record ID of the input table, **P0** is the probability that the image represent the digit 0,… . Note that the **@singleton** annotation in line 36, will prevent the model creation to just once which will make the process function run fast. Also, the second argument (**known_args.model**) in line 86 will be the last argument send to the process function (**checkpoint**).
+    c.	**WriteToBQ**: that writes the prediction output (**ID**, **P0**,…,**P9**) into another BigQuery table. The table will be created if no exist and will be truncated if exist.
+    
+    ![](images/df19.jpg)
