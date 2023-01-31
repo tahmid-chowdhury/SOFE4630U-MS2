@@ -18,8 +18,8 @@ In this section, you will learn about Dataflow, MapReduce pattern, and a word co
 ## Configure Dataflow
 1. Open the GCP site.
 2. Search for **Dataflow API**.
-
-  ![](images/df1.jpg)
+    
+    ![](images/df1.jpg)
 3. Then click **Enable** and Wait until the GCP get the service enabled for you.
   
   ![](images/df2.jpg)
@@ -47,7 +47,7 @@ pip install 'apache-beam[gcp]'
   ```
 
 ## Running the wordcount Example
-1.	There already a set of examples exist within the python library folder. The following command will search for the file within any subdirectory of the home directory (~) and print it.
+1.	There already a set of examples exist within the python library folder. The following command will search for the wordcount within any subdirectory of the home directory (**~**) and print it.
   ``` cmd
 find ~ -name 'wordcount.py'
   ```
