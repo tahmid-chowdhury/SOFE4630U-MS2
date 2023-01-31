@@ -41,4 +41,12 @@ In this section, you will learn about Dataflow, MapReduce pattern, and a word co
   
   ![](images/df6.jpg)
   
-8.
+8. Now, it’s time to install the python library of DataFlow
+  ``` cmd
+pip install pip --upgrade
+pip install 'apache-beam[gcp]'
+  ```
+
+## Running the wordcount Example
+
+
