@@ -153,7 +153,7 @@ In this section, you will learn about Dataflow, MapReduce pattern, and a word co
       --output2 $BUCKET/result/outputs2 \
       --experiment use_unsupported_python_version
     ```
-## NMIST dataset
+## MNIST dataset
 The Modified National Institute of Standards and Technology (**MNIST**) dataset consists of handwritten digits that is commonly used for machine learning and image processing applications. Each digit is represented as a 28*28 gray image. The value of pixels ranges from 0 (white) to 255 (black) as shown in the following image. The values are normalized to 1 and converted from a matrix to a vector and stored as string. The string is fed to a Machine Learning (ML) model that estimate the probability that the image represents one of the ten digits. The ML model is implemented using a python library called TensorFlow. The detail of the model is behind the scope of this course. What you want to know is that the model parameters and the MNIST CSV are saved in a folder **/MNIST/data** in the repository.
 
 ![](images/df16.jpg)
