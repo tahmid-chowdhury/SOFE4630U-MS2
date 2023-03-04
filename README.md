@@ -11,9 +11,9 @@
 
 ## Dataflow and a Simple Map Reduce Example:
 In this section, you will learn about Dataflow, MapReduce pattern, and a word count as a MapReduce example. 
-1. Watch this video about [https://www.youtube.com/watch?v=KalJ0VuEM7s](Google Cloud Dataflow).
-2. Watch this video about [https://www.youtube.com/watch?v=JZiM-NsdiJo](MapReduce concepts).
-3. Read this article about [https://www.analyticsvidhya.com/blog/2022/05/an-introduction-to-mapreduce-with-a-word-count-example/](implementing a word count example using the MapReduce patterns).
+1. Watch this video about [Google Cloud Dataflow](https://www.youtube.com/watch?v=KalJ0VuEM7s).
+2. Watch this video about [MapReduce concepts](https://www.youtube.com/watch?v=JZiM-NsdiJo).
+3. Read this article about [implementing a word count example using the MapReduce patterns](https://www.analyticsvidhya.com/blog/2022/05/an-introduction-to-mapreduce-with-a-word-count-example/).
 
 ## Configure Dataflow
 1. Open the GCP site.
