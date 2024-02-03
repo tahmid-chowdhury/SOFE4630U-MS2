@@ -143,6 +143,8 @@ In this section, you will learn about Dataflow, MapReduce pattern, and a word co
     cd ~
     git clone https://github.com/GeorgeDaoud3/SOFE4630U-MS2.git
     cd ~/SOFE4630U-MS2/wordcount
+    PROJECT=$(gcloud config list project --format "value(core.project)")
+    BUCKET=gs://$PROJECT-bucket
     python wordcount2.py \
       --region northamerica-northeast2 \
       --runner DataflowRunner \
@@ -167,6 +169,8 @@ BigQuery is a cloud-based serverless data warehouse that supports SQL.
 3.	Make sure that the Project and Bucket environment variables are already defined then run the DataFlow job using the following commands. 
     ``` cmd
     cd ~/SOFE4630U-MS2/mnist
+    PROJECT=$(gcloud config list project --format "value(core.project)")
+    BUCKET=gs://$PROJECT-bucket
     python mnistBQ.py \
       --runner DataflowRunner \
       --project $PROJECT \
@@ -174,8 +178,8 @@ BigQuery is a cloud-based serverless data warehouse that supports SQL.
       --temp_location $BUCKET/temp \
       --model $BUCKET/model \
       --setup_file ./setup.py \
-      --input $PROJECT:MNIST.Images \
-      --output $PROJECT:MNIST.Predict\
+      --input $PROJECT.MNIST.Images \
+      --output $PROJECT.MNIST.Predict\
       --region  northamerica-northeast2 \
       --experiment use_unsupported_python_version
     ```
@@ -227,6 +231,8 @@ It consists of five stages:
     
     ``` cmd
     cd ~/SOFE4630U-MS2/mnist
+    PROJECT=$(gcloud config list project --format "value(core.project)")
+    BUCKET=gs://$PROJECT-bucket
     python mnistPubSub.py \
       --runner DataflowRunner \
       --project $PROJECT \
