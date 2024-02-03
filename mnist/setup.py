@@ -48,7 +48,7 @@ class CustomCommands(setuptools.Command):
       self.RunCustomCommand(command)
 
 
-CUSTOM_COMMANDS = [['pip', 'install','tensorflow-cpu==2.8.0']
+CUSTOM_COMMANDS = [['pip', 'install','tensorflow-cpu']
 ]
 
 REQUIRED_PACKAGES = []
