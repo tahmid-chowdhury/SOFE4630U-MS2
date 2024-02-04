@@ -248,9 +248,9 @@ It consists of five stages:
     ````
     A new arguement **streaming** is used here to mark the pipeline as streaming process. SO it will run forever until you manually stop it.
 
-4. In your computer, Edit lines 4, 5, and 6 in the file /mnist/data/consumerMnistPubSup.py to have the path of the JSON, Project ID, and mnist_predict subscription id. The file represent a consumer that will read any message from the mnist_predict topic and display it.
+4. In your computer, Edit lines 4, 5, and 6 in the file /mnist/data/consumerMnistPubSup.py to have the path of the JSON, Project ID, and mnist_predict subscription id. The file represent a consumer that will read any message from the mnist_predict topic and display it (**Similar to the design part in the first milestone**).
 
-6. In your computer, Edit lines 11, 12, and 13 in the file /mnist/data/consumerMnistPubSup.py to have the path of the JSON, Project ID, and the topic id of mnist_image. The file represent a producer that will send any message consists of a single mnist record each second.
+6. In your computer, Edit lines 11, 12, and 13 in the file /mnist/data/consumerMnistPubSup.py to have the path of the JSON, Project ID, and the topic id of mnist_image. The file represent a producer that will send any message consists of a single mnist record each second (**Similar tothe design part in the first milestone**).
 
     It may take minutes until every things are setup. The whole example can be summarized as:
     a) The producer will produce to the mnist_image topic.  ( your local machine)
