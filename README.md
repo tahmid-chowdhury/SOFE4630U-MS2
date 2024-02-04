@@ -212,7 +212,7 @@ BigQuery is a cloud-based serverless data warehouse that supports SQL. We will u
     
     a.	**ReadFromBQ**: that reads a BigQuery table.
     
-    b.	**Prediction**: that call the process function defined within the PredictDoFn class to process each record (row) and returns a dictionary that contains the following fields; **ID**, **P0**,…,**P9** where **ID** is the same as the record ID of the input table, **P0** is the probability that the image represent the digit 0,… . Note that the **@singleton** annotation in line 36, will prevent the model creation to just once which will make the process function run fast. Also, the second argument (**known_args.model**) is the path of the model at the bucket.
+    b.	**Prediction**: that call the process function defined within the PredictDoFn class to process each record (row) and returns a dictionary that contains the following fields; **ID**, **P0**,…,**P9** where **ID** is the same as the record ID of the input table, **P0** is the probability that the image represent the digit 0,… . Note that the **@singleton** annotation in line 36, will prevent the model creation to just once which will make the process function run fast. Also, the second argument (**known_args.model**) is in line 86 will be the last argument send to the process function (**checkpoint**).
     
     c.	**WriteToBQ**: that writes the prediction output (**ID**, **P0**,…,**P9**) into another BigQuery table. The table will be created if no exist and will be truncated if exist.
     
@@ -224,26 +224,11 @@ BigQuery is a cloud-based serverless data warehouse that supports SQL. We will u
 
 ## Data flow Processing the MNIST database from Pub/Sub
 
-In this example, the data will be read and store into Google Pub/Sub. In the previous milestone, you have already learned how to create a topic in Google Pub/sub, a consumer to read the data, and a producer to send data through the pub/sub. 
+In this example, the data will be read and store into Google Pub/Sub. In the previous milestone, you have already learned how to create a topic in Google Pub/sub, a consumer to read the data, and a producer to send data through the pub/sub. This will be the first streaming process. It will keep running until you manually stop it.
 
 1. Go to the **service account** created before and generate a key in JSON format.
 2. Create two topics **mnist_image**, and **mnist_predict** at **Google Pub/Sub**.
 3. Run the Data flow job that reads JSON objects from the **mnist_image** topic, apply it to the ML model, send the prediction results via **mnist_predict** topic.
-It consists of five stages:
-
-
-    a.	Read from Pub/Sub: that reads messages from the input topic.
-
-    b.	toDict: as Pub/Sub is agnostic to the type of the message. It’s handled as a stream of bytes. To process the message, The toDict stage deserialize the message to its original format (JSON).
-
-    c.	Prediction: the same as the Prediction in the BigQuery example.
-
-    d.	To byte: Serialize the predicted output to bytes.
-    
-    e.	To Pub/sub: send the serialized prediction int the output topic.
-    
-    ![](images/df21.jpg)
-    
     ``` cmd
     cd ~/SOFE4630U-MS2/mnist
     PROJECT=$(gcloud config list project --format "value(core.project)")
@@ -261,11 +246,26 @@ It consists of five stages:
       --experiment use_unsupported_python_version \
       --streaming
     ````
-    A new arguement **streaming** is used here to mark the pipeline as streaming process. SO it will run forever until you manually stop it.
+    A new arguement **streaming** is used here to mark the pipeline as streaming process. So it will run forever until you manually stop it.
 
-4. In your computer, Edit lines 4, 5, and 6 in the file /mnist/data/consumerMnistPubSup.py to have the path of the JSON, Project ID, and mnist_predict subscription id. The file represent a consumer that will read any message from the mnist_predict topic and display it (**Similar to the design part in the first milestone**).
+4. The job pipeline consists of five stages:
 
-6. In your computer, Edit lines 11, 12, and 13 in the file /mnist/data/consumerMnistPubSup.py to have the path of the JSON, Project ID, and the topic id of mnist_image. The file represent a producer that will send any message consists of a single mnist record each second (**Similar tothe design part in the first milestone**).
+    a.	**Read from Pub/Sub**: reads messages from the input topic.
+
+    b.	**toDict**: Pub/Sub is agnostic to the type of the message. It’s handled as a stream of bytes. To process the message, The stage deserialize the messagefrom bytes to its original format (JSON).
+
+    c.	**Prediction**: the same as the Prediction in the BigQuery example.
+
+    d.	**To byte**: Serialize the predicted output to bytes.
+    
+    e.	**To Pub/sub**: send the serialized prediction int the output topic.
+    
+    ![](images/df21.jpg)
+    
+5. In your computer, Edit lines 11, 12, and 13 in the file **/mnist/data/producerMnistPubSup.py** to have the path of the JSON, Project ID, and the topic id of mnist_image. The file represent a producer that will send any message consists of a single mnist record each second (**Similar tothe design part in the first milestone**).
+
+6. In your computer, Edit lines 4, 5, and 6 in the file **/mnist/data/consumerMnistPubSup.py** to have the path of the JSON, Project ID, and mnist_predict subscription id. The file represent a consumer that will read any message from the mnist_predict topic and display it (**Similar to the design part in the first milestone**).
+
 
     It may take minutes until every things are setup. The whole example can be summarized as:
     a) The producer will produce to the mnist_image topic.  ( your local machine)
@@ -273,6 +273,7 @@ It consists of five stages:
     a) The consumer will consume every result from the mnist_predict topic and display it.  ( your local machine)
 
 7. Note, As the Dataflow job is marked as streaming, it will be still running. To stop it, go to the Dataflow job, and stop it manually.
+   
     ![](images/df22.jpg)
 
 ## Design
@@ -287,6 +288,6 @@ In the previous milestone, you have sent the smart meter readings to Google Pub/
 4. **Write to PubSub**: send the measurement back to another topic
  
 ## Deliverables
-1. A report that includes the discription of the second wordcount example (wordcount2.py) and the pipeline you used in the Design section. It should have snapshots of the job and results of the four examples (wordcount and mnist) as well as the design part.
+1. A report that includes the discription of the second wordcount example (**wordcount2.py**) and the pipeline you used in the Design section. It should have snapshots of the job and results of the four examples (wordcount and mnist) as well as the design part.
 2. An audible video of about 4 minutes showing the created job and the results of the four examples (wordcount and mnist).
 3. Another audible video of about 3 minutes showing the design part.
