@@ -143,20 +143,20 @@ In this section, you will learn about Dataflow, MapReduce pattern, and a word co
       --experiment use_unsupported_python_version
     ```
     
-    Some of the command arguments are needed by Dataflow to process the pipeline while others as input and output are used by the wordcount code to generate a customized pipeline. It will take minutes for Dataflow to generate worker nodes, configure them, execute the pipeline, and finally it will display **JOB_STATE_DONE**.
+    Some of the command arguments are needed by Dataflow to process the pipeline while others as input and output are used by the **wordcount** code to generate a customized pipeline. It will take minutes for Dataflow to generate worker nodes, configure them, execute the pipeline, and finally it will display **JOB_STATE_DONE**.
 
     ![](images/df14a.jpg)
-9.	To see the details about Dataflow Job, search for **Dataflow Jobs**, then choose the first one in the list (last job). A diagram of the pipeline will be displayed in which each stage is named as instructed in the python file. Note that, the name is unique and can’t be repeated for different stages. Also, the job info and logs are shown which can be used to debug the job. 
+  	
+10.	To see the details about Dataflow Job, search for **Dataflow Jobs**, then choose the first one in the list (last job). A diagram of the pipeline will be displayed in which each stage is named as instructed in the python file. Note that, the name is unique and can’t be repeated for different stages. Also, the job info and logs are shown which can be used to debug the job. 
     
     ![](images/df15.jpg)
-10. Go to the bucket created in step 7 and open the file(s) started by the prefix **outputs** within a folder named **result**. Download the file to read it.
-11.	In the GitHub repository, there is an upgrade to the wordcount script. Make sure that the **PROJECT** and **BUCKET** environment variables are still existing. Then, clone the repository and run the updated script. Try to understand its function.
+
+11. Go to the bucket created in step 7 and open the file(s) started by the prefix **outputs** within a folder named **result**. Download the file to read it.
+12.	In the GitHub repository, there is also an upgrade to the wordcount script. Make sure that the **PROJECT** and **BUCKET** environment variables are still existing. Then, clone the repository and run the updated script. Try to understand its function.
     ```cmd 
     cd ~
     git clone https://github.com/GeorgeDaoud3/SOFE4630U-MS2.git
     cd ~/SOFE4630U-MS2/wordcount
-    PROJECT=$(gcloud config list project --format "value(core.project)")
-    BUCKET=gs://$PROJECT-bucket
     python wordcount2.py \
       --region northamerica-northeast2 \
       --runner DataflowRunner \
@@ -168,21 +168,21 @@ In this section, you will learn about Dataflow, MapReduce pattern, and a word co
       --experiment use_unsupported_python_version
     ```
 ## MNIST dataset
-The Modified National Institute of Standards and Technology (**MNIST**) dataset consists of handwritten digits that is commonly used for machine learning and image processing applications. Each digit is represented as a 28*28 gray image. The value of pixels ranges from 0 (white) to 255 (black) as shown in the following image. The values are normalized to 1 and converted from a matrix to a vector and stored as string. The string is fed to a Machine Learning (ML) model that estimate the probability that the image represents one of the ten digits. The ML model is implemented using a python library called TensorFlow. The detail of the model is behind the scope of this course. What you want to know is that the model parameters and the MNIST CSV are saved in a folder **/MNIST/data** in the repository.
+The Modified National Institute of Standards and Technology (**MNIST**) dataset consists of handwritten digits that is commonly used for machine learning and image processing applications. Each digit is represented as a 28*28 gray image. The value of pixels ranges from 0 (white) to 255 (black) as shown in the following image. The values are normalized to 1 and converted from a matrix to a vector and stored as string. The string is fed to a Machine Learning (ML) model that estimate the probability that the image represents one of the ten digits. The ML model is implemented using a python library called **TensorFlow**. The detail of the model is behind the scope of this course. What you want to know is that the model parameters and the MNIST CSV are saved in a folder **/MNIST/data** in the repository.
 
 ![](images/df16.jpg)
 
 ## Data flow Processing the MNIST database from BigQuery
-BigQuery is a cloud-based serverless data warehouse that supports SQL. 
+BigQuery is a cloud-based serverless data warehouse that supports SQL. We will use it to store the table containing the MNIST images. Thus, a dataset, namely **MNIST**, will be created within **BigQuerry**. A table, namely **Images**, will be created within the dataset. Then, the CSV file will be uploaded to fill the table. The Dataflow job will query the content of the table, run the ML model on each image, and produce a prediction of the handwritten digit. Finally, The Job will store the results in another table, **Predict**, within the same dataset.
+
 1. Search for **BigQuery**, Within the current project, create a dataset and name it **MNIST**, create a table, name it **Images** and upload the **mnist/data/mnist.csv** file from the repository (you need to download it first to your computer). It may take several minutes to create the dataset and the table.
     
     ![](images/df17.jpg)
+    
 2. Go to the bucket created before and upload the model folder from the **/mnist/model** folder from the repository.
 3.	Make sure that the Project and Bucket environment variables are already defined then run the DataFlow job using the following commands. 
     ``` cmd
     cd ~/SOFE4630U-MS2/mnist
-    PROJECT=$(gcloud config list project --format "value(core.project)")
-    BUCKET=gs://$PROJECT-bucket
     python mnistBQ.py \
       --runner DataflowRunner \
       --project $PROJECT \
@@ -203,8 +203,8 @@ BigQuery is a cloud-based serverless data warehouse that supports SQL.
     b)	**output** that specifies the table name to be created to store the predicted values.
     
     c)	**model** that specifies the path from which the model parameters can be read.
-    
-    Another important argument is **setup_file**. It specifies the libraries needed to be installed on each worker. The lines show in the following figure is the list of commands needed to be executed over each worker. The list contains only one command that will install the **TensorFlow** library needed to run the model.
+
+    Another important argument is **setup_file**. It specifies the libraries needed to be installed on each worker. The following figure shows the list of commands in the **setup_file** that will be executed to initiate each worker. The list contains only one command to install the **TensorFlow** library required to run the model. Note: Installing dependencies will consume time when initiating each worker node. Another approach is to provide a docker image with preinstalled dependencies. This will reduce the launch time of the worker nodes and the job.
     
     ![](images/df18.jpg)
     
@@ -212,17 +212,20 @@ BigQuery is a cloud-based serverless data warehouse that supports SQL.
     
     a.	**ReadFromBQ**: that reads a BigQuery table.
     
-    b.	**Prediction**: that call the process function defined within the PredictDoFn class to process each record (row) and returns a dictionary that contains the following fields; **ID**, **P0**,…,**P9** where **ID** is the same as the record ID of the input table, **P0** is the probability that the image represent the digit 0,… . Note that the **@singleton** annotation in line 36, will prevent the model creation to just once which will make the process function run fast. Also, the second argument (**known_args.model**) in line 86 will be the last argument send to the process function (**checkpoint**) at **Google Pub/Sub**.
+    b.	**Prediction**: that call the process function defined within the PredictDoFn class to process each record (row) and returns a dictionary that contains the following fields; **ID**, **P0**,…,**P9** where **ID** is the same as the record ID of the input table, **P0** is the probability that the image represent the digit 0,… . Note that the **@singleton** annotation in line 36, will prevent the model creation to just once which will make the process function run fast. Also, the second argument (**known_args.model**) is the path of the model at the bucket.
     
     c.	**WriteToBQ**: that writes the prediction output (**ID**, **P0**,…,**P9**) into another BigQuery table. The table will be created if no exist and will be truncated if exist.
     
     ![](images/df19.jpg)
+  	
 5.	Now, a new table is created in the MNIST dataset, let’s display its content.
 
     ![](images/df20.jpg)
 
 ## Data flow Processing the MNIST database from Pub/Sub
- In this example, the data will be read and store into Google Pub/Sub. In the previous milestone, you have already learned how to create a topic in Google Pub/sub, a consumer to read the data, and a producer to send data through the pub/sub. 
+
+In this example, the data will be read and store into Google Pub/Sub. In the previous milestone, you have already learned how to create a topic in Google Pub/sub, a consumer to read the data, and a producer to send data through the pub/sub. 
+
 1. Go to the **service account** created before and generate a key in JSON format.
 2. Create two topics **mnist_image**, and **mnist_predict** at **Google Pub/Sub**.
 3. Run the Data flow job that reads JSON objects from the **mnist_image** topic, apply it to the ML model, send the prediction results via **mnist_predict** topic.
