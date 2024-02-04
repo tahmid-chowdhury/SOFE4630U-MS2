@@ -73,8 +73,8 @@ In this section, you will learn about Dataflow, MapReduce pattern, and a word co
         * The first is called **Split** that splits each line into list of words using a custom class implemented in lines 50:63. 
         * The second is called **PairWithOne** that converts each word into a key/value pair which the key is the word and the value is 1. This stage is used a inline function that takes a word **x** and return the tuple **(x,1)**. 
         * The first two stages are Map operations which takes a single input and produce a single or multiple outputs.
-        * The third stage is a Reduce stage that will combine tuples having the same key (word) and them apply the **sum** function over the values to generate a new tuple of a word as a key and the count as the value. 
-    * Line 102 append a new stage to the pipeline. The stage implements another Map operation that executes a customized function defined in lines 99 and 100 to convert each tuple to a string.
+        * The third stage is a Reduce stage that will combine tuples having the same key (word) and then apply the **sum** function over the values to generate a new tuple of a word as a key and the count as the value. 
+    * Line 102 append another stage to the pipeline. The stage implements another Map operation that executes a customized function defined in lines 99 and 100 to convert each tuple to a string.
     * A final stage is used to save the output (list of strings) to a text file.
 
     ![](images/df9.jpg)
@@ -96,12 +96,14 @@ In this section, you will learn about Dataflow, MapReduce pattern, and a word co
     ``` cmd
     cat outputs* | more
     ```
-6.	Now, let’s run it as a GCP service. First step is to get the project ID using and save it to an environment variable (**$PROJECT**). (Note: the variable is temporally and has to be created if the console/session is terminated)
+    
+6.	Now, let's run it as a GCP service to benefit from being globally available, managed, and auto scaled by Dataflow. The first step is to get the project ID and save it to an environment variable (**$PROJECT**). (**Note**: the variable is temporally and has to be created if the console or the session is terminated)
     
     ``` cmd
     PROJECT=$(gcloud config list project --format "value(core.project)")
     echo $PROJECT
     ```
+    
 7.	As the input and output pathes should be globally accessed files, a folder created in Google Cloud Storage is needed to be accessed by the Dataflow service. Google Cloud Storage that acts as a File System is called Bucket. The following steps will lead you to create a Bucket.
     
     a) Search for **Buckets**
