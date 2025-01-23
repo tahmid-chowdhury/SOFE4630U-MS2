@@ -21,40 +21,40 @@
 To set up Google Kubernetes Engine (**GKE**), open the console of the project you have created within the Google Cloud Platform (GCP) during the first milestone.
 1. Set the default compute zone to **northamerica-northeast1-b**
    
-    ```cmd
-    gcloud config set compute/zone northamerica-northeast1-b  
-    ```
+   ```cmd
+   gcloud config set compute/zone northamerica-northeast1-b  
+   ```
     
 2. Enable GKE by searching for **Kubernetes Engine**. Select **Kubernetes Engine API**. Then, click **Enable**.
    
-    ![MS3 figure1](figures/cl3-1.jpg)
+   ![MS3 figure1](figures/cl3-1.jpg)
    
 3. Wait until the API is enabled. Then, create a three-node cluster on GKE called **sofe4630u**. A Node is a worker machine in which docker images and applications can be deployed.
    
-    ```cmd
-    gcloud container clusters create sofe4630u --num-nodes=3 
-    ```
+   ```cmd
+   gcloud container clusters create sofe4630u --num-nodes=3 
+   ```
       
-    **Note**: if the authorization windows pop up, click Authorize
+   **Note**: if the authorization windows pop up, click Authorize
    
-    **Note**: if you get an error that there are no available resources to create the nodes, you may need to change the default compute zone (e.g., to **us-central1-a**) or reduce the number of nodes.
+   **Note**: if you get an error that there are no available resources to create the nodes, you may need to change the default compute zone (e.g., to **us-central1-a**) or reduce the number of nodes.
 
 ## Deploy MySQL using GKE:
 1. We will use a YAML file to deploy a pre-created MySQL image over the GKE cluster. A YAML file contains the configuration used to set the deployment. The deployment's role is to orchestrate docker applications.
 
-    1. Clone the GitHub repository
+   1. Clone the GitHub repository
        
-        ```cmd 
-        cd ~
-        git clone https://github.com/GeorgeDaoud3/SOFE4630U-MS2.git
-        ```
+      ```cmd 
+      cd ~
+      git clone https://github.com/GeorgeDaoud3/SOFE4630U-MS2.git
+      ```
         
     2. Run the following command to deploy the MySQL server
       
-        ```cmd 
-        cd ~/SOFE4630U-MS2/mySQL
-        kubectl create -f mysql-deploy.yaml
-        ```
+      ```cmd 
+      cd ~/SOFE4630U-MS2/mySQL
+      kubectl create -f mysql-deploy.yaml
+      ```
         
         The command will deploy the configuration stored in the [mysql-deploy.yaml](/mySQL/mysql-deploy.yaml) into GKE. It would pull the **mysql/mysql-server** Docker image and deploy and enable the **3306** port number to allow access from the outside world. The file **mysql-deploy.yaml** is used to configure the deployment. It's shown in the following figure and can be interpreted as:
       
