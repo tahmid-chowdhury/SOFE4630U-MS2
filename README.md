@@ -18,7 +18,7 @@
 5. We will create a similar tool within GCP in this lab. However, we will focus on the sink connectors, It's possible to create a source connector as well.
 
 ## Setting Google Kubernetes Engine
-To set up Google Kubernetes Engine (**GKE**). Open the console within your Google Cloud Platform (GCP) project.
+To set up Google Kubernetes Engine (**GKE**), open the console within Google Cloud Platform (GCP) project, you have created in the first lab.
 1. Set the default compute zone to **northamerica-northeast1-b** 
     ```cmd
     gcloud config set compute/zone northamerica-northeast1-b  
