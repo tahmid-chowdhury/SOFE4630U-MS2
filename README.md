@@ -62,7 +62,7 @@ To set up Google Kubernetes Engine (**GKE**), open the console of the project yo
       
          * **Hyphen** means an element within a list
       
-         * **First two lines**: indicate that the type of the yaml and its version.
+         * **First two lines**: indicate that the type of the YAML file and its version.
       
          * **Line 4**: provides a name for the deployment. This name will be used by Kubernetes to access the deployment.
       
@@ -78,20 +78,25 @@ To set up Google Kubernetes Engine (**GKE**), open the console of the project yo
       
          ![MS3 figure2](figures/cl3-2.jpg)      
    
-    3. The status of the deployment can be checked by the following command
-        ```cmd 
-        kubectl get deployment 
-        ```
-   4. While the status of pods can be accessed by the following command 
-   ```cmd 
-   kubectl get pods  
-   ```
-   check that the deployment is available and that the pod is running successfully (it may take some time until everything is settled down)
-2. To give the deployment an IP address, a load Balancer service, mysql-service, should be created to that deployment. The load Balancer distributing the requests and workload between the replicas in the deployment (why this is not important in our case?) and associate an IP to the access the deployed application. 
+   3. The status of the deployment can be checked by the following command
+      
+      ```cmd 
+         kubectl get deployment 
+      ```
+
+   4. While the status of pods can be accessed by the following command
+      
+      ```cmd 
+         kubectl get pods  
+      ```
+
+      check that the deployment is available and that the pod is running successfully (it may take some time until everything is settled down)
+      
+3. To give the deployment an IP address, a load Balancer service, mysql-service, should be created to that deployment. The load Balancer distributing the requests and workload between the replicas in the deployment (why this is not important in our case?) and associate an IP to the access the deployed application. 
    1. the configuration of the load Balancer service is included in the [mysql-service.yaml](/mySQL/mysql-service.yaml) file from the cloned repo.
       ```cmd 
-      cd ~/SOFE4630U-MS2/mySQL
-      kubectl create -f mysql-service.yaml
+         cd ~/SOFE4630U-MS2/mySQL
+         kubectl create -f mysql-service.yaml
       ```
       The important lines in the mysql-service.yaml file are:
          * **Line 8**: the port number that will be assigned to the external IP
@@ -107,7 +112,7 @@ To set up Google Kubernetes Engine (**GKE**), open the console of the project yo
       ![MS3 figure4](figures/cl3-4.jpg)      
    
       It may take some time until the external IP address is changed from pending to a valid IP address. You may need to repeat the previous command.
-3. To access the MySQL using the IP address,
+4. To access the MySQL using the IP address,
    1. From any device in which MySQL client is installed ( or the GCP console), run the following commands. Before running the command, replace the **\<IP-address\>** with the external IP obtained in the previous step. The options **-u**, **-p**, and **-h** are used to specify the **username**, **password**, and **host IP** of the deployed server, respectively. 
       ```cmd
       mysql -uusr -psofe4630u -h<IP-address>
