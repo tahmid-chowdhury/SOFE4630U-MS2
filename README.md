@@ -317,9 +317,10 @@ Application Integration offers a comprehensive set of core integration tools to 
 
       ![mysql_a8.jpg](figures/mysql_a8.jpg)
       
-   10.  The format of the topic messages is not compitable with the format accepted by the MySQL connector. To make them compitable, drag and drop a **Data Mapping** box from the **TASKS** deopdown menu. Select the **Data Mapping** box and click **OPEN DATA MAPPING EDITOR**.
+   10. The format of the topic messages is not compitable with the format accepted by the MySQL connector. To make them compitable, drag and drop a **Data Mapping** box from the **TASKS** deopdown menu. Select the **Data Mapping** box and click **OPEN DATA MAPPING EDITOR**.
 
-   11.  Drag and drop the **CloudPubSubMessage.data** as input and **connectorInputPayload \(mysql-connector\)** as output. Thus, only the **data** field will pass from the Pub/Sub into the MySQL connector.
+   11. Drag and drop the **CloudPubSubMessage.data** as input and **connectorInputPayload \(mysql-connector\)** as output. Thus, only the **data** field will pass from the Pub/Sub into the MySQL connector.
+       
        ![mysql_a9.jpg](figures/mysql_a9.jpg)
    
 ### ggg
