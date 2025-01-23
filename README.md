@@ -11,7 +11,7 @@
 [https://github.com/GeorgeDaoud3/SOFE4630U-MS2](https://github.com/GeorgeDaoud3/SOFE4630U-MS2)
 
 ## Introduction:
-1. The video shows a case study of containerization in DevOps. The concept of Docker containerization is used extensively in the cloud world. Watch The video to get familiar with  [Docker](https://youtu.be/rOTqprHv1YE) terminologies. 
+1. The video shows a case study of containerization in DevOps. The concept of Docker containerization is used extensively in the cloud world. Watch the video to familiarize yourself with [Docker](https://youtu.be/rOTqprHv1YE) terminologies. 
 2. To manage Docker images and applications, we will use Kubernetes (**K8s**), watch the following  video to get familiar with [Kubernetes and its components](https://youtu.be/cC46cg5FFAM).
 3. To set up Google Kubernetes Engine (GKE). Open the console within your Google Cloud Platform (GCP) project.
    1. Set the default compute zone to **northamerica-northeast1-b** 
