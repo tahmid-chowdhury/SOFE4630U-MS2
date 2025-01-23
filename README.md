@@ -45,15 +45,15 @@ To set up Google Kubernetes Engine (**GKE**), open the console of the project yo
    1. Clone the GitHub repository
        
       ```cmd 
-         cd ~
-         git clone https://github.com/GeorgeDaoud3/SOFE4630U-MS2.git
+      cd ~
+      git clone https://github.com/GeorgeDaoud3/SOFE4630U-MS2.git
       ```
         
    2. Run the following command to deploy the MySQL server
       
       ```cmd 
-         cd ~/SOFE4630U-MS2/mySQL
-         kubectl create -f mysql-deploy.yaml
+      cd ~/SOFE4630U-MS2/mySQL
+      kubectl create -f mysql-deploy.yaml
       ```
         
       The command will deploy the configuration stored in the [mysql-deploy.yaml](/mySQL/mysql-deploy.yaml) into GKE. It would pull the **mysql/mysql-server** Docker image and deploy and enable the **3306** port number to allow access from the outside world. The file **mysql-deploy.yaml** is used to configure the deployment. It's shown in the following figure and can be interpreted as:
