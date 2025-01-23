@@ -206,7 +206,10 @@ To set up Google Kubernetes Engine (**GKE**), open the console of the project yo
       * Run **SendImage.py**, then check the keys in the Redis server. Finally, run **ReceiveImage.py** and check that the **received.jpg** image has been created.
 
 ## Create a Pub/Sub sink connector to MySQL
+The sink connector is a service that automatically consumes from a topic(s) and stores the consumed messages in a data storage, as shown in the following figure.
 
+   ![sink connector](figures/cl3-7_v2.jpg)
+   
 ### 1. Create an Integration Connectors to The MySQL Server
 
    Integration Connectors provide a transparent, standard interface to connect to various data sources from your integrations. As an integration developer, you can quickly connect to a growing pool of applications and systems without the need for protocol-specific knowledge or the use of custom code.
@@ -244,9 +247,29 @@ To set up Google Kubernetes Engine (**GKE**), open the console of the project yo
       7. For the credentials, set **usr** as the MySQL **Username**. For the **password**, you have to **Create New Secret**. Name it **mysql-password**. Set its value to **sofe4630u**. (MSQL username and password can be found in mysql-deploy.yaml)
          
          ![mysql_c8.jpg](figures/mysql_c8.jpg)
-
+   
       8. Grant any Necessary roles. Then Click **NEXT**.
          
          ![mysql_c9.jpg](figures/mysql_c9.jpg)
 
-      9. Finally, review the summary and cLick **CREATE**. 
+      9. Finally, review the summary and cLick **CREATE**.
+      10. Wait until The connector status changed to **Active**
+          
+### 2. Setup a New Table in The MySQL server
+   1. Login to the MySQL server
+      
+      ```cmd
+      mysql -uusr -psofe4630u -h<IP-address>
+      ```
+      
+   2. Create a table to store the Smart Meter records.
+
+      ```sql
+      use Readings; 
+      create table SmartMeter( ID int primary key, profile_name string, temperature double, humidity double, modified long); 
+      ```
+      
+   3. Exit the MySQL CLI, by running
+      ```sql
+      exit
+      ```
