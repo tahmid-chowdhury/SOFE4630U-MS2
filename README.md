@@ -42,28 +42,32 @@ To set up Google Kubernetes Engine (**GKE**), open the console of the project yo
 ## Deploy MySQL using GKE:
 1. We will use a YAML file to deploy a pre-created MySQL image over the GKE cluster. A YAML file contains the configuration used to set the deployment. The deployment's role is to orchestrate docker applications.
 
-   1. Clone the GitHub repository
-      ```cmd 
-      cd ~
-      git clone https://github.com/GeorgeDaoud3/SOFE4630U-MS2.git
-      ```
-   2. Run the following command to deploy the MySQL server 
-      ```cmd 
-      cd ~/SOFE4630U-MS2/mySQL
-      kubectl create -f mysql-deploy.yaml
-      ```
-   The command will deploy the configuration stored in the [mysql-deploy.yaml](/mySQL/mysql-deploy.yaml) into GKE. It would pull the **mysql/mysql-server** Docker image and deploy and enable the **3306** port number to allow access from the outside world. The file **mysql-deploy.yaml** is used to configure the deployment. It's shown in the following figure and can be interpreted as:
-      * **Indentation** means nested elements
-      *	**Hyphen** means an element within a list
-      *	**First two lines**: indicate that the type of the yaml and its version.
-      *	**Line 4**: provides a name for the deployment. This name will be used by Kubernetes to access the deployment. 
-      *	**Line 6**: indicates that only a single pod will be used.
-      *	**Line 9**: provides the name of the application that will be accessed by the pod.
-      *	**Line 16**: provides the ID of the Docker image to be deployed.
-      *	**Lines 19-24**: define image-dependent environment variables that define the username/password (**usr/sofe4630u**) , and a schema (**Readings**).
-      *	**Line 26**: defines the port number that will be used by the image.
+    1. Clone the GitHub repository
+       
+        ```cmd 
+        cd ~
+        git clone https://github.com/GeorgeDaoud3/SOFE4630U-MS2.git
+        ```
+        
+   2. Run the following command to deploy the MySQL server
       
-         ![MS3 figure2](figures/cl3-2.jpg)      
+        ```cmd 
+        cd ~/SOFE4630U-MS2/mySQL
+        kubectl create -f mysql-deploy.yaml
+        ```
+        
+        The command will deploy the configuration stored in the [mysql-deploy.yaml](/mySQL/mysql-deploy.yaml) into GKE. It would pull the **mysql/mysql-server** Docker image and deploy and enable the **3306** port number to allow access from the outside world. The file **mysql-deploy.yaml** is used to configure the deployment. It's shown in the following figure and can be interpreted as:
+            * **Indentation** means nested elements
+            *	**Hyphen** means an element within a list
+            *	**First two lines**: indicate that the type of the yaml and its version.
+            *	**Line 4**: provides a name for the deployment. This name will be used by Kubernetes to access the deployment. 
+            *	**Line 6**: indicates that only a single pod will be used.
+            *	**Line 9**: provides the name of the application that will be accessed by the pod.
+            *	**Line 16**: provides the ID of the Docker image to be deployed.
+            *	**Lines 19-24**: define image-dependent environment variables that define the username/password (**usr/sofe4630u**) , and a schema (**Readings**).
+            *	**Line 26**: defines the port number that will be used by the image.
+      
+            ![MS3 figure2](figures/cl3-2.jpg)      
    
    3. The status of the deployment can be checked by the following command
    ```cmd 
