@@ -365,3 +365,9 @@ Application Integration offers a comprehensive set of core integration tools to 
       ```sql
       exit
       ```
+
+4. To be able to use the integration, you have to publish (deploy) it first by click to the **publish** button.
+
+   ![mysql_t3.jpg](figures/mysql_t3.jpg)
+   
+### 4. Using MySQL Connector with Python Script 
