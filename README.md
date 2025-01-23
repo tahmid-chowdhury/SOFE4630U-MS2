@@ -145,19 +145,19 @@ To set up Google Kubernetes Engine (**GKE**), open the console of the project yo
       kubectl delete -f mysql-service.yaml
       ```  
 ## Deploy Redis using GKE:
-1. Watch the first 7:45 minutes in the following video to get familiar with [redis commands](https://youtu.be/jgpVdJB2sKQ).  
-2. Both the deployment and the load balancer service are included in the same file. To deploy both to GKE, run the following commands 
+
+1. Both the deployment and the load balancer service are included in the same file. To deploy both to GKE, run the following commands 
    ```cmd
    cd ~/SOFE4630U-MS3/Redis
    kubectl create -f redis.yaml
    ```
    Check that status of deployment, service, and pod. Note that the password is set within the yaml file to **sofe4630u**.
-3. Get Redis external IP.
+2. Get Redis external IP.
    ```cmd
    kubectl get services
    ```
    ![MS3 figure5](figures/cl3-6.jpg)      
-4. To access the Redis datastore,
+3. To access the Redis datastore,
    1. You can install the Redis client on your machine as shown in the previous video. However, let’s install it over the GCP console.
       ```cmd
       sudo apt-get install redis-tools
@@ -180,7 +180,7 @@ To set up Google Kubernetes Engine (**GKE**), open the console of the project yo
       ```cmd
       exit
       ```
-5. To access, Redis using python code,
+4. To access, Redis using python code,
    1. Install its library on your local machine (or GCP console) 
       ``` cmd
       pip install redis
