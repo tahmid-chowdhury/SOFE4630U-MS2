@@ -164,15 +164,15 @@ To set up Google Kubernetes Engine (**GKE**), open the console of the project yo
    ![MS3 figure5](figures/cl3-6.jpg)
    
 3. To access the Redis datastore,
-   1. To access Redis server, you have to install the Redis client on your machine. Fortunately, it's already installed in the GCP, and can be access from the console.
+   1. To access the Redis server, install the Redis client on your machine. Fortunately, it's installed in the GCP and can be accessed from the console.
       
-   2. Log in to Redis server from the GCP console using the command after replacing the **\<Redis-IP\>** with the IP obtained in step 2 and **sofe4630u** for the password.
+   2. Log in the to Redis server from the GCP console using the command after replacing the **\<Redis-IP\>** with the IP obtained in step 2 and **sofe4630u** for the password.
       
       ```cmd
       redis-cli -h <Redis-IP> -a sofe4630u
       ```
       
-   3 Try to run the following commands. **Note**, there are 16 different databases to select within Redis. The first command selects the first database (0). What are the functions executed by of other commands? 
+   3 Try to run the following commands. **Note**: there are 16 different databases to select within Redis. The first command selects the first database (0). What are the functions executed by other commands? 
       ``` cmd
       select 0
       set var 100
@@ -187,7 +187,7 @@ To set up Google Kubernetes Engine (**GKE**), open the console of the project yo
       exit
       ```
 
-4. To access, Redis using python code,
+4. To access Redis using Python code,
    
    1. Install its library on your local machine (or GCP console) 
 
