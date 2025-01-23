@@ -49,7 +49,7 @@ To set up Google Kubernetes Engine (**GKE**), open the console of the project yo
          git clone https://github.com/GeorgeDaoud3/SOFE4630U-MS2.git
       ```
         
-    2. Run the following command to deploy the MySQL server
+   2. Run the following command to deploy the MySQL server
       
       ```cmd 
          cd ~/SOFE4630U-MS2/mySQL
