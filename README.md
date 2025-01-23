@@ -205,7 +205,7 @@ To set up Google Kubernetes Engine (**GKE**), open the console of the project yo
         
       * Run **SendImage.py**, then check the keys in the Redis server. Finally, run **ReceiveImage.py** and check that the **received.jpg** image has been created.
 
-## Configure Kafka Connector with MySQL sink
+## Create a Pub/Sub sink connector to MySQL
 The sink connector is a Kafka service that automatically consumes from a topic(s) and stores the consumed messages in a data storage, as shown in the following figure.
 
    ![sink connector](figures/cl3-7_v2.jpg)
