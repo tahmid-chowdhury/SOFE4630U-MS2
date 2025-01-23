@@ -195,15 +195,15 @@ To set up Google Kubernetes Engine (**GKE**), open the console of the project yo
       pip install redis
       ```
       
-   2. In the cloned Github at path [/Redis/code/](/Redis/code/), there are two python files and a jpg image.
+   2. In the cloned Github at path [/Redis/code/](/Redis/code/), there are two Python files and a JPG image.
       
       * **SendImage.py**, will read the image **ontarioTech.jpg** and store it in Redis associated with a key **"OntarioTech"** at database 0.
         
-      * **ReceiveImage.py**, will read the value associated with the key **"OntarioTech"** from the Redis server and will save it into **received.jpg** image.
+      * **ReceiveImage.py**, will read the value associated with the key **"OntarioTech"** from the Redis server and save it into **received.jpg** image.
         
-      * You have to set the Redis Server IP in the second line in both **SendImage.py** and **ReceiveImage.py**.
+      * Set the Redis Server IP in the second line in **SendImage.py** and **ReceiveImage.py**.
         
-      * Run **SendImage.py**, then check the keys in the Redis server. Finally, Run **ReceiveImage.py** and check that the **received.jpg** image is created.
+      * Run **SendImage.py**, then check the keys in the Redis server. Finally, run **ReceiveImage.py** and check that the **received.jpg** image has been created.
 
 ## Configure Kafka Connector with MySQL sink
 The sink connector is a Kafka service that automatically consumes from a topic(s) and stores the consumed messages in a data storage, as shown in the following figure.
