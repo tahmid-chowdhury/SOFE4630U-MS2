@@ -12,7 +12,7 @@
 
 ## Introduction:
 1. Watch The following video to understand [Docker](https://youtu.be/rOTqprHv1YE) terminologies.
-2. To manage Docker images and applications, we will use Kubernetes, watch the following  video to get familiar with [Kubernetes and its components](https://youtu.be/cC46cg5FFAM).
+2. To manage Docker images and applications, we will use Kubernetes (**K8s**), watch the following  video to get familiar with [Kubernetes and its components](https://youtu.be/cC46cg5FFAM).
 3. To set up Google Kubernetes Engine (GKE). Open the console within your Google Cloud Platform (GCP) project.
    1. Set the default compute zone to **northamerica-northeast1-b** 
       ```cmd
