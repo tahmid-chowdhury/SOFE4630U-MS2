@@ -78,13 +78,13 @@ To set up Google Kubernetes Engine (**GKE**), open the console of the project yo
       
             ![MS3 figure2](figures/cl3-2.jpg)      
    
-   3. The status of the deployment can be checked by the following command
+   3. The following command can check the status of the deployment
       
       ```cmd 
       kubectl get deployment 
       ```
 
-   4. While the status of pods can be accessed by the following command
+   4. While the following command can access the status of pods
       
       ```cmd 
       kubectl get pods  
