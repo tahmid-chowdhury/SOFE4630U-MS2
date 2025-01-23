@@ -328,11 +328,17 @@ Application Integration offers a comprehensive set of core integration tools to 
 ### 4. Test the integration and publish it
 1. To test the integration, we will get access to the Cloud Pub/Sub output from the interface by
    * Click the **Cloud Pub/Sub Trigger** box.
+     
    * Scroll down to **Trigger Output Variables**.
-   * Edit the **CloudPubSubMessage** variable
+     
+   * Edit the **CloudPubSubMessage** variable.
+     
       ![mysql_t1.jpg](figures/mysql_t1.jpg)
+     
    * Change the **Variable Type** to **Output from Integration**. Thus, we can test the integration by manually setting this variable.
+     
       ![mysql_t2.jpg](figures/mysql_t2.jpg)
+     
    * Save Variable.
      
 2. Click on the design area to enable the test button. Click **test** and set the following JSON value into the **CloudPubSubMessage** textbox. This JSON file is the minimal subset of the JSON value produced from the PUb/Sub. You can find here [the format of the Pub/Sub messages](https://cloud.google.com/pubsub/docs/publisher#using-attributes)
