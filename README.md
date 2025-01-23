@@ -164,21 +164,15 @@ To set up Google Kubernetes Engine (**GKE**), open the console of the project yo
    ![MS3 figure5](figures/cl3-6.jpg)
    
 3. To access the Redis datastore,
-   1. As shown in the previous video, You can install the Redis client on your machine. However, let's deploy it over the GCP console.
-
-      ```cmd
-      sudo apt-get install redis-tools
-      ```
-
-      **Note**: this installation is not persistent and you need to repeat it each time the session is ended.
+   1. To access Redis server, you have to install the Redis client on your machine. Fortunately, it's already installed in the GCP, and can be access from the console.
       
-   2. Now, let’s log in to the server using the command after replacing the **\<Redis-IP\>** with the IP obtained in step 3 and **sofe4630u** for the password.
+   2. Log in to Redis server from the GCP console using the command after replacing the **\<Redis-IP\>** with the IP obtained in step 2 and **sofe4630u** for the password.
       
       ```cmd
       redis-cli -h <Redis-IP> -a sofe4630u
       ```
       
-   5. Now, try to run the following commands. **Note**, there are 16 different databases to select within Redis. The first command selects the first database (0). What are the functions of other commands? 
+   3 Try to run the following commands. **Note**, there are 16 different databases to select within Redis. The first command selects the first database (0). What are the functions executed by of other commands? 
       ``` cmd
       select 0
       set var 100
@@ -187,19 +181,28 @@ To set up Google Kubernetes Engine (**GKE**), open the console of the project yo
       del var
       keys *
       ```
-   6. Finally to exit the command line interface, type
+   4. Finally, to exit the command line interface, type
+
       ```cmd
       exit
       ```
-5. To access, Redis using python code,
+
+4. To access, Redis using python code,
+   
    1. Install its library on your local machine (or GCP console) 
+
       ``` cmd
       pip install redis
       ```
-   2. In the cloned Github at path [/Redis/code/](/Redis/code/), there are two python files and a jpg image. 
+      
+   2. In the cloned Github at path [/Redis/code/](/Redis/code/), there are two python files and a jpg image.
+      
       * **SendImage.py**, will read the image **ontarioTech.jpg** and store it in Redis associated with a key **"OntarioTech"** at database 0.
+        
       * **ReceiveImage.py**, will read the value associated with the key **"OntarioTech"** from the Redis server and will save it into **received.jpg** image.
+        
       * You have to set the Redis Server IP in the second line in both **SendImage.py** and **ReceiveImage.py**.
+        
       * Run **SendImage.py**, then check the keys in the Redis server. Finally, Run **ReceiveImage.py** and check that the **received.jpg** image is created.
 
 ## Configure Kafka Connector with MySQL sink
