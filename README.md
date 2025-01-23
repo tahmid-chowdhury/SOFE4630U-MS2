@@ -58,18 +58,26 @@ To set up Google Kubernetes Engine (**GKE**), open the console of the project yo
         
         The command will deploy the configuration stored in the [mysql-deploy.yaml](/mySQL/mysql-deploy.yaml) into GKE. It would pull the **mysql/mysql-server** Docker image and deploy and enable the **3306** port number to allow access from the outside world. The file **mysql-deploy.yaml** is used to configure the deployment. It's shown in the following figure and can be interpreted as:
             * **Indentation** means nested elements
+      
             *	**Hyphen** means an element within a list
+      
             *	**First two lines**: indicate that the type of the yaml and its version.
-            *	**Line 4**: provides a name for the deployment. This name will be used by Kubernetes to access the deployment. 
+      
+            *	**Line 4**: provides a name for the deployment. This name will be used by Kubernetes to access the deployment.
+      
             *	**Line 6**: indicates that only a single pod will be used.
+      
             *	**Line 9**: provides the name of the application that will be accessed by the pod.
+      
             *	**Line 16**: provides the ID of the Docker image to be deployed.
+      
             *	**Lines 19-24**: define image-dependent environment variables that define the username/password (**usr/sofe4630u**) , and a schema (**Readings**).
+      
             *	**Line 26**: defines the port number that will be used by the image.
       
             ![MS3 figure2](figures/cl3-2.jpg)      
    
-   3. The status of the deployment can be checked by the following command
+   4. The status of the deployment can be checked by the following command
    ```cmd 
    kubectl get deployment 
    ```
