@@ -103,7 +103,7 @@ To set up Google Kubernetes Engine (**GKE**), open the console of the project yo
       
       The essential lines in the mysql-service.yaml file is:
       
-         * **Line 8**: the port number that will be assigned to the external IP.
+         * **Line 8**: the port number assigned to the external IP.
            
          * **Line 10**:  the name of the application that the service will target.
      
@@ -121,12 +121,12 @@ To set up Google Kubernetes Engine (**GKE**), open the console of the project yo
       
 3. To access the MySQL using the IP address,
 
-   1. Run the following commands From any device on which the MySQL client is installed ( or the GCP console). Before running the command, replace the <IP-address> with the external IP obtained in the previous step. The options **-u**, **-p**, and **-h** specify the deployed server's username, password, and host IP, respectively.
+   1. Run the following commands from any device where the MySQL client is installed (or the GCP console). Before running the command, replace the <IP-address> with the external IP obtained from the previous step. The options **-u**, **-p**, and **-h** specify the deployed server's username, password, and host IP, respectively.
       
       ```cmd
       mysql -uusr -psofe4630u -h<IP-address>
       ```
-   2. Try to run the following SQL statements to create a table, insert 3 records, and search the table.
+   2. Try to run the following SQL statements to create a table, create three records, and search the table.
       ```sql
       use Readings; 
       create table meterType( ID int primary key, type varchar(50), cost float); 
@@ -139,7 +139,7 @@ To set up Google Kubernetes Engine (**GKE**), open the console of the project yo
       ```sql
       exit
       ```
-   5. (**optional**) after creating a video for submission, you can delete the deployment by using the following command (**Don’t run it right now**)
+   5. (**optional**) After creating a video for submission, you can delete the deployment by using the following command (**Don’t run it right now**)
        ```cmd
       kubectl delete -f mysql-deploy.yaml
       kubectl delete -f mysql-service.yaml
