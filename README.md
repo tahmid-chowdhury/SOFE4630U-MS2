@@ -2,16 +2,16 @@
 
 ## Objective:
 * Get familiar with Docker images and containers.
-* Deploy Tabular and key-Value data storage using GKE.
-* Get familiar with Key-Value data storage.
-* Create and configure connectors from Google Pub/Sub to MySql server.
+* Deploy Tabular and key-value data storage using Google Kubernetes Engine (GKE).
+* Get familiar with key-value data storage.
+* Create and configure connectors from Google Pub/Sub to MySQL server.
 * Create and configure connectors from Google Pub/Sub to Redis server.
 
 ## Repository:
 [https://github.com/GeorgeDaoud3/SOFE4630U-MS2](https://github.com/GeorgeDaoud3/SOFE4630U-MS2)
 
 ## Introduction:
-1. Watch The following video to understand [Docker](https://youtu.be/rOTqprHv1YE) terminologies. he video shows a case study of containerization in DevOps. However, It an essential tool in Cloud world. 
+1. Watch The following video to understand [Docker](https://youtu.be/rOTqprHv1YE) terminologies. The video shows a case study of containerization in DevOps. However, It's an essential tool in the Cloud world. 
 2. To manage Docker images and applications, we will use Kubernetes (**K8s**), watch the following  video to get familiar with [Kubernetes and its components](https://youtu.be/cC46cg5FFAM).
 3. To set up Google Kubernetes Engine (GKE). Open the console within your Google Cloud Platform (GCP) project.
    1. Set the default compute zone to **northamerica-northeast1-b** 
