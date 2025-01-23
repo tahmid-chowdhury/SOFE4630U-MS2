@@ -149,7 +149,7 @@ To set up Google Kubernetes Engine (**GKE**), open the console of the project yo
 1. The deployment and the load balancer service are in the same file. To deploy both to GKE, run the following commands 
 
    ```cmd
-   cd ~/SOFE4630U-MS3/Redis
+   cd ~/SOFE4630U-MS2/Redis
    kubectl create -f redis.yaml
    ```
 
