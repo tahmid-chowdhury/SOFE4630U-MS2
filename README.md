@@ -211,6 +211,26 @@ To set up Google Kubernetes Engine (**GKE**), open the console of the project yo
 
       Integration Connectors provide a transparent, standard interface to connect to various data sources from your integrations. As an integration developer, you can quickly connect to a growing pool of applications and systems without the need for protocol-specific knowledge or the use of custom code.
       
-      1. Search for **Connectors** and choose "Connections / Integration Connectors".
-      
-      2. Click **setup 
+      1. Search for **Connectors** and choose **Connections / Integration Connectors**.
+
+         ![mysql_c1.jpg](figures/mysql_c1.jpg)
+         
+      2. For the first time, click **SET UP INTEGRATION CONNECTORS**.
+         
+         ![mysql_c2.jpg](figures/mysql_c2.jpg)
+         
+      3. Click The **SET UP INTEGRATION CONNECTORS** button and click **ENABLE APIS". Wait until the API is been enabled. Then, click **Done**.
+
+         ![mysql_c3.jpg](figures/mysql_c3.jpg)
+
+      4. Click **CREATE NEW CONNECTION**
+         ![mysql_c4.jpg](figures/mysql_c4.jpg)
+         
+         1. Choose The location to be **northamerica-northeast2 (Toronto)**.
+            ![mysql_c5.jpg](figures/mysql_c5.jpg)
+         2. Click **NEXT**.
+         3. In the **connection Details**, search for **MySQL** for the **connector** type. Set the **Connection Name** to **mysql-connector** and the **Database Name** to **Readings**. Leave everything else by its default value.
+            ![mysql_c6.jpg](figures/mysql_c6.jpg)
+         4. Click **NEXT**.
+         5. For the Dstinations, set The MySQL IP address obtained before in the **host 1** text box and **3306** in the **port 1** text box.
+            ![mysql_c7.jpg](figures/mysql_c7.jpg)
