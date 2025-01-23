@@ -2,7 +2,7 @@
 
 ## Objective:
 * Get familiar with Docker images and containers.
-* Deploy Tabular and key-value data storage using Google Kubernetes Engine (GKE).
+* Deploy tabular and key-value data storage using Google Kubernetes Engine (GKE).
 * Get familiar with key-value data storage.
 * Create and configure connectors from Google Pub/Sub to MySQL server.
 * Create and configure connectors from Google Pub/Sub to Redis server.
