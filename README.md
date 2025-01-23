@@ -62,7 +62,7 @@ To set up Google Kubernetes Engine (**GKE**), open the console of the project yo
       
          * **Hyphen** means an element within a list
       
-         * **First two lines**: indicate that the type of the YAML file and its version.
+         * **First two lines**: indicate the YAML file type and its version.
       
          * **Line 4**: provides a name for the deployment. This name will be used by Kubernetes to access the deployment.
       
