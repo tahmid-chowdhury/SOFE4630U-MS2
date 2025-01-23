@@ -64,30 +64,30 @@ To set up Google Kubernetes Engine (**GKE**), open the console of the project yo
       
          * **First two lines**: indicate the YAML file type and its version.
       
-         * **Line 4**: provides a name for the deployment. This name will be used by Kubernetes to access the deployment.
+         * **Line 4**: provides a name for the deployment.  Kubernetes will use this name to access the deployment.
       
          * **Line 6**: indicates that only a single pod will be used.
       
-         * **Line 9**: provides the name of the application that will be accessed by the pod.
+         * **Line 9**: provides the name of the application that the pod will access.
       
          * **Line 16**: provides the ID of the Docker image to be deployed.
       
-         * **Lines 19-24**: define image-dependent environment variables that define the username/password (**usr/sofe4630u**) , and a schema (**Readings**).
+         * **Lines 19-24**: define image-dependent environment variables that define the username/password (**usr/sofe4630u**), and a schema (**Readings**).
       
-         * **Line 26**: defines the port number that will be used by the image.
+         * **Line 26**: defines the port number that the image will use.
       
-         ![MS3 figure2](figures/cl3-2.jpg)      
+            ![MS3 figure2](figures/cl3-2.jpg)      
    
    3. The status of the deployment can be checked by the following command
       
       ```cmd 
-         kubectl get deployment 
+      kubectl get deployment 
       ```
 
    4. While the status of pods can be accessed by the following command
       
       ```cmd 
-         kubectl get pods  
+      kubectl get pods  
       ```
 
       check that the deployment is available and that the pod is running successfully (it may take some time until everything is settled down)
