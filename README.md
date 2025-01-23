@@ -49,7 +49,7 @@ To set up Google Kubernetes Engine (**GKE**), open the console of the project yo
       ```
    2. Run the following command to deploy the MySQL server 
       ```cmd 
-      cd ~/SOFE4630U-MS3/mySQL
+      cd ~/SOFE4630U-MS2/mySQL
       kubectl create -f mysql-deploy.yaml
       ```
    The command will deploy the configuration stored in the [mysql-deploy.yaml](/mySQL/mysql-deploy.yaml) into GKE. It would pull the **mysql/mysql-server** Docker image and deploy and enable the **3306** port number to allow access from the outside world. The file **mysql-deploy.yaml** is used to configure the deployment. It's shown in the following figure and can be interpreted as:
@@ -77,7 +77,7 @@ To set up Google Kubernetes Engine (**GKE**), open the console of the project yo
 2. To give the deployment an IP address, a load Balancer service, mysql-service, should be created to that deployment. The load Balancer distributing the requests and workload between the replicas in the deployment (why this is not important in our case?) and associate an IP to the access the deployed application. 
    1. the configuration of the load Balancer service is included in the [mysql-service.yaml](/mySQL/mysql-service.yaml) file from the cloned repo.
       ```cmd 
-      cd ~/SOFE4630U-MS3/mySQL
+      cd ~/SOFE4630U-MS2/mySQL
       kubectl create -f mysql-service.yaml
       ```
       The important lines in the mysql-service.yaml file are:
