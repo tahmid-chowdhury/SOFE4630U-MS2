@@ -1,15 +1,16 @@
-# Milestone 3:  Data Storage and Kafka connects
+# Milestone 2:  Data Storage and Pub/Sub connects
 
 ## Objective:
 * Get familiar with Docker images and containers.
 * Deploy Tabular and key-Value data storage using GKE.
 * Get familiar with Key-Value data storage.
-* Get familiar with Kafka Connects and their configuration.
+* Create and configure connectors from Google Pub/Sub to MySql server.
+* Create and configure connectors from Google Pub/Sub to Redis server.
 
 ## Repository:
-[https://github.com/GeorgeDaoud3/SOFE4630U-MS3](https://github.com/GeorgeDaoud3/SOFE4630U-MS3)
+[https://github.com/GeorgeDaoud3/SOFE4630U-MS2](https://github.com/GeorgeDaoud3/SOFE4630U-MS2)
 
-## Docker and Kubernetes:
+## Introduction:
 1. Watch The following video to understand [Docker](https://youtu.be/rOTqprHv1YE) terminologies.
 2. To manage Docker images and applications, we will use Kubernetes, watch the following  video to get familiar with [Kubernetes and its components](https://youtu.be/cC46cg5FFAM).
 3. To set up Google Kubernetes Engine (GKE). Open the console within your Google Cloud Platform (GCP) project.
