@@ -1,293 +1,356 @@
-# SOFE4630U-MS2
-# Milestone 2: Data Processing Service (Dataflow)
-
-##  Repository: 
-[https://github.com/GeorgeDaoud3/SOFE4630U-MS2.git](https://github.com/GeorgeDaoud3/SOFE4630U-MS2.git)
+# Milestone 3:  Data Storage and Kafka connects
 
 ## Objective:
-1. Get familiar with Dataflow.
-2. Understand MapReduce patterns.
-3. Run batch and Stream Processing examples over MNIST dataset.
+* Get familiar with Docker images and containers.
+* Deploy Tabular and key-Value data storage using GKE.
+* Get familiar with Key-Value data storage.
+* Get familiar with Kafka Connects and their configuration.
 
-## Dataflow and a Simple Map Reduce Example:
-In this section, you will learn about Dataflow, MapReduce pattern, and a word count as a MapReduce example. 
-1. Watch this video about [Google Cloud Dataflow](https://www.youtube.com/watch?v=KalJ0VuEM7s).
-2. Watch this video about [MapReduce concepts](https://www.youtube.com/watch?v=JZiM-NsdiJo).
-3. Read this article about [implementing a word count example using the MapReduce patterns](https://www.analyticsvidhya.com/blog/2022/05/an-introduction-to-mapreduce-with-a-word-count-example/).
+## Repository:
+[https://github.com/GeorgeDaoud3/SOFE4630U-MS3](https://github.com/GeorgeDaoud3/SOFE4630U-MS3)
 
-## Configure Dataflow
-1. Open the GCP site.
-2. Search for **Dataflow API**.
-    
-    ![](images/df1.jpg)
+## Docker and Kubernetes:
+1. Watch The following video to understand [Docker](https://youtu.be/rOTqprHv1YE) terminologies.
+2. To manage Docker images and applications, we will use Kubernetes, watch the following  video to get familiar with [Kubernetes and its components](https://youtu.be/cC46cg5FFAM).
+3. To set up Google Kubernetes Engine (GKE). Open the console within your Google Cloud Platform (GCP) project.
+   1. Set the default compute zone to **northamerica-northeast1-b** 
+      ```cmd
+      gcloud config set compute/zone northamerica-northeast1-b  
+      ```
+   2. Enable GKE by searching for **Kubernetes Engine**. Select **Kubernetes Engine API**. Then, click **Enable**. 
    
-3. Then click **Enable** and Wait until the GCP get the service enabled for you.
-    
-    ![](images/df2.jpg)
+      ![MS3 figure1](figures/cl3-1.jpg)
    
-4. To grant privileges for you project to use Dataflow, search for **Service Accounts**.
-    
-    ![](images/df3.jpg)
+   3. Wait until the API is enabled then, create a three-nodes cluster on GKE called **sofe4630u**. The cluster contains three nodes. A Node is a worker machine in which docker images and applications can be deployed.
+      ```cmd
+      gcloud container clusters create sofe4630u --num-nodes=3 
+      ```
+      
+   **Note**: if the authorization windows popped up, click Authorize 
+   **Note**: if you got an error that there are no available resources to create the nodes, you may need to change the default compute zone (e.g. to **us-central1-a** ) 
 
-5. Create a new service account.
-    
-    ![](images/df4.jpg)
+## Deploy MySQL using GKE:
+1. To deploy a pre-existed MySQL image over the GKE cluster, we will use a YAML file. A YAML file is a file containing the configuration used to set the deployment. The deployment's role is to orchestrate docker applications.
 
-6. As the service name is a global identifier, it’s a good practice to use the project id as a prefix as **ProjectID-DFSA**, the project ID can be copied from the console.
-    
-    ![](images/df5.jpg)
-
-7. Add **Compute Engine Service Agent**  and **Pub/Sub Admin** as roles to the service account.
-
-    ![](images/df6.jpg)
-
-8. Now, it’s time to install the python library of DataFlow
-    ``` cmd
-    pip install pip --upgrade
-    pip install 'apache-beam[gcp]'
-    ```
-
-## Running the wordcount Example
-1.	A set of examples is already within the Python library folder. The following command will search for the file containing wordcount examples within any subdirectory of the home directory (**~**) and print it.
-
-    ``` cmd
-    find ~ -name 'wordcount.py'
-    ```
-
-2.	The following command will copy the file to the home directory (Replace path with the **path** you got from the previous step).
-
-    ``` cmd
-    cp path  ~/wordcount.py
-    ```
-    
-    ![](images/df7.jpg)
-
-3. Open the file using the text editor. Now, let's try to understand the Python code. The user can send arguments to customize the processing. The first step is to parse those arguments. Lines 69 to 73 define the first argument, which will be set in the calling command using the option **--input**. It's an optional argument; if not given, it will have the default value in line 72. The second argument is set using the **--output** option. It's required (not optional); thus, no default value is needed. After describing the arguments, line 79 will parse the arguments and return a dictionary (**known_args**) with two keys named by the **dest** parameter of the parsed arguments (**input** and **output**)
-
-    ![](images/df8.jpg)
+   1. Clone the GitHub repository
+      ```cmd 
+      cd ~
+      git clone https://github.com/GeorgeDaoud3/SOFE4630U-MS3.git
+      ```
+   2. Run the following command to deploy the MySQL server 
+      ```cmd 
+      cd ~/SOFE4630U-MS3/mySQL
+      kubectl create -f mysql-deploy.yaml
+      ```
+   The command will deploy the configuration stored in the [mysql-deploy.yaml](/mySQL/mysql-deploy.yaml) into GKE. It would pull the **mysql/mysql-server** Docker image and deploy and enable the **3306** port number to allow access from the outside world. The file **mysql-deploy.yaml** is used to configure the deployment. It's shown in the following figure and can be interpreted as:
+      * **Indentation** means nested elements
+      *	**Hyphen** means an element within a list
+      *	**First two lines**: indicate that the type of the yaml and its version.
+      *	**Line 4**: provides a name for the deployment. This name will be used by Kubernetes to access the deployment. 
+      *	**Line 6**: indicates that only a single pod will be used.
+      *	**Line 9**: provides the name of the application that will be accessed by the pod.
+      *	**Line 16**: provides the ID of the Docker image to be deployed.
+      *	**Lines 19-24**: define image-dependent environment variables that define the username/password (**usr/sofe4630u**) , and a schema (**Readings**).
+      *	**Line 26**: defines the port number that will be used by the image.
+      
+         ![MS3 figure2](figures/cl3-2.jpg)      
    
-4.	The pipeline is described from lines 87 to 106. It's instructions that will be given to a worker to execute. The dataflow will convert each stage into a function and associate a worker node to run it. The number of workers can be scaled by dataflow to satisfy suitable throughput demands.
-    * Line 87 defines the root of the processing as a python variable **p**.
-    * The first stage inserted after **p** (using **|** operator) is given in line 90. It's called **Read**, which runs a built-in function to read a text file. Note that when executed, the output will be a list of lines (strings). Note also that the pipeline till the first stage is saved into a Python variable named **line**.
-    * The statements from lines 92 to 96 add three consequent stages. 
-        * The first is called **Split** that splits each line into list of words using a custom class implemented in lines 50:63. 
-        * The second is called **PairWithOne** that converts each word into a key/value pair which the key is the word and the value is 1. This stage is used a inline function that takes a word **x** and return the tuple **(x,1)**. 
-        * The first two stages are Map operations which takes a single input and produce a single or multiple outputs.
-        * The third stage is a Reduce stage that will combine tuples having the same key (word) and then apply the **sum** function over the values to generate a new tuple of a word as a key and the count as the value. 
-    * Line 102 append another stage to the pipeline. The stage implements another Map operation that executes a customized function defined in lines 99 and 100 to convert each tuple to a string.
-    * A final stage is used to save the output (list of strings) to a text file.
-
-    ![](images/df9.jpg)
-
-5.	To check the code, we can execute it locally (at the GCP console) first be running the following command. As no input option is given, it will use the default value while the output will be saved in the home directory (current directory) with a prefix **outputs**
-    
-    ``` cmd
-    python wordcount.py --output outputs
-    ```
-    
-    you can display the output file(s) using
-    
-    ``` cmd
-    ls outputs*
-    ```
-    
-    you can open the output file(s) with the text editor or using the Linux command
-    
-    ``` cmd
-    cat outputs* | more
-    ```
-    
-6.	Now, let's run it as a GCP service to benefit from being globally available, managed, and auto scaled by Dataflow. The first step is to get the project ID and save it to an environment variable (**$PROJECT**). (**Note**: the variable is temporally and has to be created if the console or the session is terminated)
-    
-    ``` cmd
-    PROJECT=$(gcloud config list project --format "value(core.project)")
-    echo $PROJECT
-    ```
-    
-7.	As the input and output pathes should be globally accessed files, a folder created in Google Cloud Storage is needed to be accessed by the Dataflow service. Google Cloud Storage that acts as a File System is called Bucket. The following steps will lead you to create a Bucket.
-    
-    a) Search for **Buckets**
-
-    ![](images/df10.jpg)
-    
-    b) Click **create**.
-
-    ![](images/df11.jpg)
-    
-    c) As the name of the bucket is a unique global identifier, let’s use the project ID as a prefix as **ProjectID-bucket**. Then click **create**.
-
-    ![](images/df12.jpg)
-    
-    d)	As only the service from our project will access the bucket, enable **public access prevention**.
-
-    ![](images/df13.jpg)
-    
-    e)	Let’s got the console and create another environment variable for the bucket.
-    
-    ``` cmd
-    BUCKET=gs://$PROJECT-bucket
-    echo $BUCKET
-    ```
-
-    ![](images/df14.jpg)
-8.	To run the pipeline using DataFlow, run the following command, 
-    
-    ``` cmd 
-    python wordcount.py \
-      --region northamerica-northeast2 \
-      --runner DataflowRunner \
-      --project $PROJECT \
-      --temp_location $BUCKET/tmp/ \
-      --input gs://dataflow-samples/shakespeare/winterstale.txt \
-      --output $BUCKET/result/outputs \
-      --experiment use_unsupported_python_version
-    ```
-    
-    Some of the command arguments are needed by Dataflow to process the pipeline while others as input and output are used by the **wordcount** code to generate a customized pipeline. It will take minutes for Dataflow to generate worker nodes, configure them, execute the pipeline, and finally it will display **JOB_STATE_DONE**.
-
-    ![](images/df14a.jpg)
-  	
-10.	To see the details about Dataflow Job, search for **Dataflow Jobs**, then choose the first one in the list (last job). A diagram of the pipeline will be displayed in which each stage is named as instructed in the python file. Note that, the name is unique and can’t be repeated for different stages. Also, the job info and logs are shown which can be used to debug the job. 
-    
-    ![](images/df15.jpg)
-
-11. Go to the bucket created in step 7 and open the file(s) started by the prefix **outputs** within a folder named **result**. Download the file to read it.
-12.	In the GitHub repository, there is also an upgrade to the wordcount script. Make sure that the **PROJECT** and **BUCKET** environment variables are still existing. Then, clone the repository and run the updated script. Try to understand its function.
-    ```cmd 
-    cd ~
-    git clone https://github.com/GeorgeDaoud3/SOFE4630U-MS2.git
-    cd ~/SOFE4630U-MS2/wordcount
-    python wordcount2.py \
-      --region northamerica-northeast2 \
-      --runner DataflowRunner \
-      --project $PROJECT \
-      --temp_location $BUCKET/tmp/ \
-      --input gs://dataflow-samples/shakespeare/winterstale.txt \
-      --output $BUCKET/result/outputs \
-      --output2 $BUCKET/result/outputs2 \
-      --experiment use_unsupported_python_version
-    ```
-## MNIST dataset
-The Modified National Institute of Standards and Technology (**MNIST**) dataset consists of handwritten digits that is commonly used for machine learning and image processing applications. Each digit is represented as a 28*28 gray image. The value of pixels ranges from 0 (white) to 255 (black) as shown in the following image. The values are normalized to 1 and converted from a matrix to a vector and stored as string. The string is fed to a Machine Learning (ML) model that estimate the probability that the image represents one of the ten digits. The ML model is implemented using a python library called **TensorFlow**. The detail of the model is behind the scope of this course. What you want to know is that the model parameters and the MNIST CSV are saved in a folder **/MNIST/data** in the repository.
-
-![](images/df16.jpg)
-
-## Data flow Processing the MNIST database from BigQuery
-BigQuery is a cloud-based serverless data warehouse that supports SQL. We will use it to store the table containing the MNIST images. Thus, a dataset, namely **MNIST**, will be created within **BigQuerry**. A table, namely **Images**, will be created within the dataset. Then, the CSV file will be uploaded to fill the table. The Dataflow job will query the content of the table, run the ML model on each image, and produce a prediction of the handwritten digit. Finally, The Job will store the results in another table, **Predict**, within the same dataset.
-
-1. Search for **BigQuery**, Within the current project, create a dataset and name it **MNIST**, create a table, name it **Images** and upload the **mnist/data/mnist.csv** file from the repository (you need to download it first to your computer). It may take several minutes to create the dataset and the table.
-    
-    ![](images/df17.jpg)
-    
-2. Go to the bucket created before and upload the model folder from the **/mnist/model** folder from the repository.
-3.	Make sure that the Project and Bucket environment variables are already defined then run the DataFlow job using the following commands. 
-    ``` cmd
-    cd ~/SOFE4630U-MS2/mnist
-    python mnistBQ.py \
-      --runner DataflowRunner \
-      --project $PROJECT \
-      --staging_location $BUCKET/staging \
-      --temp_location $BUCKET/temp \
-      --model $BUCKET/model \
-      --setup_file ./setup.py \
-      --input $PROJECT.MNIST.Images \
-      --output $PROJECT.MNIST.Predict\
-      --region  northamerica-northeast2 \
-      --experiment use_unsupported_python_version
-    ```
-    
-    Three arguments are used by the python code to create a customized pipeline.
-    
-    a)	**input** that specify the table name to read the data from which follows the following pattern, **ProjectID.Dataset.Table**
-    
-    b)	**output** that specifies the table name to be created to store the predicted values.
-    
-    c)	**model** that specifies the path from which the model parameters can be read.
-
-    Another important argument is **setup_file**. It specifies the libraries needed to be installed on each worker. The following figure shows the list of commands in the **setup_file** that will be executed to initiate each worker. The list contains only one command to install the **TensorFlow** library required to run the model. Note: Installing dependencies will consume time when initiating each worker node. Another approach is to provide a docker image with preinstalled dependencies. This will reduce the launch time of the worker nodes and the job.
-    
-    ![](images/df18.jpg)
-    
-4.	As shown in the following image, the pipeline consists of 3 stages:
-    
-    a.	**ReadFromBQ**: that reads a BigQuery table.
-    
-    b.	**Prediction**: that call the process function defined within the PredictDoFn class to process each record (row) and returns a dictionary that contains the following fields; **ID**, **P0**,…,**P9** where **ID** is the same as the record ID of the input table, **P0** is the probability that the image represent the digit 0,… . Note that the **@singleton** annotation in line 36, will prevent the model creation to just once which will make the process function run fast. Also, the second argument (**known_args.model**) is in line 86 will be the last argument send to the process function (**checkpoint**).
-    
-    c.	**WriteToBQ**: that writes the prediction output (**ID**, **P0**,…,**P9**) into another BigQuery table. The table will be created if no exist and will be truncated if exist.
-    
-    ![](images/df19.jpg)
-  	
-5.	Now, a new table is created in the MNIST dataset, let’s display its content.
-
-    ![](images/df20.jpg)
-
-## Data flow Processing the MNIST database from Pub/Sub
-
-In this example, the data will be read and store into Google Pub/Sub. In the previous milestone, you have already learned how to create a topic in Google Pub/sub, a consumer to read the data, and a producer to send data through the pub/sub. This will be the first streaming process. It will keep running until you manually stop it.
-
-1. Go to the **service account** created before and generate a key in JSON format.
-2. Create two topics **mnist_image**, and **mnist_predict** at **Google Pub/Sub**.
-3. Run the Data flow job that reads JSON objects from the **mnist_image** topic, apply it to the ML model, send the prediction results via **mnist_predict** topic.
-    ``` cmd
-    cd ~/SOFE4630U-MS2/mnist
-    PROJECT=$(gcloud config list project --format "value(core.project)")
-    BUCKET=gs://$PROJECT-bucket
-    python mnistPubSub.py \
-      --runner DataflowRunner \
-      --project $PROJECT \
-      --staging_location $BUCKET/staging \
-      --temp_location $BUCKET/temp \
-      --model $BUCKET/model \
-      --setup_file ./setup.py \
-      --input projects/$PROJECT/topics/mnist_image	\
-      --output projects/$PROJECT/topics/mnist_predict \
-      --region  northamerica-northeast2 \
-      --experiment use_unsupported_python_version \
-      --streaming
-    ````
-    A new arguement **streaming** is used here to mark the pipeline as streaming process. So it will run forever until you manually stop it.
-
-4. The job pipeline consists of five stages:
-
-    a.	**Read from Pub/Sub**: reads messages from the input topic.
-
-    b.	**toDict**: Pub/Sub is agnostic to the type of the message. It’s handled as a stream of bytes. To process the message, The stage deserialize the messagefrom bytes to its original format (JSON).
-
-    c.	**Prediction**: the same as the Prediction in the BigQuery example.
-
-    d.	**To byte**: Serialize the predicted output to bytes.
-    
-    e.	**To Pub/sub**: send the serialized prediction int the output topic.
-    
-    ![](images/df21.jpg)
-    
-5. In your computer, Edit lines 11, 12, and 13 in the file **/mnist/data/producerMnistPubSup.py** to have the path of the JSON, Project ID, and the topic id of mnist_image. The file represent a producer that will send any message consists of a single mnist record each second (**Similar tothe design part in the first milestone**).
-
-6. In your computer, Edit lines 4, 5, and 6 in the file **/mnist/data/consumerMnistPubSup.py** to have the path of the JSON, Project ID, and mnist_predict subscription id. The file represent a consumer that will read any message from the mnist_predict topic and display it (**Similar to the design part in the first milestone**).
-
-
-    It may take minutes until every things are setup. The whole example can be summarized as:
-    a) The producer will produce to the mnist_image topic.  ( your local machine)
-    b) Data flow job will read messages, process them, and send them to the mnist_predict topic ( over GCP)
-    a) The consumer will consume every result from the mnist_predict topic and display it.  ( your local machine)
-
-7. Note, As the Dataflow job is marked as streaming, it will be still running. To stop it, go to the Dataflow job, and stop it manually.
+   3. The status of the deployment can be checked by the following command
+   ```cmd 
+   kubectl get deployment 
+   ```
+   4. While the status of pods can be accessed by the following command 
+   ```cmd 
+   kubectl get pods  
+   ```
+   check that the deployment is available and that the pod is running successfully (it may take some time until everything is settled down)
+2. To give the deployment an IP address, a load Balancer service, mysql-service, should be created to that deployment. The load Balancer distributing the requests and workload between the replicas in the deployment (why this is not important in our case?) and associate an IP to the access the deployed application. 
+   1. the configuration of the load Balancer service is included in the [mysql-service.yaml](/mySQL/mysql-service.yaml) file from the cloned repo.
+      ```cmd 
+      cd ~/SOFE4630U-MS3/mySQL
+      kubectl create -f mysql-service.yaml
+      ```
+      The important lines in the mysql-service.yaml file are:
+         * **Line 8**: the port number that will be assigned to the external IP
+         * **Line 10**:  the name of the application that will be targeted by the service.
+     
+            ![MS3 figure3](figures/cl3-3.jpg)      
    
-    ![](images/df22.jpg)
+   2. To check the status of the service, use this command 
+      ```cmd 
+      kubectl get service 
+      ```
+   
+      ![MS3 figure4](figures/cl3-4.jpg)      
+   
+      It may take some time until the external IP address is changed from pending to a valid IP address. You may need to repeat the previous command.
+3. To access the MySQL using the IP address,
+   1. From any device in which MySQL client is installed ( or the GCP console), run the following commands. Before running the command, replace the **\<IP-address\>** with the external IP obtained in the previous step. The options **-u**, **-p**, and **-h** are used to specify the **username**, **password**, and **host IP** of the deployed server, respectively. 
+      ```cmd
+      mysql -uusr -psofe4630u -h<IP-address>
+      ```
+   2. Try to run the following SQL statements 
+      ```sql
+      use Readings; 
+      create table meterType( ID int, type varchar(50), cost float); 
+      insert into meterType values(1,'boston',100.5); 
+      insert into meterType values(2,'denver',120); 
+      insert into meterType values(3,'losang',155); 
+      select * from meterType where cost>=110; 
+      ```
+   3. Exit the MySQL CLI, by running
+      ```sql
+      exit
+      ```
+   4. (**optional**) after creating a video for submission, you can delete the deployment by using the following command (**Don’t run it right now**)
+       ```cmd
+      kubectl delete -f mysql-deploy.yaml
+      kubectl delete -f mysql-service.yaml
+      ```  
+## Deploy Redis using GKE:
+1. Watch the first 7:45 minutes in the following video to get familiar with [redis commands](https://youtu.be/jgpVdJB2sKQ).  
+2. Both the deployment and the load balancer service are included in the same file. To deploy both to GKE, run the following commands 
+   ```cmd
+   cd ~/SOFE4630U-MS3/Redis
+   kubectl create -f redis.yaml
+   ```
+   Check that status of deployment, service, and pod. Note that the password is set within the yaml file to **sofe4630u**.
+3. Get Redis external IP.
+   ```cmd
+   kubectl get services
+   ```
+   ![MS3 figure5](figures/cl3-6.jpg)      
+4. To access the Redis datastore,
+   1. You can install the Redis client on your machine as shown in the previous video. However, let’s install it over the GCP console.
+      ```cmd
+      sudo apt-get install redis-tools
+      ```
+      **Note**: this installation is not persistent and you need to repeat it each time the session is ended.
+   2. Now, let’s log in to the server using the command after replacing the **\<Redis-IP\>** with the IP obtained in step 3 and **sofe4630u** for the password.  
+      ```cmd
+      redis-cli -h <Redis-IP> -a sofe4630u
+      ```
+   3. Now, try to run the following commands. **Note**, there are 16 different databases to select within Redis. The first command selects the first database (0). What are the functions of other commands? 
+      ``` cmd
+      select 0
+      set var 100
+      get var
+      keys *
+      del var
+      keys *
+      ```
+   4. Finally to exit the command line interface, type
+      ```cmd
+      exit
+      ```
+5. To access, Redis using python code,
+   1. Install its library on your local machine (or GCP console) 
+      ``` cmd
+      pip install redis
+      ```
+   2. In the cloned Github at path [/Redis/code/](/Redis/code/), there are two python files and a jpg image. 
+      * **SendImage.py**, will read the image **ontarioTech.jpg** and store it in Redis associated with a key **"OntarioTech"** at database 0.
+      * **ReceiveImage.py**, will read the value associated with the key **"OntarioTech"** from the Redis server and will save it into **received.jpg** image.
+      * You have to set the Redis Server IP in the second line in both **SendImage.py** and **ReceiveImage.py**.
+      * Run **SendImage.py**, then check the keys in the Redis server. Finally, Run **ReceiveImage.py** and check that the **received.jpg** image is created.
 
-## Design
-In the previous milestone, you have sent the smart meter readings to Google Pub/Sub. It's needed to add a Dataflow job to preprocess the smart meter measurements. The job consists of the following stages
-1. **Read from PubSub**: read the measurement reading .
-2. **Filter**: Eliminate records with missing measurements (containing None). 
-3. **Convert**:  convert  the  pressure  from  kPa  to  psi  and  the  temperature  from  Celsius  to  Fahrenheit using the following equations 
-    
-    𝑃(𝑝𝑠𝑖) = 𝑃(𝑘𝑃𝑎)/6.895
-    
-    𝑇(𝐹) = 𝑇(𝐶)∗1.8+32
-4. **Write to PubSub**: send the measurement back to another topic
- 
-## Deliverables
-1. A report that includes the discription of the second wordcount example (**wordcount2.py**) and the pipeline you used in the Design section. It should have snapshots of the job and results of the four examples (wordcount and mnist) as well as the design part.
-2. An audible video of about 4 minutes showing the created job and the results of the four examples (wordcount and mnist).
-3. Another audible video of about 3 minutes showing the design part.
+## Configure Kafka Connector with MySQL sink
+The sink connector is a Kafka service that automatically consumes from a topic(s) and stores the consumed messages in a data storage, as shown in the following figure.
+
+   ![sink connector](figures/cl3-7_v2.jpg)
+
+1. Watch the following video about [Kafka connect](https://youtu.be/YXgXw25E5RU).
+2. Log in to the **Confluent Kafka account** you created in the first milestone. Make sure you are still in the trial period.
+3. As described in the first milestone, create a topic and name it **Readings**. This topic will be accessed by the connector for data.
+4. Add a Schema to the topic to be used by the connector to create a table in MySQL database. 
+   **Note**: you can have the schema during the topic creation. but we will asume that the topic has created without schema).
+   1. Navigate to the **Readings** topic. Then, choose the **Schema** tap. Make sure that **Value** is selected. Finally, click **Set a schema**.
+
+      ![set a schema](figures/cl3-8_v2.jpg)      
+
+   2. Choose **Avro** as the serialization format, delete the default avro schema, and copy the [following script](connectors/mysql/schema.txt) as the new schema, then click **create**.
+
+      ![avro schema](figures/cl3-9_v2.jpg)
+
+   3. The schema is describing the following fields
+      
+      | Name         | Lunch order   | Nullable |
+      | ------------ | ------------- | -------- |
+      | ID           | long          | False    |
+      | profile_name | string        | False    |   
+      | temperature  | double        | True     |
+      | humidity     | double        | True     |
+      | modified     | Timestamp     | False    |      
+      
+6. Create a MySQL sink connector.
+   1. Within the cluster, click **Add Connector**, choose **connectors**, search for **MySQL**, and finally select **MySQL sink**
+
+      ![MySQL sink](figures/cl3-10_v2.jpg)
+      
+   2. Fill in the configuration (keep the default values if not mentioned) as in 
+      1. **Topic selection**:
+         * **Topic name**: **Readings**
+      2. **Kafka credentials**: use the existing **API key** and **API secret** you have created in the first Milestone (or create a new one).
+      3. **Authentication**: Enter the information of the MySQL server we already have deployed on GKE
+         * **Connection host**: The MySQL IP you obtained before
+         * **Connection port**: **3306**
+         * **Connection user**: **usr**
+         * **Connection password**: **sofe4630u**
+         * **Database name**: **Readings**
+         * **SSL mode**: **prefer**
+      4. **Configuration**: (click **show advanced configurations**)
+         * **Input Kafka record value format**: **AVRO**
+         * **Insert mode**: **UPSERT**
+         * **Auto create table**: **true**
+         * **Auto add columns**: **true**
+         * **PK mode**: **record_value**
+         * **PK fields**: **ID**
+         * **Input Kafka record key format**: **string**
+      5. **Sizing**: 
+         * **Tasks**:1
+      6. Review and launch: 
+         * **Connector name**: **smartMeter2MySQL**
+   
+      The previous settings configure the connector to continuously consume from the **Readings** topic and deserialize the message using the **Avro** schema into a record. The record will be stored in the **MySQL server** deployed before on **GKE**. A table with the same name as the topic (**Readings**) will be created in the database (**Readings**), and the data will be inserted using the field named **ID** from the consumed messages (values) as the primary key.
+   4. It will take a few minutes until the connector is running.
+7. Send data to the topic from your local machine (or GCP console)
+   1. Install Avro library.
+      ```cmd
+      pip install avro
+      ```
+   2. Copy the schema ID
+	
+      ![MS3 figure10](figures/cl3-11.jpg)
+	
+   3. Three files are needed found at the path [/connectors/mysql/](/connectors/mysql/) in the GitHub repository
+      * **cred.json**: you have to edit it and specify the **Bootstrap server**, the **API key**, and the **API secret** of the Kafka cluster as you did in the first milestone.
+      * **schema.txt**: contains the schema of the topic and will be accessed by the Avro library to serialize each record before sending it to the topic. Don't change its content.
+      * **smartMeter.py**: will use **cred.json** to access the Kafka cluster and **schema.txt** to serialize records and send them as messages to be sent to the Reading topics.
+      * You have to update the **schemaID** at line 12. 
+      * A new function called **encode** is defined that will encode each record in Avro format.
+      * Each record has a new field called **ID** that will be used as a primary key by the connector.
+         ![MS3 figure11](figures/cl3-12 .jpg)
+   4. Update **cred.json** and **smartMeter.py** as described. Note the three files should be saved in the same folder.
+   5. run **smartMeter.py**
+8. Check that the connector is successfully processed the messages. 
+	
+   ![MS3 figure12](figures/cl3-13.jpg)
+	
+9. Check MySQL database
+   1. log into Mysql server
+      ```cmd
+      mysql -uusr -psofe4630u -h<IP-address>
+      ```
+   2. get the list of tables in the database
+      ```sql
+      select TABLE_NAME from INFORMATION_SCHEMA.TABLES where TABLE_SCHEMA='Readings';
+      ```
+      as the connector will create a table with the same name as the topic, a table with the name **Readings** should be returned by the previous statement as well as **meterType** table created before.
+   3. query the values in the table
+      ```sql
+      Use Readings;
+      select * from Readings limit 10;
+      ```
+      The output should look like
+	
+      ![MS3 figure13](figures/cl3-14.jpg)
+	
+   4. Exit from the MySQL interface
+      ```sql
+      exit
+      ```
+
+## Configure Kafka Connector with MySQL source
+The source connector is a Kafka service that automatically read values from a data storage and produce them into a topic, as shown in the following figure.
+
+   ![source connector](figures/cl3-15_v2.jpg)
+
+1. Log in to the **Confluent Kafka account** you created in the first milestone. Make sure you are still in the trial period.
+2. Create a **MySQL source** connector.
+   1. Within the cluster, choose **connectors**, click **Add Connector**, search for **MySQL**, and finally select **MySQL source**
+   2. Fill in the configuration (keep the default values if not mentioned) as in 
+      1. **Topic selection**:
+         * **Topic prefix**: **SM_**
+      2. **Kafka credentials**: use the existing **API key** and **API secret** you have created in the first Milestone  (or create a new one).
+      3. **Authentication**: Enter the information of the MySQL server we already have deployed on GKE
+         * **Connection host**: The MySQL IP you obtained before
+         * **Connection port**: **3306**
+         * **Connection user**: **usr**
+         * **Connection password**: **sofe4630u**
+         * **Database name**: **Readings**
+         * **SSL mode**: **prefer**
+      4. **Configuration**: (click **show advanced configurations**)
+         * **Table names**: **Readings**
+         * **Select output record value format**: **AVRO**
+         * **Timestamp column name**: **modified**
+      5. **Sizing**: 
+         * **Tasks**:1
+      6. Review and launch: 
+         * **Connector name**: **MySQL2Kafka**
+	
+      The previous settings configure the connector to continuously query new records from a table (or set of tables), namely **Readings** from a particular MySQL database (**Readings**), serialize each record as a message in Avro format, and produce the message into a Kafka topic. The Kafka topic name will be the same as the table(s) name but with a prefix (**SM_**). The connector will automatically create the Avro schema. **Note**: we are using the **Readings** table created in the previous section to make things easier, but it's not necessary.
+   3. It will take a few minutes until the connector is running.
+3. Check that a topic with the name **SM_Readings** is created and there are messages already received in the topic. 
+4. To consume the messages, we will use three files; **avroConsumer.py**, **cred.json**, **schema2.txt** in the path [connectors/mysql/](connectors/mysql/) at the GitHub repository.
+   1. you should copy the schema of the generated topic (**SM_Readings**), and paste it into **schema2.txt**.
+	
+      ![MS3 figure9](figures/cl3-15.jpg)
+	
+   2. use the same **cred.json**, you have updated in the previous section.
+   3. Make sure that the three files are in the same folder. Then, run **avroConsumer.py** to consume the messages from the **SM_Readings** topic.
+	
+   Note that **avroConsumer.py** has a function called **decode** that deserializes Avro objects. 
+	
+## Redis Sink Connector
+It's like the MySQL sink connector but for Redis. The key and value of the Kafka message will be used as the key and value for Redis. 
+1. Log in to the **Confluent Kafka account** you created in the first milestone. Make sure you are still in the trial period.
+2. Create a topic and name it **ToRedis**
+3. Create a Redis sink connector.
+   1. Within the cluster, choose **connectors**, click **Add Connector**, search for **Redis**, and finally select **Redis Sink**
+   2. Click Next
+   3. Fill in the configuration (keep the default values if not mentioned) as in 
+      1. **Install Connector**:
+         * **Select or create new topics** : **ToRedis**
+      2. **Kafka credentials**: use the existing **API key** and **API secret** you have created in the first Milestone  (or create a new one).
+      3. **Authentication**: Enter the information of the Redis server we already have deployed on GKE
+         * **Redis hostname**: The Redis IP you obtained before
+         * **Redis port number**: **6379**
+         * **Redis database index**: **1**
+         * **Redis server password**: **sofe4630u**
+         * **SSL mode**: **disabled**
+      4. **Configuration**: (click **show advanced configurations**)
+         * **Input Kafka record value format**: **BYTES**
+         * **Input Kafka record key format**: **STRING**
+      5. **Sizing**: 
+         * **Tasks**:1
+      6. Review and launch: 
+         * **Connector name**: **Kafka2Redis**
+            The previous settings configure the connector to continuously consume messages from the topic named **ToRedis**. Each key and value of each message will be stored as a key-value pair in the Redis at database 1.
+4. To send an image (as an example) to the Kafka topic, we will use files from the GitHub repository at the path [/connectors/Redis/](/connectors/Redis/)
+   * **cred.json**: has to be updated as described before
+   * **ontarioTech.jpg**: the image to be sent to the Kafka topic
+   * **produceImage.py**: produces the image to a kafka topic named **ToRedis** with a key **fromKafka**
+   * make sure that the three files at the same folder. then, run **produceImage.py**.
+5. To check that the connector works and that the key/value message is parsed and sent to the Redis server, check the status of the connector at Confluent Kafka.
+6. To check that the connector, ReceiveImage.py will read the bytes associated with the key from the Redis server and save as another JPG file (**recieved.jpg**).
+   * First, change the IP at line 4 with the Redis IP.
+   * Run **ReceiveImage.py**
+   * check that **recieved.jpg** is created and its content is a copy of the original sent image.
+The following figure summerizes the integration of the previou scripts with the connector and Redis.
+![Redis summary](figures/cl3-16_v2.jpg)
+## Discussion: 
+* How do Kafka connectors maintain availability?
+* MySQL connector supports three serialize/deserialize methods; JSON, AVRO, and PROTOBUF. What are the advantages and disadvantages of each.
+* There are two options for **Insert mode** (**UPSERT** or **INSERT**) can be configured for MySQL sink connector. Compare both of them and provide a use case for each of them.
+* Confluent Cloud Kafka supports connectors while Google Pub/Sub doesn't support them. What are the advantages and disadvantages of adding connectors to any pub/sub service?
+
+## Design: 
+Although Google Pub/Sub doesn't support connectors, it can be implemented using Data flow or any other processing service. Update the Dataflow pipeline you implemented in the second milestone to include a parallel branch that saves the preprocessed records into a MySQL server deployed on GKE.
+
+You may find [this package](http://mohaseeb.com/beam-nuggets/beam_nuggets.html) helpful
+
+# Deliverables
+1. A report that includes the Discussion part and description of the updated pipeline.
+2. The code you implemented in the Design part.
+2. An audible video of about 5 minutes showing the connectors described. Your video should highlight the check steps.
+3. Another audible video of about 3 minutes shows the output of the design part.
