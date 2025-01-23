@@ -255,7 +255,7 @@ The sink connector is a service that automatically consumes from a topic(s) and 
       9. Finally, review the summary and cLick **CREATE**.
       10. Wait until The connector status changed to **Active**
           
-### 2. Setup a New Table in The MySQL server
+### 2. Prepare The MySQL server and the Pub/Sub topic
    1. Login to the MySQL server
       
       ```cmd
@@ -270,6 +270,42 @@ The sink connector is a service that automatically consumes from a topic(s) and 
       ```
       
    3. Exit the MySQL CLI, by running
+
       ```sql
       exit
       ```
+      
+   4. Create a new Topic under the name **smartMeterReadings** as you have done in the first milestone.
+      
+### 3. Set Up Application Integration
+Application Integration offers a comprehensive set of core integration tools to connect and manage the multitude of applications (Google Cloud services and third-party SaaS) and data required to support various business operations. This includes Google Pub/Sub, MySQL, and Redis. It's configured as a plug-and-play tool. The source of the data that start the integration is called trigger while the sedtination and other temperory processes are called tasks.
+
+   1. Search  for **Application Integration**.
+
+      ![mysql_a1.jpg](figures/mysql_a1.jpg)
+      
+   2. For the First time, choose the region to be **northamerica-northeast2 (Toronto)**. Then, click **QUICK SETUP** to enable the required APIs.
+
+      ![mysql_a2.jpg](figures/mysql_a2.jpg)
+
+   3. Click **Create Integration**.
+
+      ![mysql_a3.jpg](figures/mysql_a3.jpg)
+      
+   4. Name The integration **mysql-integration**. Then, click **Create**.
+
+      ![mysql_a4.jpg](figures/mysql_a4.jpg)
+
+   5. From the **triggers** dropdown menu, choose **Cloud Pub/Sub**. A box named **Cloud Pub/Sub Trigger** should appear. Place it in the design area.
+
+      ![mysql_a5.jpg](figures/mysql_a5.jpg)
+      
+   6. Click the **Cloud Pub/Sub Trigger** box to display the properties. set the Pub/Sub topic text box with the full path of the topic. It should be in the following format **projects/<project_id>/topics/<topic_id>**. **Note**: you can copy the full path of the topic from the Google Pub/sub topics page. Fill the **Service account** textbox by the Service account, you have created in the first milestone with the Two Pub/Sub roles. Finally, click **GRANT** button to fix any missing role within the service account.
+
+      ![mysql_a6.jpg](figures/mysql_a6.jpg)
+
+   7. From the **TASKS** dropdown menu, select **CONNECTORS**. Then, choose the **mysql-connector**. Place the **mysql-connector** box in the design area.
+      
+      ![mysql_a6.jpg](figures/mysql_a7.jpg)
+      
+   8.  The format of the topic messages is not compitable with the format accepted by the MySQL connector. To make them compitable, drag and drop a **data mapping** box from the **TASKS** deopdown menu.
