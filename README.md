@@ -101,9 +101,11 @@ To set up Google Kubernetes Engine (**GKE**), open the console of the project yo
       kubectl create -f mysql-service.yaml
       ```
       
-      The important lines in the mysql-service.yaml file are:
-         * **Line 8**: the port number that will be assigned to the external IP
-         * **Line 10**:  the name of the application that will be targeted by the service.
+      The essential lines in the mysql-service.yaml file is:
+      
+         * **Line 8**: the port number that will be assigned to the external IP.
+           
+         * **Line 10**:  the name of the application that the service will target.
      
             ![MS3 figure3](figures/cl3-3.jpg)      
    
@@ -118,11 +120,13 @@ To set up Google Kubernetes Engine (**GKE**), open the console of the project yo
       It may take some time until the external IP address is changed from pending to a valid IP address. You may need to repeat the previous command.
       
 3. To access the MySQL using the IP address,
-   1. From any device in which MySQL client is installed ( or the GCP console), run the following commands. Before running the command, replace the **\<IP-address\>** with the external IP obtained in the previous step. The options **-u**, **-p**, and **-h** are used to specify the **username**, **password**, and **host IP** of the deployed server, respectively. 
+
+   1. Run the following commands From any device on which the MySQL client is installed ( or the GCP console). Before running the command, replace the <IP-address> with the external IP obtained in the previous step. The options **-u**, **-p**, and **-h** specify the deployed server's username, password, and host IP, respectively.
+      
       ```cmd
       mysql -uusr -psofe4630u -h<IP-address>
       ```
-   2. Try to run the following SQL statements 
+   2. Try to run the following SQL statements to create a table, insert 3 records, and search the table.
       ```sql
       use Readings; 
       create table meterType( ID int primary key, type varchar(50), cost float); 
@@ -135,7 +139,7 @@ To set up Google Kubernetes Engine (**GKE**), open the console of the project yo
       ```sql
       exit
       ```
-   4. (**optional**) after creating a video for submission, you can delete the deployment by using the following command (**Don’t run it right now**)
+   5. (**optional**) after creating a video for submission, you can delete the deployment by using the following command (**Don’t run it right now**)
        ```cmd
       kubectl delete -f mysql-deploy.yaml
       kubectl delete -f mysql-service.yaml
