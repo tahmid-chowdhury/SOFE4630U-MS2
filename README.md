@@ -146,28 +146,39 @@ To set up Google Kubernetes Engine (**GKE**), open the console of the project yo
       ```  
 ## Deploy Redis using GKE:
 
-1. Both the deployment and the load balancer service are included in the same file. To deploy both to GKE, run the following commands 
+1. The deployment and the load balancer service are in the same file. To deploy both to GKE, run the following commands 
+
    ```cmd
    cd ~/SOFE4630U-MS3/Redis
    kubectl create -f redis.yaml
    ```
-   Check that status of deployment, service, and pod. Note that the password is set within the yaml file to **sofe4630u**.
+
+   Check the status of deployment, service, and pod. Note that the password is set within the YAML file to **sofe4630u**.
+   
 2. Get Redis external IP.
+   
    ```cmd
    kubectl get services
    ```
-   ![MS3 figure5](figures/cl3-6.jpg)      
+   
+   ![MS3 figure5](figures/cl3-6.jpg)
+   
 3. To access the Redis datastore,
-   1. You can install the Redis client on your machine as shown in the previous video. However, let’s install it over the GCP console.
+   1. As shown in the previous video, You can install the Redis client on your machine. However, let's deploy it over the GCP console.
+
       ```cmd
       sudo apt-get install redis-tools
       ```
+
       **Note**: this installation is not persistent and you need to repeat it each time the session is ended.
-   2. Now, let’s log in to the server using the command after replacing the **\<Redis-IP\>** with the IP obtained in step 3 and **sofe4630u** for the password.  
+      
+   2. Now, let’s log in to the server using the command after replacing the **\<Redis-IP\>** with the IP obtained in step 3 and **sofe4630u** for the password.
+      
       ```cmd
       redis-cli -h <Redis-IP> -a sofe4630u
       ```
-   3. Now, try to run the following commands. **Note**, there are 16 different databases to select within Redis. The first command selects the first database (0). What are the functions of other commands? 
+      
+   5. Now, try to run the following commands. **Note**, there are 16 different databases to select within Redis. The first command selects the first database (0). What are the functions of other commands? 
       ``` cmd
       select 0
       set var 100
@@ -176,11 +187,11 @@ To set up Google Kubernetes Engine (**GKE**), open the console of the project yo
       del var
       keys *
       ```
-   4. Finally to exit the command line interface, type
+   6. Finally to exit the command line interface, type
       ```cmd
       exit
       ```
-4. To access, Redis using python code,
+5. To access, Redis using python code,
    1. Install its library on your local machine (or GCP console) 
       ``` cmd
       pip install redis
