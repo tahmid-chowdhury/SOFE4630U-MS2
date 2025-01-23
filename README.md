@@ -341,5 +341,27 @@ Application Integration offers a comprehensive set of core integration tools to 
      
    * Save Variable.
      
-2. Click on the design area to enable the test button. Click **test** and set the following JSON value into the **CloudPubSubMessage** textbox. This JSON file is the minimal subset of the JSON value produced from the PUb/Sub. You can find here [the format of the Pub/Sub messages](https://cloud.google.com/pubsub/docs/publisher#using-attributes)
-{ "data": "{\"ID\":-1, \"profile_name\":\"test\", \"temperature\":50, \"humidity\":60, \"modified\": 1253145}"}
+2. Click on the design area to enable the test button. Click **test** and set the following JSON value into the **CloudPubSubMessage** textbox. This JSON file is the minimal subset of the JSON value produced from the PUb/Sub. You can find here [the format of the Pub/Sub messages](https://cloud.google.com/pubsub/docs/publisher#using-attributes). **Note**: as the MySQL connector is configured by the **Create** operation, You can't insert a record with an ID that already exists the table. 
+ 
+   ```JSON
+   { "data": "{\"ID\":-1, \"profile_name\":\"test\", \"temperature\":50, \"humidity\":60, \"modified\": 1253145}"}
+   ```
+   
+3. To check the success of the integration, we will display the **SmartMeter** table
+  1. Run the following commands from any device where the MySQL client is installed (or the GCP console). Before running the command, replace the <IP-address> with the external IP obtained from the previous step. The options **-u**, **-p**, and **-h** specify the deployed server's username, password, and host IP, respectively.
+      
+      ```cmd
+      mysql -uusr -psofe4630u -h<IP-address>
+      ```
+      
+   2. Try to run the following SQL statements to create a table, create three records, and search the table.
+
+      ```sql
+      use Readings; 
+      select * from SmartMeter; 
+      ```
+      
+   3. Exit the MySQL CLI, by running
+      ```sql
+      exit
+      ```
