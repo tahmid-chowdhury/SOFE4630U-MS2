@@ -13,9 +13,9 @@
 ## Introduction:
 1. The video shows a case study of containerization in DevOps. The concept of Docker containerization is used extensively in the cloud world. Watch the video to familiarize yourself with [Docker](https://youtu.be/rOTqprHv1YE) terminologies. 
 2. We will use Kubernetes (**K8s**) to manage Docker images and applications. The following video covers [Kubernetes and its components](https://youtu.be/cC46cg5FFAM).
-3. Kubernetes will be used to deploy both The MySQL and Redis servers. Watch the first **7:45 minutes** in the following video to get familiar with [redis commands](https://youtu.be/jgpVdJB2sKQ).
-4. Kafka has an existing tools to automatically store the data get published into a topic to a datastorage. This tools is called Kafka Connect. Watch the following video about [Kafka connect](https://youtu.be/YXgXw25E5RU).
-5. In this lab we will create a similar tool within GCP. However, we will focus on the sink connectors, It's also possible to create a source connector.
+3. Kubernetes will be used to deploy both The MySQL and Redis servers. Watch the first **7:45 minutes** in the following video to get familiar with [Redis commands](https://youtu.be/jgpVdJB2sKQ).
+4. 4.	Kafka has an existing tool to automatically store into data storage the data published into a topic. This tool is called Kafka Connect. Watch the following video for more information about [Kafka Connect](https://youtu.be/YXgXw25E5RU).
+5. We will create a similar tool within GCP in this lab. However, we will focus on the sink connectors, It's possible to create a source connector as well.
 
 ## Setting Google Kubernetes Engine
 To set up Google Kubernetes Engine (**GKE**). Open the console within your Google Cloud Platform (GCP) project.
