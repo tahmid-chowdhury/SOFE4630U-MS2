@@ -37,7 +37,7 @@ To set up Google Kubernetes Engine (**GKE**), open the console of the project yo
       
     **Note**: if the authorization windows pop up, click Authorize
    
-    **Note**: if you got an error that there are no available resources to create the nodes, you may need to change the default compute zone (e.g., to **us-central1-a**) or reduce the number of nodes.
+    **Note**: if you get an error that there are no available resources to create the nodes, you may need to change the default compute zone (e.g., to **us-central1-a**) or reduce the number of nodes.
 
 ## Deploy MySQL using GKE:
 1. To deploy a pre-existed MySQL image over the GKE cluster, we will use a YAML file. A YAML file is a file containing the configuration used to set the deployment. The deployment's role is to orchestrate docker applications.
