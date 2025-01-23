@@ -266,7 +266,7 @@ The sink connector is a service that automatically consumes from a topic(s) and 
 
       ```sql
       use Readings; 
-      create table SmartMeter( ID int primary key, profile_name string, temperature double, humidity double, modified long); 
+      create table SmartMeter( ID int primary key, profile_name varchar(100), temperature double, humidity double, modified long); 
       ```
       
    3. Exit the MySQL CLI, by running
