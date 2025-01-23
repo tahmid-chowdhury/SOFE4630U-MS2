@@ -32,7 +32,8 @@ To set up Google Kubernetes Engine (**GKE**), open the console within Google Clo
     gcloud container clusters create sofe4630u --num-nodes=3 
     ```
       
-    **Note**: if the authorization windows popped up, click Authorize 
+    **Note**: if the authorization windows popped up, click Authorize
+   
     **Note**: if you got an error that there are no available resources to create the nodes, you may need to change the default compute zone (e.g. to **us-central1-a** ) 
 
 ## Deploy MySQL using GKE:
