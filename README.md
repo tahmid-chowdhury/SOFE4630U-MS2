@@ -322,3 +322,5 @@ Application Integration offers a comprehensive set of core integration tools to 
    11.  Drag and drop the **CloudPubSubMessage.data** as input and **connectorInputPayload (mysql-connector)** as output. Thus only the data field will pass from the Pub/Sub into the MySQL connector.
 
       ![mysql_a9.jpg](figures/mysql_a9.jpg)
+   
+### ggg
