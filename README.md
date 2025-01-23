@@ -13,22 +13,25 @@
 ## Introduction:
 1. The video shows a case study of containerization in DevOps. The concept of Docker containerization is used extensively in the cloud world. Watch the video to familiarize yourself with [Docker](https://youtu.be/rOTqprHv1YE) terminologies. 
 2. We will use Kubernetes (**K8s**) to manage Docker images and applications. The following video covers [Kubernetes and its components](https://youtu.be/cC46cg5FFAM).
-3. To set up Google Kubernetes Engine (**GKE**). Open the console within your Google Cloud Platform (GCP) project.
-   1. Set the default compute zone to **northamerica-northeast1-b** 
-      ```cmd
-      gcloud config set compute/zone northamerica-northeast1-b  
-      ```
-   2. Enable GKE by searching for **Kubernetes Engine**. Select **Kubernetes Engine API**. Then, click **Enable**. 
+3. Kubernetes will be used to deploy both The MySQL and Redis servers. Watch the first 7:45 minutes in the following video to get familiar with [redis commands](https://youtu.be/jgpVdJB2sKQ).
+
+## Setting Google Kubernetes Engine
+To set up Google Kubernetes Engine (**GKE**). Open the console within your Google Cloud Platform (GCP) project.
+1. Set the default compute zone to **northamerica-northeast1-b** 
+    ```cmd
+    gcloud config set compute/zone northamerica-northeast1-b  
+    ```
+2. Enable GKE by searching for **Kubernetes Engine**. Select **Kubernetes Engine API**. Then, click **Enable**.
    
-      ![MS3 figure1](figures/cl3-1.jpg)
+    ![MS3 figure1](figures/cl3-1.jpg)
    
-   3. Wait until the API is enabled then, create a three-nodes cluster on GKE called **sofe4630u**. The cluster contains three nodes. A Node is a worker machine in which docker images and applications can be deployed.
-      ```cmd
-      gcloud container clusters create sofe4630u --num-nodes=3 
-      ```
+3. Wait until the API is enabled then, create a three-nodes cluster on GKE called **sofe4630u**. The cluster contains three nodes. A Node is a worker machine in which docker images and applications can be deployed.
+    ```cmd
+    gcloud container clusters create sofe4630u --num-nodes=3 
+    ```
       
-   **Note**: if the authorization windows popped up, click Authorize 
-   **Note**: if you got an error that there are no available resources to create the nodes, you may need to change the default compute zone (e.g. to **us-central1-a** ) 
+    **Note**: if the authorization windows popped up, click Authorize 
+    **Note**: if you got an error that there are no available resources to create the nodes, you may need to change the default compute zone (e.g. to **us-central1-a** ) 
 
 ## Deploy MySQL using GKE:
 1. To deploy a pre-existed MySQL image over the GKE cluster, we will use a YAML file. A YAML file is a file containing the configuration used to set the deployment. The deployment's role is to orchestrate docker applications.
