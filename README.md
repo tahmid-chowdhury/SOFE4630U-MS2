@@ -306,6 +306,19 @@ Application Integration offers a comprehensive set of core integration tools to 
 
    7. From the **TASKS** dropdown menu, select **CONNECTORS**. Then, choose the **mysql-connector**. Place the **mysql-connector** box in the design area.
       
-      ![mysql_a6.jpg](figures/mysql_a7.jpg)
+   8. Click the **mysql-connector** box. Then, click the **CONFIGURE CONNECTOR**
       
-   8.  The format of the topic messages is not compitable with the format accepted by the MySQL connector. To make them compitable, drag and drop a **data mapping** box from the **TASKS** deopdown menu.
+      ![mysql_a7.jpg](figures/mysql_a7.jpg)
+   
+   9. Set the configuration, as shown in the figure in three steps:
+       * Leave the default values in the first step.
+       * In the second step, select **entities** to select a table.
+       * In the last step, set the table name, **SmartMeter** as the **Entity** and **Create** as the operation. The creation operation will insert new records into the table according to its primary key (**ID**).
+
+      ![mysql_a8.jpg](figures/mysql_a8.jpg)
+      
+   10.  The format of the topic messages is not compitable with the format accepted by the MySQL connector. To make them compitable, drag and drop a **Data Mapping** box from the **TASKS** deopdown menu. Select the **Data Mapping** box and click **OPEN DATA MAPPING EDITOR**.
+
+   11.  Drag and drop the **CloudPubSubMessage.data** as input and **connectorInputPayload (mysql-connector)** as output. Thus only the data field will pass from the Pub/Sub into the MySQL connector.
+
+      ![mysql_a9.jpg](figures/mysql_a9.jpg)
