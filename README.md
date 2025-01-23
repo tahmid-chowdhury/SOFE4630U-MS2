@@ -232,10 +232,21 @@ To set up Google Kubernetes Engine (**GKE**), open the console of the project yo
             ![mysql_c5.jpg](figures/mysql_c5.jpg)
          
       2. Click **NEXT**.
-      3. In the **connection Details**, search for **MySQL** for the **connector** type. Set the **Connection Name** to **mysql-connector** and the **Database Name** to **Readings**. Leave everything else by its default value.
+      3. In the **connection Details**, search for **MySQL** for the **connector** type. Set the **Connection Name** to **mysql-connector** and the **Database Name** to **Readings** (check mysql-deploy.yaml). Leave everything else by its default value.
 
          ![mysql_c6.jpg](figures/mysql_c6.jpg)
          
       4. Click **NEXT**.
       5. For the Dstinations, set The MySQL IP address obtained before in the **host 1** text box and **3306** in the **port 1** text box.
+
          ![mysql_c7.jpg](figures/mysql_c7.jpg)
+         
+      7. For the credentials, set **usr** as the MySQL **Username**. For the **password**, you have to **Create New Secret**. Name it **mysql-password**. Set its value to **sofe4630u**. (MSQL username and password can be found in mysql-deploy.yaml)
+         
+         ![mysql_c8.jpg](figures/mysql_c8.jpg)
+
+      8. Grant any Necessary roles. Then Click **NEXT**.
+         
+         ![mysql_c9.jpg](figures/mysql_c9.jpg)
+
+      9. Finally, review the summary and cLick **CREATE**. 
