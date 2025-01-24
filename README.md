@@ -384,7 +384,8 @@ Also, <ins><b>Suspend</b></ins> the **mysql-connector**
 
 ## Create a Pub/Sub Sink Connector to Redis Server
 This will be similar to the MySQL. Thus, a higher level instruction is given. One of the difference is that a key/value pairs are needed. Those will be mapped to the Pub/Sub message's data and key.
-   ![sink connector](figures/cl3-8_v2.jpg)
+
+![sink connector](figures/cl3-16.jpg)
    
 ### 1. Create an Integration Connectors to The Redis Server
 
