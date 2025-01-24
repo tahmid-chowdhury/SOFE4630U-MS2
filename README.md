@@ -417,9 +417,10 @@ Create a new topic and name it **Image2Redis** as you did in the first milestone
        * In the second step, select **Entity** to select a table.
        * In the last step, set **Keys**, as the **Entity**, and **Create** as the operation.
    10. To make the format of the topic messages compatible with the format accepted by the Redis connector. Drag and drop a **Data Mapping** box from the **TASKS** dropdown menu to make them compatible. Connect the different boxes as shown in the following figure.
+
        ![mysql_a10.jpg](figures/redis_1.jpg)
        
-   11. Select the **Data Mapping** box and click **OPEN DATA MAPPING EDITOR** and map the data as shown in the following figure.
+   12. Select the **Data Mapping** box and click **OPEN DATA MAPPING EDITOR** and map the data as shown in the following figure.
        
        ![mysql_a9.jpg](figures/redis_2.jpg)
    
