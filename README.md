@@ -230,30 +230,28 @@ The sink connector is a service that automatically consumes from a topic(s) and 
 
       ![mysql_c4.jpg](figures/mysql_c4.jpg)
          
-      1. Choose The location to be **northamerica-northeast2 (Toronto)**.
+      1. Choose The location to be **northamerica-northeast2 (Toronto)**. Then, click **NEXT**.
          
             ![mysql_c5.jpg](figures/mysql_c5.jpg)
          
-      2. Click **NEXT**.
-      3. In the **connection Details**, search for **MySQL** for the **connector** type. Set the **Connection Name** to **mysql-connector** and the **Database Name** to **Readings** (check mysql-deploy.yaml). Leave everything else by its default value.
+      2. In the **connection Details**, search for **MySQL** for the **connector** type. Set the **Connection Name** to **mysql-connector** and the **Database Name** to **Readings** (check mysql-deploy.yaml). Leave everything else by its default value. Then, click **NEXT**.
 
          ![mysql_c6.jpg](figures/mysql_c6.jpg)
          
-      4. Click **NEXT**.
-      5. For the **destination**, set The MySQL IP address obtained in the **host 1** text box and **3306** in the **port 1** text box.
+      3. For the **destination**, set The MySQL IP address obtained in the **host 1** text box and **3306** in the **port 1** text box.
 
          ![mysql_c7.jpg](figures/mysql_c7.jpg)
          
-      6. For the credentials, set **usr** as the MySQL **Username**. For the **password**, you have to **Create New Secret**. Name it **mysql-password**. Set its value to **sofe4630u**. (MSQL username and password can be found in mysql-deploy.yaml)
+      4. For the credentials, set **usr** as the MySQL **Username**. For the **password**, you have to **Create New Secret**. Name it **mysql-password**. Set its value to **sofe4630u**. (MSQL username and password can be found in mysql-deploy.yaml)
          
          ![mysql_c8.jpg](figures/mysql_c8.jpg)
    
-      7. Grant any Necessary roles. Then Click **NEXT**.
+      5. Grant any Necessary roles. Then Click **NEXT**.
          
          ![mysql_c9.jpg](figures/mysql_c9.jpg)
 
-      8. Finally, review the summary and click **CREATE**.
-      9. Wait until the connector status changed to **Active**
+      6. Finally, review the summary and click **CREATE**.
+      7. Wait until the connector status changed to **Active**
           
 ### 2. Prepare the MySQL Server and the Pub/Sub Topic
    1. Login to the MySQL server
