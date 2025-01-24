@@ -17,7 +17,7 @@
 4. Kafka has an existing tool to automatically store into data storage the data published into a topic. This tool is called Kafka Connect. Watch the following video for more information about [Kafka Connect](https://www.youtube.com/watch?v=Lmus2AFX-oc).
 5. We will create a similar tool within GCP in this lab. However, we will focus on the sink connectors, It's possible to create a source connector as well.
 
-## Setting Google Kubernetes Engine
+## Setting Up Google Kubernetes Engine
 To set up Google Kubernetes Engine (**GKE**), open the console of the project you have created within the Google Cloud Platform (GCP) during the first milestone.
 1. Set the default compute zone to **northamerica-northeast1-b**
    
@@ -205,14 +205,14 @@ To set up Google Kubernetes Engine (**GKE**), open the console of the project yo
         
       * Run **SendImage.py**, then check the keys in the Redis server. Finally, run **ReceiveImage.py** and check that the **received.jpg** image has been created.
 
-## Create a Pub/Sub sink connector to MySQL
+## Create a Pub/Sub Sink Connector to MySQL Server
 The sink connector is a service that automatically consumes from a topic(s) and stores the consumed messages in a data storage, as shown in the following figure.
 
    ![sink connector](figures/cl3-7_v2.jpg)
    
 ### 1. Create an Integration Connectors to The MySQL Server
 
-   Integration Connectors provide a transparent, standard interface to connect to various data sources from your integrations. As an integration developer, you can quickly connect to a growing pool of applications and systems without the need for protocol-specific knowledge or the use of custom code.
+   Integration Connectors provide a transparent, standard interface to connect to various data sources from your integrations. As an integration developer, you can quickly connect to a growing pool of applications and systems without the need for protocol-specific knowledge or custom code.
       
    1. Search for **Connectors** and choose **Connections / Integration Connectors**.
 
@@ -222,7 +222,7 @@ The sink connector is a service that automatically consumes from a topic(s) and 
          
       ![mysql_c2.jpg](figures/mysql_c2.jpg)
          
-   3. Click The **SET UP INTEGRATION CONNECTORS** button and click **ENABLE APIS". Wait until the API is been enabled. Then, click **Done**.
+   3. Click The **SET UP INTEGRATION CONNECTORS** button and click **ENABLE APIS". Wait until the API is enabled. Then, click **Done**.
 
       ![mysql_c3.jpg](figures/mysql_c3.jpg)
 
@@ -240,22 +240,22 @@ The sink connector is a service that automatically consumes from a topic(s) and 
          ![mysql_c6.jpg](figures/mysql_c6.jpg)
          
       4. Click **NEXT**.
-      5. For the Dstinations, set The MySQL IP address obtained before in the **host 1** text box and **3306** in the **port 1** text box.
+      5. For the **destination**, set The MySQL IP address obtained in the **host 1** text box and **3306** in the **port 1** text box.
 
          ![mysql_c7.jpg](figures/mysql_c7.jpg)
          
-      7. For the credentials, set **usr** as the MySQL **Username**. For the **password**, you have to **Create New Secret**. Name it **mysql-password**. Set its value to **sofe4630u**. (MSQL username and password can be found in mysql-deploy.yaml)
+      6. For the credentials, set **usr** as the MySQL **Username**. For the **password**, you have to **Create New Secret**. Name it **mysql-password**. Set its value to **sofe4630u**. (MSQL username and password can be found in mysql-deploy.yaml)
          
          ![mysql_c8.jpg](figures/mysql_c8.jpg)
    
-      8. Grant any Necessary roles. Then Click **NEXT**.
+      7. Grant any Necessary roles. Then Click **NEXT**.
          
          ![mysql_c9.jpg](figures/mysql_c9.jpg)
 
-      9. Finally, review the summary and cLick **CREATE**.
-      10. Wait until The connector status changed to **Active**
+      8. Finally, review the summary and click **CREATE**.
+      9. Wait until the connector status changed to **Active**
           
-### 2. Prepare The MySQL server and the Pub/Sub topic
+### 2. Prepare the MySQL Server and the Pub/Sub Topic
    1. Login to the MySQL server
       
       ```cmd
@@ -269,22 +269,22 @@ The sink connector is a service that automatically consumes from a topic(s) and 
       create table SmartMeter( ID int primary key, time bigint, profile_name varchar(100), temperature double, humidity double, pressure double); 
       ```
       
-   3. Exit the MySQL CLI, by running
+   3. Exit the MySQL CLI.
 
       ```sql
       exit
       ```
       
-   4. Create a new Topic under the name **smartMeterReadings** as you have done in the first milestone.
+   4. Create a new topic and name it **smartMeterReadings** as you did in the first milestone.
       
 ### 3. Set Up Application Integration
-Application Integration offers a comprehensive set of core integration tools to connect and manage the multitude of applications (Google Cloud services and third-party SaaS) and data required to support various business operations. This includes Google Pub/Sub, MySQL, and Redis. It's configured as a plug-and-play tool. The source of the data that start the integration is called trigger while the sedtination and other temperory processes are called tasks.
+Application Integration offers a comprehensive set of core integration tools to connect and manage various applications (Google Cloud services and third-party SaaS) and data required to support multiple business operations. This includes Google Pub/Sub, MySQL, and Redis. It's configured as a plug-and-play tool. The source of the data that starts the integration is called the trigger, while the destination and other temporary processes are called tasks.
 
    1. Search  for **Application Integration**.
 
       ![mysql_a1.jpg](figures/mysql_a1.jpg)
       
-   2. For the First time, choose the region to be **northamerica-northeast2 (Toronto)**. Then, click **QUICK SETUP** to enable the required APIs.
+   2. For the first time, choose the region **northamerica-northeast2 (Toronto)**. Then, click **QUICK SETUP** to enable the required APIs.
 
       ![mysql_a2.jpg](figures/mysql_a2.jpg)
 
@@ -300,9 +300,9 @@ Application Integration offers a comprehensive set of core integration tools to 
 
       ![mysql_a5.jpg](figures/mysql_a5.jpg)
       
-   6. Click the **Cloud Pub/Sub Trigger** box to display the properties. set the Pub/Sub topic text box with the full path of the topic. It should be in the following format **projects/<project_id>/topics/<topic_id>**. **Note**: you can copy the full path of the topic from the Google Pub/sub topics page. Fill the **Service account** textbox by the Service account, you have created in the first milestone with the Two Pub/Sub roles. Finally, click **GRANT** button to fix any missing role within the service account.
+   6.	Click the **Cloud Pub/Sub Trigger** box to display the properties. Set the Pub/Sub topic text box with the full path of the topic. It should be in the following format: **projects/<project_id>/topics/<topic_id>**. **Note**: you can copy the full path of the topic from the Cloud Pub/Sub topics page. Fill the **Service account** textbox with the Service account you created in the first milestone with the Two Pub/Sub roles. Finally, click the **GRANT** button to fix any missing role within the service account.
 
-      ![mysql_a6.jpg](figures/mysql_a6.jpg)
+     	![mysql_a6.jpg](figures/mysql_a6.jpg)
 
    7. From the **TASKS** dropdown menu, select **CONNECTORS**. Then, choose the **mysql-connector**. Place the **mysql-connector** box in the design area.
       
@@ -310,15 +310,14 @@ Application Integration offers a comprehensive set of core integration tools to 
       
       ![mysql_a7.jpg](figures/mysql_a7.jpg)
    
-   9. Set the configuration, as shown in the figure in three steps:
+   9. Set the configuration, as shown in the figure, in three steps:
        * Leave the default values in the first step.
        * In the second step, select **entities** to select a table.
-       * In the last step, set the table name, **SmartMeter** as the **Entity** and **Create** as the operation. The creation operation will insert new records into the table according to its primary key (**ID**).
+       * In the last step, set the table name, **SmartMeter**, as the **Entity**, and **Create** as the operation. The creation operation will insert new records into the table according to its primary key (**ID**).
 
       ![mysql_a8.jpg](figures/mysql_a8.jpg)
       
-   10. The format of the topic messages is not compitable with the format accepted by the MySQL connector. To make them compitable, drag and drop a **Data Mapping** box from the **TASKS** deopdown menu. Connect the different boxes as shown in the following fihure.
-       
+   10. The format of the topic messages is incompatible with the format accepted by the MySQL connector. Drag and drop a **Data Mapping** box from the **TASKS** dropdown menu to make them compatible. Connect the different boxes as shown in the following figure.
        ![mysql_a10.jpg](figures/mysql_a10.jpg)
        
    11. Select the **Data Mapping** box and click **OPEN DATA MAPPING EDITOR**. Drag and drop the **CloudPubSubMessage.data** as input and **connectorInputPayload \(mysql-connector\)** as output. Thus, only the **data** field will pass from the Pub/Sub into the MySQL connector.
@@ -341,13 +340,13 @@ Application Integration offers a comprehensive set of core integration tools to 
      
    * Save Variable.
      
-2. Click on the design area to enable the test button. Click **test** and set the following JSON value into the **CloudPubSubMessage** textbox. This JSON file is the minimal subset of the JSON value produced from the PUb/Sub. You can find here [the format of the Pub/Sub messages](https://cloud.google.com/pubsub/docs/publisher#using-attributes). **Note**: as the MySQL connector is configured by the **Create** operation, You can't insert a record with an ID that already exists the table. 
- 
+2. Click on the design area to enable the test button. Click **test** and set the following JSON value into the **CloudPubSubMessage** textbox. This JSON file is the minimal subset of the JSON value produced from the Pub/Sub. You can find here [the format of the Pub/Sub messages](https://cloud.google.com/pubsub/docs/publisher#using-attributes). **Note**: as the **Create** operation configures the MySQL connector, you can't insert a record with an ID that already exists in the table.
+
    ```JSON
    { "data": "{\"ID\":-1, \"profile_name\":\"test\", \"temperature\":50, \"humidity\":60, \"pressure\": 1.0, \"time\": 1253145}"}
    ```
    
-3. To check the success of the integration, we will display the **SmartMeter** table
+4. To check the success of the integration, we will display the **SmartMeter** table
    1. Run the following commands from any device where the MySQL client is installed (or the GCP console). Before running the command, replace the <IP-address> with the external IP obtained from the previous step. The options **-u**, **-p**, and **-h** specify the deployed server's username, password, and host IP, respectively.
       
       ```cmd
@@ -366,7 +365,7 @@ Application Integration offers a comprehensive set of core integration tools to 
       exit
       ```
 
-4. To be able to use the integration, you have to publish (deploy) it first by click to the **publish** button.
+5. To be able to use the integration, you have to publish (deploy) it first by click to the **publish** button.
 
    ![mysql_t3.jpg](figures/mysql_t3.jpg)
    
@@ -374,7 +373,152 @@ Application Integration offers a comprehensive set of core integration tools to 
 * In the folder [/MySQL-connector](/MySQL-connector) within the reposaitory, there is a python script code under the name **smartMeter.py**. The script is similar to the one used in the first milestone. The only difference is it publishes to the **smartMeterReadings** topic. As usual,
    * Download the script to your computer.
    * Set the project ID to variable at line 15.
-   * move the JSON key for service account to the the same directory as the **smartMeter.py** file
+   * move the JSON key for the service account to the same directory as the **smartMeter.py** file
+* run the **smartMeter.py** script.
+* Check the table within the MySQL server to check that the integration is working.
+
+### 6. Clean up (important)
+
+It's required to <ins><b>unpublish</b></ins> the **mysql-integration** integration as it will consume your credit quickly.
+
+## Create a Pub/Sub Sink Connector to Redis Server
+This will be similar to the MySQL. Thus, a higher level instruction is given. One of the difference is that a key/value pairs are needed. Those will be mapped to the Pub/Sub message's data and key.
+   ![sink connector](figures/cl3-8_v2.jpg)
+   
+### 1. Create an Integration Connectors to The Redis Server
+
+   1. Search for **Connectors** and choose **Connections / Integration Connectors**.
+      
+   2. Click **CREATE NEW**
+      1. Choose The location to be **northamerica-northeast2 (Toronto)**.
+      2. Click **NEXT**.
+      3. In the **connection Details**, search for **Redis** for the **connector** type. Set the **Connection Name** to **redis-connector**. Leave everything else by its default value.
+      4. Click **NEXT**.
+      5. For the **destination**, set The Redis IP address obtained in the **host 1** text box and **6379** in the **port 1** text box.
+      6. For the credentials, select **User Password** usr** and set the **password** to ****sofe4630u**. (MSQL username and password can be found in mysql-deploy.yaml)
+      7. Grant any Necessary roles. Then Click **NEXT**.
+      8. Finally, review the summary and click **CREATE**.
+      9. Wait until the connector status changed to **Active**
+          
+### 2. Prepare the MySQL Server and the Pub/Sub Topic
+   1. Login to the MySQL server
+      
+      ```cmd
+      mysql -uusr -psofe4630u -h<IP-address>
+      ```
+      
+   2. Create a table to store the Smart Meter records.
+
+      ```sql
+      use Readings; 
+      create table SmartMeter( ID int primary key, time bigint, profile_name varchar(100), temperature double, humidity double, pressure double); 
+      ```
+      
+   3. Exit the MySQL CLI.
+
+      ```sql
+      exit
+      ```
+      
+   4. Create a new topic and name it **smartMeterReadings** as you did in the first milestone.
+      
+### 3. Set Up Application Integration
+Application Integration offers a comprehensive set of core integration tools to connect and manage various applications (Google Cloud services and third-party SaaS) and data required to support multiple business operations. This includes Google Pub/Sub, MySQL, and Redis. It's configured as a plug-and-play tool. The source of the data that starts the integration is called the trigger, while the destination and other temporary processes are called tasks.
+
+   1. Search  for **Application Integration**.
+
+      ![mysql_a1.jpg](figures/mysql_a1.jpg)
+      
+   2. For the first time, choose the region **northamerica-northeast2 (Toronto)**. Then, click **QUICK SETUP** to enable the required APIs.
+
+      ![mysql_a2.jpg](figures/mysql_a2.jpg)
+
+   3. Click **Create Integration**.
+
+      ![mysql_a3.jpg](figures/mysql_a3.jpg)
+      
+   4. Name The integration **mysql-integration**. Then, click **Create**.
+
+      ![mysql_a4.jpg](figures/mysql_a4.jpg)
+
+   5. From the **triggers** dropdown menu, choose **Cloud Pub/Sub**. A box named **Cloud Pub/Sub Trigger** should appear. Place it in the design area.
+
+      ![mysql_a5.jpg](figures/mysql_a5.jpg)
+      
+   6.	Click the **Cloud Pub/Sub Trigger** box to display the properties. Set the Pub/Sub topic text box with the full path of the topic. It should be in the following format: **projects/<project_id>/topics/<topic_id>**. **Note**: you can copy the full path of the topic from the Cloud Pub/Sub topics page. Fill the **Service account** textbox with the Service account you created in the first milestone with the Two Pub/Sub roles. Finally, click the **GRANT** button to fix any missing role within the service account.
+
+     	![mysql_a6.jpg](figures/mysql_a6.jpg)
+
+   7. From the **TASKS** dropdown menu, select **CONNECTORS**. Then, choose the **mysql-connector**. Place the **mysql-connector** box in the design area.
+      
+   8. Click the **mysql-connector** box. Then, click the **CONFIGURE CONNECTOR**
+      
+      ![mysql_a7.jpg](figures/mysql_a7.jpg)
+   
+   9. Set the configuration, as shown in the figure, in three steps:
+       * Leave the default values in the first step.
+       * In the second step, select **entities** to select a table.
+       * In the last step, set the table name, **SmartMeter**, as the **Entity**, and **Create** as the operation. The creation operation will insert new records into the table according to its primary key (**ID**).
+
+      ![mysql_a8.jpg](figures/mysql_a8.jpg)
+      
+   10. The format of the topic messages is incompatible with the format accepted by the MySQL connector. Drag and drop a **Data Mapping** box from the **TASKS** dropdown menu to make them compatible. Connect the different boxes as shown in the following figure.
+       ![mysql_a10.jpg](figures/mysql_a10.jpg)
+       
+   11. Select the **Data Mapping** box and click **OPEN DATA MAPPING EDITOR**. Drag and drop the **CloudPubSubMessage.data** as input and **connectorInputPayload \(mysql-connector\)** as output. Thus, only the **data** field will pass from the Pub/Sub into the MySQL connector.
+       
+       ![mysql_a9.jpg](figures/mysql_a9.jpg)
+   
+### 4. Test the integration and publish it
+1. To test the integration, we will get access to the Cloud Pub/Sub output from the interface by
+   * Click the **Cloud Pub/Sub Trigger** box.
+     
+   * Scroll down to **Trigger Output Variables**.
+     
+   * Edit the **CloudPubSubMessage** variable.
+     
+      ![mysql_t1.jpg](figures/mysql_t1.jpg)
+     
+   * Change the **Variable Type** to **Output from Integration**. Thus, we can test the integration by manually setting this variable.
+     
+      ![mysql_t2.jpg](figures/mysql_t2.jpg)
+     
+   * Save Variable.
+     
+2. Click on the design area to enable the test button. Click **test** and set the following JSON value into the **CloudPubSubMessage** textbox. This JSON file is the minimal subset of the JSON value produced from the Pub/Sub. You can find here [the format of the Pub/Sub messages](https://cloud.google.com/pubsub/docs/publisher#using-attributes). **Note**: as the **Create** operation configures the MySQL connector, you can't insert a record with an ID that already exists in the table.
+
+   ```JSON
+   { "data": "{\"ID\":-1, \"profile_name\":\"test\", \"temperature\":50, \"humidity\":60, \"pressure\": 1.0, \"time\": 1253145}"}
+   ```
+   
+4. To check the success of the integration, we will display the **SmartMeter** table
+   1. Run the following commands from any device where the MySQL client is installed (or the GCP console). Before running the command, replace the <IP-address> with the external IP obtained from the previous step. The options **-u**, **-p**, and **-h** specify the deployed server's username, password, and host IP, respectively.
+      
+      ```cmd
+      mysql -uusr -psofe4630u -h<IP-address>
+      ```
+      
+   2. Try to run the following SQL statements to create a table, create three records, and search the table.
+
+      ```sql
+      use Readings; 
+      select * from SmartMeter; 
+      ```
+      
+   3. Exit the MySQL CLI, by running
+      ```sql
+      exit
+      ```
+
+5. To be able to use the integration, you have to publish (deploy) it first by click to the **publish** button.
+
+   ![mysql_t3.jpg](figures/mysql_t3.jpg)
+   
+### 5. Using MySQL Connector with Python Script 
+* In the folder [/MySQL-connector](/MySQL-connector) within the reposaitory, there is a python script code under the name **smartMeter.py**. The script is similar to the one used in the first milestone. The only difference is it publishes to the **smartMeterReadings** topic. As usual,
+   * Download the script to your computer.
+   * Set the project ID to variable at line 15.
+   * move the JSON key for the service account to the same directory as the **smartMeter.py** file
 * run the **smartMeter.py** script.
 * Check the table within the MySQL server to check that the integration is working.
 
