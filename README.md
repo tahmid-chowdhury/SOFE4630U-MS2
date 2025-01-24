@@ -266,7 +266,7 @@ The sink connector is a service that automatically consumes from a topic(s) and 
 
       ```sql
       use Readings; 
-      create table SmartMeter( ID int primary key, profile_name varchar(100), temperature double, humidity double, modified long); 
+      create table SmartMeter( ID int primary key, time bigint, profile_name varchar(100), temperature double, humidity double, pressure double); 
       ```
       
    3. Exit the MySQL CLI, by running
@@ -344,7 +344,7 @@ Application Integration offers a comprehensive set of core integration tools to 
 2. Click on the design area to enable the test button. Click **test** and set the following JSON value into the **CloudPubSubMessage** textbox. This JSON file is the minimal subset of the JSON value produced from the PUb/Sub. You can find here [the format of the Pub/Sub messages](https://cloud.google.com/pubsub/docs/publisher#using-attributes). **Note**: as the MySQL connector is configured by the **Create** operation, You can't insert a record with an ID that already exists the table. 
  
    ```JSON
-   { "data": "{\"ID\":-1, \"profile_name\":\"test\", \"temperature\":50, \"humidity\":60, \"modified\": \"1253145\"}"}
+   { "data": "{\"ID\":-1, \"profile_name\":\"test\", \"temperature\":50, \"humidity\":60, \"pressure\": 1.0, \"time\": 1253145}"}
    ```
    
 3. To check the success of the integration, we will display the **SmartMeter** table
