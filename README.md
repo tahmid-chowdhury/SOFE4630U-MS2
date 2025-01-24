@@ -345,13 +345,13 @@ Application Integration offers a comprehensive set of core integration tools to 
    ```
    
 4. To check the success of the integration, we will display the **SmartMeter** table
-   1. Run the following commands from any device where the MySQL client is installed (or the GCP console). Before running the command, replace the <IP-address> with the external IP obtained from the previous step. The options **-u**, **-p**, and **-h** specify the deployed server's username, password, and host IP, respectively.
+   1. Log into the MySQL CLI.
       
       ```cmd
       mysql -uusr -psofe4630u -h<IP-address>
       ```
       
-   2. Try to run the following SQL statements to create a table, create three records, and search the table.
+   2. display the **SmartMeter** table.
 
       ```sql
       use Readings; 
