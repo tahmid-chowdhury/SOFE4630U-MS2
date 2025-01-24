@@ -456,14 +456,16 @@ Create a new topic and name it **Image2Redis** as you did in the first milestone
    ![mysql_t3.jpg](figures/mysql_t3.jpg)
    
 ### 5. Using MySQL Connector with Python Script 
-* In the folder [/MySQL-connector](/MySQL-connector) within the reposaitory, there is a python script code under the name **smartMeter.py**. The script is similar to the one used in the first milestone. The only difference is it publishes to the **smartMeterReadings** topic. As usual,
-   * Download the script to your computer.
+* In the folder [/Redis-connector](/Redis-connector) within the reposaitory, the **produceImage.py** script read **ontarioTech.jpg** image, serialize it to base64, and publish it to the **Image2Redis** topic. As usual,
+   * Download the whole folder to your computer .
    * Set the project ID to variable at line 15.
-   * move the JSON key for the service account to the same directory as the **smartMeter.py** file
-* run the **smartMeter.py** script.
-* Check the table within the MySQL server to check that the integration is working.
-
+   * move the JSON key for the service account to the same directory.
+* run the **produceImage.py** script.
+* to check the success of the integration, the **ReceiveImage.py** script will access the Redis server, get the value associated with the key, **image**, deserialize it, and save it in the same folder by the name **recieved.jpg**.
+   * set the ip of the redis server in the 5th line
+   * run the **ReceiveImage.py** script.
+* Finally, check the **recieved.jpg** and compare it with the **ontarioTech.jpg** image.
 ### 6. Clean up (important)
 
-It's required to <ins><b>unpublish</b></ins> the **mysql-integration** integration as it will consume your credit quickly.
+It's required to <ins><b>unpublish</b></ins> the **redis-integration** integration as it will consume your credit quickly.
 Also, <ins><b>Suspend</b></ins> the **redis-connector** 
