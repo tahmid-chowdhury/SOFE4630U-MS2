@@ -340,7 +340,7 @@ Application Integration offers a comprehensive set of core integration tools to 
      
    * Save Variable.
      
-2. Click on the design area to enable the test button. Click **test** and set the following JSON value into the **CloudPubSubMessage** textbox. This JSON file is the minimal subset of the JSON value produced from the Pub/Sub. You can find here [the format of the Pub/Sub messages](https://cloud.google.com/pubsub/docs/publisher#using-attributes). **Note**: as the **Create** operation configures the MySQL connector, you can't insert a record with an ID that already exists in the table.
+2. Click on the design area to enable the test button. Click **test** and type the following JSON value into the **CloudPubSubMessage** textbox. This JSON file is the minimal subset of the JSON value produced from the Pub/Sub. You can find here [the format of the Pub/Sub messages](https://cloud.google.com/pubsub/docs/publisher#using-attributes). **Note**: as the **Create** operation configures the MySQL connector, you can't insert a record with an ID that already exists in the table.
 
    ```JSON
    { "data": "{\"ID\":-1, \"profile_name\":\"test\", \"temperature\":50, \"humidity\":60, \"pressure\": 1.0, \"time\": 1253145}"}
@@ -380,6 +380,7 @@ Application Integration offers a comprehensive set of core integration tools to 
 ### 6. Clean up (important)
 
 It's required to <ins><b>unpublish</b></ins> the **mysql-integration** integration as it will consume your credit quickly.
+Also, <ins><b>Suspend</b></ins> the **mysql-connector** 
 
 ## Create a Pub/Sub Sink Connector to Redis Server
 This will be similar to the MySQL. Thus, a higher level instruction is given. One of the difference is that a key/value pairs are needed. Those will be mapped to the Pub/Sub message's data and key.
@@ -395,117 +396,57 @@ This will be similar to the MySQL. Thus, a higher level instruction is given. On
       3. In the **connection Details**, search for **Redis** for the **connector** type. Set the **Connection Name** to **redis-connector**. Leave everything else by its default value.
       4. Click **NEXT**.
       5. For the **destination**, set The Redis IP address obtained in the **host 1** text box and **6379** in the **port 1** text box.
-      6. For the credentials, select **User Password** usr** and set the **password** to ****sofe4630u**. (MSQL username and password can be found in mysql-deploy.yaml)
+      6. within the credentials step, select **User Password**. For the **password**, you have to **Create New Secret**. Name it **redis-password**. Set its value to **sofe4630u** (check redis.yaml).
       7. Grant any Necessary roles. Then Click **NEXT**.
       8. Finally, review the summary and click **CREATE**.
       9. Wait until the connector status changed to **Active**
-          
-### 2. Prepare the MySQL Server and the Pub/Sub Topic
-   1. Login to the MySQL server
-      
-      ```cmd
-      mysql -uusr -psofe4630u -h<IP-address>
-      ```
-      
-   2. Create a table to store the Smart Meter records.
+    
+### 2. Create the Pub/Sub Topic
 
-      ```sql
-      use Readings; 
-      create table SmartMeter( ID int primary key, time bigint, profile_name varchar(100), temperature double, humidity double, pressure double); 
-      ```
-      
-   3. Exit the MySQL CLI.
+Create a new topic and name it **Image2Redis** as you did in the first milestone.
 
-      ```sql
-      exit
-      ```
-      
-   4. Create a new topic and name it **smartMeterReadings** as you did in the first milestone.
-      
 ### 3. Set Up Application Integration
-Application Integration offers a comprehensive set of core integration tools to connect and manage various applications (Google Cloud services and third-party SaaS) and data required to support multiple business operations. This includes Google Pub/Sub, MySQL, and Redis. It's configured as a plug-and-play tool. The source of the data that starts the integration is called the trigger, while the destination and other temporary processes are called tasks.
-
    1. Search  for **Application Integration**.
-
-      ![mysql_a1.jpg](figures/mysql_a1.jpg)
-      
-   2. For the first time, choose the region **northamerica-northeast2 (Toronto)**. Then, click **QUICK SETUP** to enable the required APIs.
-
-      ![mysql_a2.jpg](figures/mysql_a2.jpg)
-
-   3. Click **Create Integration**.
-
-      ![mysql_a3.jpg](figures/mysql_a3.jpg)
-      
-   4. Name The integration **mysql-integration**. Then, click **Create**.
-
-      ![mysql_a4.jpg](figures/mysql_a4.jpg)
-
+   2. Click **Create Integration**.  
+   3. Name The integration **redis-integration**. Then, click **Create**.
    5. From the **triggers** dropdown menu, choose **Cloud Pub/Sub**. A box named **Cloud Pub/Sub Trigger** should appear. Place it in the design area.
-
-      ![mysql_a5.jpg](figures/mysql_a5.jpg)
-      
-   6.	Click the **Cloud Pub/Sub Trigger** box to display the properties. Set the Pub/Sub topic text box with the full path of the topic. It should be in the following format: **projects/<project_id>/topics/<topic_id>**. **Note**: you can copy the full path of the topic from the Cloud Pub/Sub topics page. Fill the **Service account** textbox with the Service account you created in the first milestone with the Two Pub/Sub roles. Finally, click the **GRANT** button to fix any missing role within the service account.
-
-     	![mysql_a6.jpg](figures/mysql_a6.jpg)
-
-   7. From the **TASKS** dropdown menu, select **CONNECTORS**. Then, choose the **mysql-connector**. Place the **mysql-connector** box in the design area.
-      
-   8. Click the **mysql-connector** box. Then, click the **CONFIGURE CONNECTOR**
-      
-      ![mysql_a7.jpg](figures/mysql_a7.jpg)
-   
-   9. Set the configuration, as shown in the figure, in three steps:
+   6.	Click the **Cloud Pub/Sub Trigger** box to display the properties. Set the Pub/Sub topic text box with the full path of the topic. It should be in the following format: **projects/<project_id>/topics/<topic_id>**. **Note**: you can copy the full path of the topic from the Cloud Pub/Sub topics page. Fill the **Service account** textbox with the Service account you created in the first milestone with the Two Pub/Sub roles. Finally, if shown up, click the **GRANT** button to fix any missing role within the service account.
+   7. From the **TASKS** dropdown menu, select **CONNECTORS**. Then, choose the **redis-connector**. Place the **redis-connector** box in the design area.
+   8. Click the **redis-connector** box. Then, click the **CONFIGURE CONNECTOR**
+   9. Set the configuration, as 
        * Leave the default values in the first step.
-       * In the second step, select **entities** to select a table.
-       * In the last step, set the table name, **SmartMeter**, as the **Entity**, and **Create** as the operation. The creation operation will insert new records into the table according to its primary key (**ID**).
-
-      ![mysql_a8.jpg](figures/mysql_a8.jpg)
-      
-   10. The format of the topic messages is incompatible with the format accepted by the MySQL connector. Drag and drop a **Data Mapping** box from the **TASKS** dropdown menu to make them compatible. Connect the different boxes as shown in the following figure.
-       ![mysql_a10.jpg](figures/mysql_a10.jpg)
+       * In the second step, select **Entity** to select a table.
+       * In the last step, set **Keys**, as the **Entity**, and **Create** as the operation.
+   10. To make the format of the topic messages compatible with the format accepted by the Redis connector. Drag and drop a **Data Mapping** box from the **TASKS** dropdown menu to make them compatible. Connect the different boxes as shown in the following figure.
+       ![mysql_a10.jpg](figures/redis_1.jpg)
        
-   11. Select the **Data Mapping** box and click **OPEN DATA MAPPING EDITOR**. Drag and drop the **CloudPubSubMessage.data** as input and **connectorInputPayload \(mysql-connector\)** as output. Thus, only the **data** field will pass from the Pub/Sub into the MySQL connector.
+   11. Select the **Data Mapping** box and click **OPEN DATA MAPPING EDITOR** and map the data as shown in the following figure.
        
-       ![mysql_a9.jpg](figures/mysql_a9.jpg)
+       ![mysql_a9.jpg](figures/redis_2.jpg)
    
 ### 4. Test the integration and publish it
-1. To test the integration, we will get access to the Cloud Pub/Sub output from the interface by
-   * Click the **Cloud Pub/Sub Trigger** box.
-     
-   * Scroll down to **Trigger Output Variables**.
-     
-   * Edit the **CloudPubSubMessage** variable.
-     
-      ![mysql_t1.jpg](figures/mysql_t1.jpg)
-     
-   * Change the **Variable Type** to **Output from Integration**. Thus, we can test the integration by manually setting this variable.
-     
-      ![mysql_t2.jpg](figures/mysql_t2.jpg)
-     
-   * Save Variable.
-     
-2. Click on the design area to enable the test button. Click **test** and set the following JSON value into the **CloudPubSubMessage** textbox. This JSON file is the minimal subset of the JSON value produced from the Pub/Sub. You can find here [the format of the Pub/Sub messages](https://cloud.google.com/pubsub/docs/publisher#using-attributes). **Note**: as the **Create** operation configures the MySQL connector, you can't insert a record with an ID that already exists in the table.
+    
+1. Click on the design area to enable the test button. Click **test** and type the following JSON value into the **CloudPubSubMessage** textbox.
 
    ```JSON
-   { "data": "{\"ID\":-1, \"profile_name\":\"test\", \"temperature\":50, \"humidity\":60, \"pressure\": 1.0, \"time\": 1253145}"}
+   { "data": "1234","orderingKey": "test" }
    ```
    
-4. To check the success of the integration, we will display the **SmartMeter** table
+4. To check the success of the integration, we will check the key within the Redis storage
    1. Run the following commands from any device where the MySQL client is installed (or the GCP console). Before running the command, replace the <IP-address> with the external IP obtained from the previous step. The options **-u**, **-p**, and **-h** specify the deployed server's username, password, and host IP, respectively.
       
       ```cmd
-      mysql -uusr -psofe4630u -h<IP-address>
+      redis-cli -h <Redis-IP> -a sofe4630u
       ```
       
-   2. Try to run the following SQL statements to create a table, create three records, and search the table.
+   2. Try to run the following commands to get the.
 
       ```sql
-      use Readings; 
-      select * from SmartMeter; 
+      select 0
+      get test
       ```
       
-   3. Exit the MySQL CLI, by running
+   3. Exit the Redis CLI, by running
       ```sql
       exit
       ```
@@ -525,3 +466,4 @@ Application Integration offers a comprehensive set of core integration tools to 
 ### 6. Clean up (important)
 
 It's required to <ins><b>unpublish</b></ins> the **mysql-integration** integration as it will consume your credit quickly.
+Also, <ins><b>Suspend</b></ins> the **redis-connector** 
