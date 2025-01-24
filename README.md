@@ -370,7 +370,7 @@ Application Integration offers a comprehensive set of core integration tools to 
 
    ![mysql_t3.jpg](figures/mysql_t3.jpg)
    
-### 4. Using MySQL Connector with Python Script 
+### 5. Using MySQL Connector with Python Script 
 * In the folder [/MySQL-connector](/MySQL-connector) within the reposaitory, there is a python script code under the name **smartMeter.py**. The script is similar to the one used in the first milestone. The only difference is it publishes to the **smartMeterReadings** topic. As usual,
    * Download the script to your computer.
    * Set the project ID to variable at line 15.
@@ -378,6 +378,6 @@ Application Integration offers a comprehensive set of core integration tools to 
 * run the **smartMeter.py** script.
 * Check the table within the MySQL server to check that the integration is working.
 
-  ### 5. Clean up (important)
+### 6. Clean up (important)
 
-  It's required to <ins><b>unpublish</b></ins> the **mysql-integration** integration as it will consume your credit quickly.
+It's required to <ins><b>unpublish</b></ins> the **mysql-integration** integration as it will consume your credit quickly.
