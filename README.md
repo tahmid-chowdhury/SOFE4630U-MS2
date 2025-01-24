@@ -380,4 +380,4 @@ Application Integration offers a comprehensive set of core integration tools to 
 
   ### 5. Clean up (important)
 
-  It's required to <u>**unpublish**</u> the **mysql-integration** integration as it will consume your credit quickly.
+  It's required to <u><b>unpublish</b></u> the **mysql-integration** integration as it will consume your credit quickly.
