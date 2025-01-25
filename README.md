@@ -1,4 +1,4 @@
-# Milestone 2:  Data Storage and Pub/Sub connects
+# Milestone 2:  Data Storage and Integration Connectors
 
 ## Objective:
 * Get familiar with Docker images and containers.
