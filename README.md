@@ -8,7 +8,7 @@
 * Create and configure connectors from Google Pub/Sub to Redis server.
 
 ## Repository:
-[https://github.com/GeorgeDaoud3/SOFE4630U-MS2](https://github.com/GeorgeDaoud3/SOFE4630U-MS2)
+[https://github.com/zubxxr/SOFE4630U-MS2](https://github.com/zubxxr/SOFE4630U-MS2)
 
 ## Introduction:
 1. The video shows a case study of containerization in DevOps. The concept of Docker containerization is used extensively in the cloud world. Watch the video to familiarize yourself with [Docker](https://youtu.be/rOTqprHv1YE) terminologies. 
@@ -46,7 +46,7 @@ To set up Google Kubernetes Engine (**GKE**), open the console of the project yo
        
       ```cmd 
       cd ~
-      git clone https://github.com/GeorgeDaoud3/SOFE4630U-MS2.git
+      git clone https://github.com/zubxxr/SOFE4630U-MS2.git
       ```
         
    2. Run the following command to deploy the MySQL server
