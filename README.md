@@ -488,7 +488,7 @@ kubectl delete -f redis.yaml
 
 ## Design: 
 We will contine using the same dataset used in the first milestone. However, we will use the Whole dataset, not only the CSV file. The dataset:
-* can be accessed from  (https://github.com/GeorgeDaoud3/SOFE4630U-Design)[https://github.com/GeorgeDaoud3/SOFE4630U-Design]
+* can be accessed from  [https://github.com/GeorgeDaoud3/SOFE4630U-Design](https://github.com/GeorgeDaoud3/SOFE4630U-Design)
 * contains a folder of images
 * contains the **Labels.csv** file, you used in the first milestone.
 
