@@ -380,8 +380,8 @@ Application Integration offers a comprehensive set of core integration tools to 
 It's required to <ins><b>unpublish</b></ins> the **mysql-integration** integration as it will consume your credit quickly.
 Also, <ins><b>Suspend</b></ins> the **mysql-connector** 
 
-## Create a Pub/Sub Sink Connector to Redis Server
-This will be similar to the MySQL. Thus, a higher level instruction is given. One of the difference is that a key/value pairs are needed. Those will be mapped to the Pub/Sub message's data and key.
+## Create a Pub/Sub Sink Connector to The Redis Server
+This will be similar to the MySQL. Thus, a high-level instruction is given. One of the differences is that key/value pairs are needed. Those will be mapped to the Pub/Sub message's data and key.
 
 ![sink connector](figures/cl3-16_v2.jpg)
    
@@ -392,35 +392,35 @@ This will be similar to the MySQL. Thus, a higher level instruction is given. On
    2. Click **CREATE NEW**
       1. Choose The location to be **northamerica-northeast2 (Toronto)**.
       2. Click **NEXT**.
-      3. In the **connection Details**, search for **Redis** for the **connector** type. Set the **Connection Name** to **redis-connector**. Leave everything else by its default value.
+      3. Search for **Redis** for the **connector** type in the **Connection Details**. Set the **Connection Name** to **redis-connector**. Leave everything else by its default value.
       4. Click **NEXT**.
       5. For the **destination**, set The Redis IP address obtained in the **host 1** text box and **6379** in the **port 1** text box.
-      6. within the credentials step, select **User Password**. For the **password**, you have to **Create New Secret**. Name it **redis-password**. Set its value to **sofe4630u** (check redis.yaml).
+      6. within the credentials step, select **User Password**. To create the **password**, select **Create New Secret**. Name it **redis-password** and set its value to **sofe4630u** (check the edis.yaml file).
       7. Grant any Necessary roles. Then Click **NEXT**.
       8. Finally, review the summary and click **CREATE**.
       9. Wait until the connector status changed to **Active**
     
 ### 2. Create the Pub/Sub Topic
 
-Create a new topic and name it **Image2Redis** as you did in the first milestone.
+Create a new topic and name it **Image2Redis**, as you did in the first milestone.
 
 ### 3. Set Up Application Integration
    1. Search  for **Application Integration**.
    2. Click **Create Integration**.  
    3. Name The integration **redis-integration**. Then, click **Create**.
-   5. From the **triggers** dropdown menu, choose **Cloud Pub/Sub**. A box named **Cloud Pub/Sub Trigger** should appear. Place it in the design area.
-   6.	Click the **Cloud Pub/Sub Trigger** box to display the properties. Set the Pub/Sub topic text box with the full path of the topic. It should be in the following format: **projects/<project_id>/topics/<topic_id>**. **Note**: you can copy the full path of the topic from the Cloud Pub/Sub topics page. Fill the **Service account** textbox with the Service account you created in the first milestone with the Two Pub/Sub roles. Finally, if shown up, click the **GRANT** button to fix any missing role within the service account.
-   7. From the **TASKS** dropdown menu, select **CONNECTORS**. Then, choose the **redis-connector**. Place the **redis-connector** box in the design area.
-   8. Click the **redis-connector** box. Then, click the **CONFIGURE CONNECTOR**
-   9. Set the configuration, as 
+   4. From the **triggers** dropdown menu, choose **Cloud Pub/Sub**. A box named **Cloud Pub/Sub Trigger** should appear. Place it in the design area.
+   5.	Click the **Cloud Pub/Sub Trigger** box to display the properties. Set the Pub/Sub topic text box with the full path of the topic. It should be in the following format: **projects/<project_id>/topics/<topic_id>**. **Note**: you can copy the full path of the topic from the Cloud Pub/Sub topics page. Fill the **Service account** textbox with the Service account you created in the first milestone with the Two Pub/Sub roles. Finally, if shown up, click the **GRANT** button to fix any missing role within the service account.
+   6. From the **TASKS** dropdown menu, select **CONNECTORS**. Then, choose the **redis-connector**. Place the **redis-connector** box in the design area.
+   7. Click the **redis-connector** box. Then, click the **CONFIGURE CONNECTOR**
+   8. Set the configuration as 
        * Leave the default values in the first step.
        * In the second step, select **Entity** to select a table.
-       * In the last step, set **Keys**, as the **Entity**, and **Create** as the operation.
-   10. To make the format of the topic messages compatible with the format accepted by the Redis connector. Drag and drop a **Data Mapping** box from the **TASKS** dropdown menu to make them compatible. Connect the different boxes as shown in the following figure.
+       * In the last step, set **Keys** as the **Entity** and **Create** as the operation.
+   9. To make the format of the topic messages compatible with the format accepted by the Redis connector. Drag and drop a **Data Mapping** box from the **TASKS** dropdown menu to make them compatible. Connect the different boxes as shown in the following figure.
 
        ![mysql_a10.jpg](figures/redis_1.jpg)
        
-   12. Select the **Data Mapping** box and click **OPEN DATA MAPPING EDITOR** and map the data as shown in the following figure.
+   10. Select the **Data Mapping** box and click **OPEN DATA MAPPING EDITOR**. Finally, the data will be mapped, as shown in the following figure.
        
        ![mysql_a9.jpg](figures/redis_2.jpg)
    
@@ -433,7 +433,7 @@ Create a new topic and name it **Image2Redis** as you did in the first milestone
    ```
    
 4. To check the success of the integration, we will check the key within the Redis storage
-   1. Run the following commands from any device where the MySQL client is installed (or the GCP console). Before running the command, replace the <IP-address> with the external IP obtained from the previous step. The options **-u**, **-p**, and **-h** specify the deployed server's username, password, and host IP, respectively.
+   1. Log into the Redis CLI.
       
       ```cmd
       redis-cli -h <Redis-IP> -a sofe4630u
@@ -446,26 +446,70 @@ Create a new topic and name it **Image2Redis** as you did in the first milestone
       get test
       ```
       
-   3. Exit the Redis CLI, by running
+   3. Exit the Redis CLI by running
       ```sql
       exit
       ```
 
-5. To be able to use the integration, you have to publish (deploy) it first by click to the **publish** button.
+5. To use the integration, you have to publish (deploy) it first by clicking the **publish** button.
 
    ![mysql_t3.jpg](figures/mysql_t3.jpg)
    
 ### 5. Using MySQL Connector with Python Script 
-* In the folder [/Redis-connector](/Redis-connector) within the reposaitory, the **produceImage.py** script read **ontarioTech.jpg** image, serialize it to base64, and publish it to the **Image2Redis** topic. As usual,
-   * Download the whole folder to your computer .
+* In the folder [/Redis-connector](/Redis-connector) within the repository, the **produceImage.py** script reads the **ontarioTech.jpg** image, serializes it to base64, and publishes it to the **Image2Redis** topic. As usual,
+   * Download the whole folder to your computer.
    * Set the project ID to variable at line 15.
    * move the JSON key for the service account to the same directory.
-* run the **produceImage.py** script.
-* to check the success of the integration, the **ReceiveImage.py** script will access the Redis server, get the value associated with the key, **image**, deserialize it, and save it in the same folder by the name **recieved.jpg**.
-   * set the ip of the redis server in the 5th line
-   * run the **ReceiveImage.py** script.
-* Finally, check the **recieved.jpg** and compare it with the **ontarioTech.jpg** image.
-### 6. Clean up (important)
+* Run the **produceImage.py** script.
+* To check the success of the integration, the **ReceiveImage.py** script will access the Redis server, get the value associated with the key, **image**, deserialize it, and save it in the same folder by the name **recieved.jpg**.
+   * Set the IP of the Redis server in the 5th line
+   * Run the **ReceiveImage.py** script.
+* Finally, check the **received.jpg** and compare it with the **ontarioTech.jpg** image.
+### 6. Cleaning up (important)
 
 It's required to <ins><b>unpublish</b></ins> the **redis-integration** integration as it will consume your credit quickly.
 Also, <ins><b>Suspend</b></ins> the **redis-connector** 
+
+## Final Cleaning up (optional)
+
+you can delete the deployment and the services of the MySQL and Redis servers by executing 
+
+```cmd
+cd ~/SOFE4630U-MS2/mySQL
+kubectl delete -f mysql-deploy.yaml
+kubectl delete -f mysql-service.yaml
+cd ~/SOFE4630U-MS2/Redis
+kubectl delete -f redis.yaml
+```
+
+## Discussion: 
+* What's the different of Source and Sink connectors?
+* What's the applications of the connectors?
+
+## Design: 
+We will contine using the same dataset used in the first milestone. However, we will use the Whole dataset, not only the CSV file. The information about the dataset is:
+* It can be accessed from  
+* It containes a folder of images
+* the **sample.csv** file, similar to the one used in the first milestone.
+
+You needed to 
+* create two topics one for the records of the CSV file and the other for the images.
+* Deploy a MySQL server and create an empty table within it to accomidate the records of the CSV file.
+* Create an application integration to automatically store the records published in the topic into the MySQL database.
+* Use the same script, we written in the first milestone to publish the messages into the topic.
+* Deploy a Redis server to store the images.
+* Create an application integration to automatically store the images published in the other topic into the Redis datastorage.
+* Write a python script that will publish the images to the topic. The script should
+   * Read search for all the images in the folder.
+   * For each image
+      * Read the image.
+      * Serialize it.
+      * Publish the message into the topic using the image name as the message key and the serialized image as the message value.
+
+
+# Deliverables
+1. A GitHub link to the scripts used in the Design part.
+2. A report that includes the discussion and the design parts.
+3. An audible video of about 5 minutes showing the design part. The video should include proofs of the successful integration of the Cloud Pub/Sub with the connectors.
+
+Put the GitHub link and video links inside your report, and submit the report.
