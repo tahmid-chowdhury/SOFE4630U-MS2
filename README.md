@@ -487,10 +487,10 @@ kubectl delete -f redis.yaml
 * What's the applications of the connectors?
 
 ## Design: 
-We will contine using the same dataset used in the first milestone. However, we will use the Whole dataset, not only the CSV file. The information about the dataset is:
-* It can be accessed from  
-* It containes a folder of images
-* the **sample.csv** file, similar to the one used in the first milestone.
+We will contine using the same dataset used in the first milestone. However, we will use the Whole dataset, not only the CSV file. The dataset:
+* can be accessed from  (https://github.com/GeorgeDaoud3/SOFE4630U-Design)[https://github.com/GeorgeDaoud3/SOFE4630U-Design]
+* contains a folder of images
+* contains the **Labels.csv** file, you used in the first milestone.
 
 You needed to 
 * create two topics one for the records of the CSV file and the other for the images.
