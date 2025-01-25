@@ -92,7 +92,7 @@ To set up Google Kubernetes Engine (**GKE**), open the console of the project yo
 
       check that the deployment is available and that the pod is running successfully (it may take some time until everything is settled down)
       
-2. To give the deployment an IP address, a load Balancer service, mysql-service, should be created for that deployment. The load Balancer distributes the requests and workload between the replicas in the deployment (why this is not important in our case?) and associates an IP to access the deployed application.
+2. To give the deployment an IP address, a load Balancer service, mysql-service, should be created for that deployment. The load Balancer distributes the requests and workload between the replicas in the deployment  (why this is not important in our case?) and associates an IP to access the deployed application.
    
    1. The load Balancer service configuration is included in the [mysql-service.yaml](/mySQL/mysql-service.yaml) file from the cloned repo.
       
