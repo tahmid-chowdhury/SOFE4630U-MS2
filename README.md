@@ -1,293 +1,515 @@
-# SOFE4630U-MS2
-# Milestone 2: Data Processing Service (Dataflow)
-
-##  Repository: 
-[https://github.com/GeorgeDaoud3/SOFE4630U-MS2.git](https://github.com/GeorgeDaoud3/SOFE4630U-MS2.git)
+# Milestone 2:  Data Storage and Pub/Sub connects
 
 ## Objective:
-1. Get familiar with Dataflow.
-2. Understand MapReduce patterns.
-3. Run batch and Stream Processing examples over MNIST dataset.
+* Get familiar with Docker images and containers.
+* Deploy tabular and key-value data storage using Google Kubernetes Engine (GKE).
+* Get familiar with key-value data storage.
+* Create and configure connectors from Google Pub/Sub to MySQL server.
+* Create and configure connectors from Google Pub/Sub to Redis server.
 
-## Dataflow and a Simple Map Reduce Example:
-In this section, you will learn about Dataflow, MapReduce pattern, and a word count as a MapReduce example. 
-1. Watch this video about [Google Cloud Dataflow](https://www.youtube.com/watch?v=KalJ0VuEM7s).
-2. Watch this video about [MapReduce concepts](https://www.youtube.com/watch?v=JZiM-NsdiJo).
-3. Read this article about [implementing a word count example using the MapReduce patterns](https://www.analyticsvidhya.com/blog/2022/05/an-introduction-to-mapreduce-with-a-word-count-example/).
+## Repository:
+[https://github.com/GeorgeDaoud3/SOFE4630U-MS2](https://github.com/GeorgeDaoud3/SOFE4630U-MS2)
 
-## Configure Dataflow
-1. Open the GCP site.
-2. Search for **Dataflow API**.
-    
-    ![](images/df1.jpg)
+## Introduction:
+1. The video shows a case study of containerization in DevOps. The concept of Docker containerization is used extensively in the cloud world. Watch the video to familiarize yourself with [Docker](https://youtu.be/rOTqprHv1YE) terminologies. 
+2. We will use Kubernetes (**K8s**) to manage Docker images and applications. The following video covers [Kubernetes and its components](https://youtu.be/cC46cg5FFAM).
+3. Kubernetes will be used to deploy both The MySQL and Redis servers. Watch the first **7:45 minutes** in the following video to get familiar with [Redis commands](https://youtu.be/jgpVdJB2sKQ).
+4. Kafka has an existing tool to automatically store into data storage the data published into a topic. This tool is called Kafka Connect. Watch the following video for more information about [Kafka Connect](https://www.youtube.com/watch?v=Lmus2AFX-oc).
+5. We will create a similar tool within GCP in this lab. However, we will focus on the sink connectors, It's possible to create a source connector as well.
+
+## Setting Up Google Kubernetes Engine
+To set up Google Kubernetes Engine (**GKE**), open the console of the project you have created within the Google Cloud Platform (GCP) during the first milestone.
+1. Set the default compute zone to **northamerica-northeast1-b**
    
-3. Then click **Enable** and Wait until the GCP get the service enabled for you.
+   ```cmd
+   gcloud config set compute/zone northamerica-northeast1-b  
+   ```
     
-    ![](images/df2.jpg)
+2. Enable GKE by searching for **Kubernetes Engine**. Select **Kubernetes Engine API**. Then, click **Enable**.
    
-4. To grant privileges for you project to use Dataflow, search for **Service Accounts**.
-    
-    ![](images/df3.jpg)
-
-5. Create a new service account.
-    
-    ![](images/df4.jpg)
-
-6. As the service name is a global identifier, it’s a good practice to use the project id as a prefix as **ProjectID-DFSA**, the project ID can be copied from the console.
-    
-    ![](images/df5.jpg)
-
-7. Add **Compute Engine Service Agent**  and **Pub/Sub Admin** as roles to the service account.
-
-    ![](images/df6.jpg)
-
-8. Now, it’s time to install the python library of DataFlow
-    ``` cmd
-    pip install pip --upgrade
-    pip install 'apache-beam[gcp]'
-    ```
-
-## Running the wordcount Example
-1.	A set of examples is already within the Python library folder. The following command will search for the file containing wordcount examples within any subdirectory of the home directory (**~**) and print it.
-
-    ``` cmd
-    find ~ -name 'wordcount.py'
-    ```
-
-2.	The following command will copy the file to the home directory (Replace path with the **path** you got from the previous step).
-
-    ``` cmd
-    cp path  ~/wordcount.py
-    ```
-    
-    ![](images/df7.jpg)
-
-3. Open the file using the text editor. Now, let's try to understand the Python code. The user can send arguments to customize the processing. The first step is to parse those arguments. Lines 69 to 73 define the first argument, which will be set in the calling command using the option **--input**. It's an optional argument; if not given, it will have the default value in line 72. The second argument is set using the **--output** option. It's required (not optional); thus, no default value is needed. After describing the arguments, line 79 will parse the arguments and return a dictionary (**known_args**) with two keys named by the **dest** parameter of the parsed arguments (**input** and **output**)
-
-    ![](images/df8.jpg)
+   ![MS3 figure1](figures/cl3-1.jpg)
    
-4.	The pipeline is described from lines 87 to 106. It's instructions that will be given to a worker to execute. The dataflow will convert each stage into a function and associate a worker node to run it. The number of workers can be scaled by dataflow to satisfy suitable throughput demands.
-    * Line 87 defines the root of the processing as a python variable **p**.
-    * The first stage inserted after **p** (using **|** operator) is given in line 90. It's called **Read**, which runs a built-in function to read a text file. Note that when executed, the output will be a list of lines (strings). Note also that the pipeline till the first stage is saved into a Python variable named **line**.
-    * The statements from lines 92 to 96 add three consequent stages. 
-        * The first is called **Split** that splits each line into list of words using a custom class implemented in lines 50:63. 
-        * The second is called **PairWithOne** that converts each word into a key/value pair which the key is the word and the value is 1. This stage is used a inline function that takes a word **x** and return the tuple **(x,1)**. 
-        * The first two stages are Map operations which takes a single input and produce a single or multiple outputs.
-        * The third stage is a Reduce stage that will combine tuples having the same key (word) and then apply the **sum** function over the values to generate a new tuple of a word as a key and the count as the value. 
-    * Line 102 append another stage to the pipeline. The stage implements another Map operation that executes a customized function defined in lines 99 and 100 to convert each tuple to a string.
-    * A final stage is used to save the output (list of strings) to a text file.
-
-    ![](images/df9.jpg)
-
-5.	To check the code, we can execute it locally (at the GCP console) first be running the following command. As no input option is given, it will use the default value while the output will be saved in the home directory (current directory) with a prefix **outputs**
-    
-    ``` cmd
-    python wordcount.py --output outputs
-    ```
-    
-    you can display the output file(s) using
-    
-    ``` cmd
-    ls outputs*
-    ```
-    
-    you can open the output file(s) with the text editor or using the Linux command
-    
-    ``` cmd
-    cat outputs* | more
-    ```
-    
-6.	Now, let's run it as a GCP service to benefit from being globally available, managed, and auto scaled by Dataflow. The first step is to get the project ID and save it to an environment variable (**$PROJECT**). (**Note**: the variable is temporally and has to be created if the console or the session is terminated)
-    
-    ``` cmd
-    PROJECT=$(gcloud config list project --format "value(core.project)")
-    echo $PROJECT
-    ```
-    
-7.	As the input and output pathes should be globally accessed files, a folder created in Google Cloud Storage is needed to be accessed by the Dataflow service. Google Cloud Storage that acts as a File System is called Bucket. The following steps will lead you to create a Bucket.
-    
-    a) Search for **Buckets**
-
-    ![](images/df10.jpg)
-    
-    b) Click **create**.
-
-    ![](images/df11.jpg)
-    
-    c) As the name of the bucket is a unique global identifier, let’s use the project ID as a prefix as **ProjectID-bucket**. Then click **create**.
-
-    ![](images/df12.jpg)
-    
-    d)	As only the service from our project will access the bucket, enable **public access prevention**.
-
-    ![](images/df13.jpg)
-    
-    e)	Let’s got the console and create another environment variable for the bucket.
-    
-    ``` cmd
-    BUCKET=gs://$PROJECT-bucket
-    echo $BUCKET
-    ```
-
-    ![](images/df14.jpg)
-8.	To run the pipeline using DataFlow, run the following command, 
-    
-    ``` cmd 
-    python wordcount.py \
-      --region northamerica-northeast2 \
-      --runner DataflowRunner \
-      --project $PROJECT \
-      --temp_location $BUCKET/tmp/ \
-      --input gs://dataflow-samples/shakespeare/winterstale.txt \
-      --output $BUCKET/result/outputs \
-      --experiment use_unsupported_python_version
-    ```
-    
-    Some of the command arguments are needed by Dataflow to process the pipeline while others as input and output are used by the **wordcount** code to generate a customized pipeline. It will take minutes for Dataflow to generate worker nodes, configure them, execute the pipeline, and finally it will display **JOB_STATE_DONE**.
-
-    ![](images/df14a.jpg)
-  	
-10.	To see the details about Dataflow Job, search for **Dataflow Jobs**, then choose the first one in the list (last job). A diagram of the pipeline will be displayed in which each stage is named as instructed in the python file. Note that, the name is unique and can’t be repeated for different stages. Also, the job info and logs are shown which can be used to debug the job. 
-    
-    ![](images/df15.jpg)
-
-11. Go to the bucket created in step 7 and open the file(s) started by the prefix **outputs** within a folder named **result**. Download the file to read it.
-12.	In the GitHub repository, there is also an upgrade to the wordcount script. Make sure that the **PROJECT** and **BUCKET** environment variables are still existing. Then, clone the repository and run the updated script. Try to understand its function.
-    ```cmd 
-    cd ~
-    git clone https://github.com/GeorgeDaoud3/SOFE4630U-MS2.git
-    cd ~/SOFE4630U-MS2/wordcount
-    python wordcount2.py \
-      --region northamerica-northeast2 \
-      --runner DataflowRunner \
-      --project $PROJECT \
-      --temp_location $BUCKET/tmp/ \
-      --input gs://dataflow-samples/shakespeare/winterstale.txt \
-      --output $BUCKET/result/outputs \
-      --output2 $BUCKET/result/outputs2 \
-      --experiment use_unsupported_python_version
-    ```
-## MNIST dataset
-The Modified National Institute of Standards and Technology (**MNIST**) dataset consists of handwritten digits that is commonly used for machine learning and image processing applications. Each digit is represented as a 28*28 gray image. The value of pixels ranges from 0 (white) to 255 (black) as shown in the following image. The values are normalized to 1 and converted from a matrix to a vector and stored as string. The string is fed to a Machine Learning (ML) model that estimate the probability that the image represents one of the ten digits. The ML model is implemented using a python library called **TensorFlow**. The detail of the model is behind the scope of this course. What you want to know is that the model parameters and the MNIST CSV are saved in a folder **/MNIST/data** in the repository.
-
-![](images/df16.jpg)
-
-## Data flow Processing the MNIST database from BigQuery
-BigQuery is a cloud-based serverless data warehouse that supports SQL. We will use it to store the table containing the MNIST images. Thus, a dataset, namely **MNIST**, will be created within **BigQuerry**. A table, namely **Images**, will be created within the dataset. Then, the CSV file will be uploaded to fill the table. The Dataflow job will query the content of the table, run the ML model on each image, and produce a prediction of the handwritten digit. Finally, The Job will store the results in another table, **Predict**, within the same dataset.
-
-1. Search for **BigQuery**, Within the current project, create a dataset and name it **MNIST**, create a table, name it **Images** and upload the **mnist/data/mnist.csv** file from the repository (you need to download it first to your computer). It may take several minutes to create the dataset and the table.
-    
-    ![](images/df17.jpg)
-    
-2. Go to the bucket created before and upload the model folder from the **/mnist/model** folder from the repository.
-3.	Make sure that the Project and Bucket environment variables are already defined then run the DataFlow job using the following commands. 
-    ``` cmd
-    cd ~/SOFE4630U-MS2/mnist
-    python mnistBQ.py \
-      --runner DataflowRunner \
-      --project $PROJECT \
-      --staging_location $BUCKET/staging \
-      --temp_location $BUCKET/temp \
-      --model $BUCKET/model \
-      --setup_file ./setup.py \
-      --input $PROJECT.MNIST.Images \
-      --output $PROJECT.MNIST.Predict\
-      --region  northamerica-northeast2 \
-      --experiment use_unsupported_python_version
-    ```
-    
-    Three arguments are used by the python code to create a customized pipeline.
-    
-    a)	**input** that specify the table name to read the data from which follows the following pattern, **ProjectID.Dataset.Table**
-    
-    b)	**output** that specifies the table name to be created to store the predicted values.
-    
-    c)	**model** that specifies the path from which the model parameters can be read.
-
-    Another important argument is **setup_file**. It specifies the libraries needed to be installed on each worker. The following figure shows the list of commands in the **setup_file** that will be executed to initiate each worker. The list contains only one command to install the **TensorFlow** library required to run the model. Note: Installing dependencies will consume time when initiating each worker node. Another approach is to provide a docker image with preinstalled dependencies. This will reduce the launch time of the worker nodes and the job.
-    
-    ![](images/df18.jpg)
-    
-4.	As shown in the following image, the pipeline consists of 3 stages:
-    
-    a.	**ReadFromBQ**: that reads a BigQuery table.
-    
-    b.	**Prediction**: that call the process function defined within the PredictDoFn class to process each record (row) and returns a dictionary that contains the following fields; **ID**, **P0**,…,**P9** where **ID** is the same as the record ID of the input table, **P0** is the probability that the image represent the digit 0,… . Note that the **@singleton** annotation in line 36, will prevent the model creation to just once which will make the process function run fast. Also, the second argument (**known_args.model**) is in line 86 will be the last argument send to the process function (**checkpoint**).
-    
-    c.	**WriteToBQ**: that writes the prediction output (**ID**, **P0**,…,**P9**) into another BigQuery table. The table will be created if no exist and will be truncated if exist.
-    
-    ![](images/df19.jpg)
-  	
-5.	Now, a new table is created in the MNIST dataset, let’s display its content.
-
-    ![](images/df20.jpg)
-
-## Data flow Processing the MNIST database from Pub/Sub
-
-In this example, the data will be read and store into Google Pub/Sub. In the previous milestone, you have already learned how to create a topic in Google Pub/sub, a consumer to read the data, and a producer to send data through the pub/sub. This will be the first streaming process. It will keep running until you manually stop it.
-
-1. Go to the **service account** created before and generate a key in JSON format.
-2. Create two topics **mnist_image**, and **mnist_predict** at **Google Pub/Sub**.
-3. Run the Data flow job that reads JSON objects from the **mnist_image** topic, apply it to the ML model, send the prediction results via **mnist_predict** topic.
-    ``` cmd
-    cd ~/SOFE4630U-MS2/mnist
-    PROJECT=$(gcloud config list project --format "value(core.project)")
-    BUCKET=gs://$PROJECT-bucket
-    python mnistPubSub.py \
-      --runner DataflowRunner \
-      --project $PROJECT \
-      --staging_location $BUCKET/staging \
-      --temp_location $BUCKET/temp \
-      --model $BUCKET/model \
-      --setup_file ./setup.py \
-      --input projects/$PROJECT/topics/mnist_image	\
-      --output projects/$PROJECT/topics/mnist_predict \
-      --region  northamerica-northeast2 \
-      --experiment use_unsupported_python_version \
-      --streaming
-    ````
-    A new arguement **streaming** is used here to mark the pipeline as streaming process. So it will run forever until you manually stop it.
-
-4. The job pipeline consists of five stages:
-
-    a.	**Read from Pub/Sub**: reads messages from the input topic.
-
-    b.	**toDict**: Pub/Sub is agnostic to the type of the message. It’s handled as a stream of bytes. To process the message, The stage deserialize the messagefrom bytes to its original format (JSON).
-
-    c.	**Prediction**: the same as the Prediction in the BigQuery example.
-
-    d.	**To byte**: Serialize the predicted output to bytes.
-    
-    e.	**To Pub/sub**: send the serialized prediction int the output topic.
-    
-    ![](images/df21.jpg)
-    
-5. In your computer, Edit lines 11, 12, and 13 in the file **/mnist/data/producerMnistPubSup.py** to have the path of the JSON, Project ID, and the topic id of mnist_image. The file represent a producer that will send any message consists of a single mnist record each second (**Similar tothe design part in the first milestone**).
-
-6. In your computer, Edit lines 4, 5, and 6 in the file **/mnist/data/consumerMnistPubSup.py** to have the path of the JSON, Project ID, and mnist_predict subscription id. The file represent a consumer that will read any message from the mnist_predict topic and display it (**Similar to the design part in the first milestone**).
-
-
-    It may take minutes until every things are setup. The whole example can be summarized as:
-    a) The producer will produce to the mnist_image topic.  ( your local machine)
-    b) Data flow job will read messages, process them, and send them to the mnist_predict topic ( over GCP)
-    a) The consumer will consume every result from the mnist_predict topic and display it.  ( your local machine)
-
-7. Note, As the Dataflow job is marked as streaming, it will be still running. To stop it, go to the Dataflow job, and stop it manually.
+3. Wait until the API is enabled. Then, create a three-node cluster on GKE called **sofe4630u**. A Node is a worker machine in which docker images and applications can be deployed.
    
-    ![](images/df22.jpg)
+   ```cmd
+   gcloud container clusters create sofe4630u --num-nodes=3 
+   ```
+      
+   **Note**: if the authorization windows pop up, click Authorize
+   
+   **Note**: if you get an error that there are no available resources to create the nodes, you may need to change the default compute zone (e.g., to **us-central1-a**) or reduce the number of nodes.
 
-## Design
-In the previous milestone, you have sent the smart meter readings to Google Pub/Sub. It's needed to add a Dataflow job to preprocess the smart meter measurements. The job consists of the following stages
-1. **Read from PubSub**: read the measurement reading .
-2. **Filter**: Eliminate records with missing measurements (containing None). 
-3. **Convert**:  convert  the  pressure  from  kPa  to  psi  and  the  temperature  from  Celsius  to  Fahrenheit using the following equations 
+## Deploy MySQL using GKE:
+1. We will use a YAML file to deploy a pre-created MySQL image over the GKE cluster. A YAML file contains the configuration used to set the deployment. The deployment's role is to orchestrate docker applications.
+
+   1. Clone the GitHub repository
+       
+      ```cmd 
+      cd ~
+      git clone https://github.com/GeorgeDaoud3/SOFE4630U-MS2.git
+      ```
+        
+   2. Run the following command to deploy the MySQL server
+      
+      ```cmd 
+      cd ~/SOFE4630U-MS2/mySQL
+      kubectl create -f mysql-deploy.yaml
+      ```
+        
+      The command will deploy the configuration stored in the [mysql-deploy.yaml](/mySQL/mysql-deploy.yaml) into GKE. It would pull the **mysql/mysql-server** Docker image and deploy and enable the **3306** port number to allow access from the outside world. The file **mysql-deploy.yaml** is used to configure the deployment. It's shown in the following figure and can be interpreted as:
+      
+         * **Indentation** means nested elements
+      
+         * **Hyphen** means an element within a list
+      
+         * **First two lines**: indicate the YAML file type and its version.
+      
+         * **Line 4**: provides a name for the deployment.  Kubernetes will use this name to access the deployment.
+      
+         * **Line 6**: indicates that only a single pod will be used.
+      
+         * **Line 9**: provides the name of the application that the pod will access.
+      
+         * **Line 16**: provides the ID of the Docker image to be deployed.
+      
+         * **Lines 19-24**: define image-dependent environment variables that define the username/password (**usr/sofe4630u**), and a schema (**Readings**).
+      
+         * **Line 26**: defines the port number that the image will use.
+      
+            ![MS3 figure2](figures/cl3-2.jpg)      
+   
+   3. The following command can check the status of the deployment
+      
+      ```cmd 
+      kubectl get deployment 
+      ```
+
+   4. While the following command can access the status of pods
+      
+      ```cmd 
+      kubectl get pods  
+      ```
+
+      check that the deployment is available and that the pod is running successfully (it may take some time until everything is settled down)
+      
+2. To give the deployment an IP address, a load Balancer service, mysql-service, should be created for that deployment. The load Balancer distributes the requests and workload between the replicas in the deployment (why this is not important in our case?) and associates an IP to access the deployed application.
+   
+   1. The load Balancer service configuration is included in the [mysql-service.yaml](/mySQL/mysql-service.yaml) file from the cloned repo.
+      
+      ```cmd 
+      cd ~/SOFE4630U-MS2/mySQL
+      kubectl create -f mysql-service.yaml
+      ```
+      
+      The essential lines in the mysql-service.yaml file is:
+      
+         * **Line 8**: the port number assigned to the external IP.
+           
+         * **Line 10**:  the name of the application that the service will target.
+     
+            ![MS3 figure3](figures/cl3-3.jpg)      
+   
+   2. To check the status of the service, use this command
+      
+      ```cmd 
+      kubectl get service 
+      ```
+   
+      ![MS3 figure4](figures/cl3-4.jpg)      
+   
+      It may take some time until the external IP address is changed from pending to a valid IP address. You may need to repeat the previous command.
+      
+3. To access the MySQL using the IP address,
+
+   1. Run the following commands from any device where the MySQL client is installed (or the GCP console). Before running the command, replace the <IP-address> with the external IP obtained from the previous step. The options **-u**, **-p**, and **-h** specify the deployed server's username, password, and host IP, respectively.
+      
+      ```cmd
+      mysql -uusr -psofe4630u -h<IP-address>
+      ```
+   2. Try to run the following SQL statements to create a table, create three records, and search the table.
+      ```sql
+      use Readings; 
+      create table meterType( ID int primary key, type varchar(50), cost float); 
+      insert into meterType values(1,'boston',100.5); 
+      insert into meterType values(2,'denver',120); 
+      insert into meterType values(3,'losang',155); 
+      select * from meterType where cost>=110; 
+      ```
+   3. Exit the MySQL CLI, by running
+      ```sql
+      exit
+      ```
+   5. (**optional**) After creating a video for submission, you can delete the deployment by using the following command (**Don’t run it right now**)
+       ```cmd
+      kubectl delete -f mysql-deploy.yaml
+      kubectl delete -f mysql-service.yaml
+      ```  
+## Deploy Redis using GKE:
+
+1. The deployment and the load balancer service are in the same file. To deploy both to GKE, run the following commands 
+
+   ```cmd
+   cd ~/SOFE4630U-MS2/Redis
+   kubectl create -f redis.yaml
+   ```
+
+   Check the status of deployment, service, and pod. Note that the password is set within the YAML file to **sofe4630u**.
+   
+2. Get Redis external IP.
+   
+   ```cmd
+   kubectl get services
+   ```
+   
+   ![MS3 figure5](figures/cl3-6.jpg)
+   
+3. To access the Redis datastore,
+   1. To access the Redis server, install the Redis client on your machine. Fortunately, it's installed in the GCP and can be accessed from the console.
+      
+   2. Log in the to Redis server from the GCP console using the command after replacing the **\<Redis-IP\>** with the IP obtained in step 2 and **sofe4630u** for the password.
+      
+      ```cmd
+      redis-cli -h <Redis-IP> -a sofe4630u
+      ```
+      
+   3 Try to run the following commands. **Note**: there are 16 different databases to select within Redis. The first command selects the first database (0). What are the functions executed by other commands? 
+      ``` cmd
+      select 0
+      set var 100
+      get var
+      keys *
+      del var
+      keys *
+      ```
+   4. Finally, to exit the command line interface, type
+
+      ```cmd
+      exit
+      ```
+
+4. To access Redis using Python code,
+   
+   1. Install its library on your local machine (or GCP console) 
+
+      ``` cmd
+      pip install redis
+      ```
+      
+   2. In the cloned Github at path [/Redis/code/](/Redis/code/), there are two Python files and a JPG image.
+      
+      * **SendImage.py**, will read the image **ontarioTech.jpg** and store it in Redis associated with a key **"OntarioTech"** at database 0.
+        
+      * **ReceiveImage.py**, will read the value associated with the key **"OntarioTech"** from the Redis server and save it into **received.jpg** image.
+        
+      * Set the Redis Server IP in the second line in **SendImage.py** and **ReceiveImage.py**.
+        
+      * Run **SendImage.py**, then check the keys in the Redis server. Finally, run **ReceiveImage.py** and check that the **received.jpg** image has been created.
+
+## Create a Pub/Sub Sink Connector to MySQL Server
+The sink connector is a service that automatically consumes from a topic(s) and stores the consumed messages in a data storage, as shown in the following figure.
+
+   ![sink connector](figures/cl3-7_v2.jpg)
+   
+### 1. Create an Integration Connectors to The MySQL Server
+
+   Integration Connectors provide a transparent, standard interface to connect to various data sources from your integrations. As an integration developer, you can quickly connect to a growing pool of applications and systems without the need for protocol-specific knowledge or custom code.
+      
+   1. Search for **Connectors** and choose **Connections / Integration Connectors**.
+
+      ![mysql_c1.jpg](figures/mysql_c1.jpg)
+         
+   2. For the first time, click **SET UP INTEGRATION CONNECTORS**.
+         
+      ![mysql_c2.jpg](figures/mysql_c2.jpg)
+         
+   3. Click The **SET UP INTEGRATION CONNECTORS** button and click **ENABLE APIS". Wait until the API is enabled. Then, click **Done**.
+
+      ![mysql_c3.jpg](figures/mysql_c3.jpg)
+
+   4. Click **CREATE NEW CONNECTION**
+
+      ![mysql_c4.jpg](figures/mysql_c4.jpg)
+         
+      1. Choose The location to be **northamerica-northeast2 (Toronto)**. Then, click **NEXT**.
+         
+            ![mysql_c5.jpg](figures/mysql_c5.jpg)
+         
+      2. In the **connection Details**, search for **MySQL** for the **connector** type. Set the **Connection Name** to **mysql-connector** and the **Database Name** to **Readings** (check mysql-deploy.yaml). Leave everything else by its default value. Then, click **NEXT**.
+
+         ![mysql_c6.jpg](figures/mysql_c6.jpg)
+         
+      3. For the **destination**, set The MySQL IP address obtained in the **host 1** text box and **3306** in the **port 1** text box.
+
+         ![mysql_c7.jpg](figures/mysql_c7.jpg)
+         
+      4. For the credentials, set **usr** as the MySQL **Username**. For the **password**, you have to **Create New Secret**. Name it **mysql-password**. Set its value to **sofe4630u**. (MSQL username and password can be found in mysql-deploy.yaml)
+         
+         ![mysql_c8.jpg](figures/mysql_c8.jpg)
+   
+      5. Grant any Necessary roles. Then Click **NEXT**.
+         
+         ![mysql_c9.jpg](figures/mysql_c9.jpg)
+
+      6. Finally, review the summary and click **CREATE**.
+      7. Wait until the connector status changed to **Active**
+          
+### 2. Prepare the MySQL Server and the Pub/Sub Topic
+   1. Login to the MySQL server
+      
+      ```cmd
+      mysql -uusr -psofe4630u -h<IP-address>
+      ```
+      
+   2. Create a table to store the Smart Meter records.
+
+      ```sql
+      use Readings; 
+      create table SmartMeter( ID int primary key, time bigint, profile_name varchar(100), temperature double, humidity double, pressure double); 
+      ```
+      
+   3. Exit the MySQL CLI.
+
+      ```sql
+      exit
+      ```
+      
+   4. Create a new topic and name it **smartMeterReadings** as you did in the first milestone.
+      
+### 3. Set Up Application Integration
+Application Integration offers a comprehensive set of core integration tools to connect and manage various applications (Google Cloud services and third-party SaaS) and data required to support multiple business operations. This includes Google Pub/Sub, MySQL, and Redis. It's configured as a plug-and-play tool. The source of the data that starts the integration is called the trigger, while the destination and other temporary processes are called tasks.
+
+   1. Search  for **Application Integration**.
+
+      ![mysql_a1.jpg](figures/mysql_a1.jpg)
+      
+   2. For the first time, choose the region **northamerica-northeast2 (Toronto)**. Then, click **QUICK SETUP** to enable the required APIs.
+
+      ![mysql_a2.jpg](figures/mysql_a2.jpg)
+
+   3. Click **Create Integration**.
+
+      ![mysql_a3.jpg](figures/mysql_a3.jpg)
+      
+   4. Name The integration **mysql-integration**. Then, click **Create**.
+
+      ![mysql_a4.jpg](figures/mysql_a4.jpg)
+
+   5. From the **triggers** dropdown menu, choose **Cloud Pub/Sub**. A box named **Cloud Pub/Sub Trigger** should appear. Place it in the design area.
+
+      ![mysql_a5.jpg](figures/mysql_a5.jpg)
+      
+   6.	Click the **Cloud Pub/Sub Trigger** box to display the properties. Set the Pub/Sub topic text box with the full path of the topic. It should be in the following format: **projects/<project_id>/topics/<topic_id>**. **Note**: you can copy the full path of the topic from the Cloud Pub/Sub topics page. Fill the **Service account** textbox with the Service account you created in the first milestone with the Two Pub/Sub roles. Finally, click the **GRANT** button to fix any missing role within the service account.
+
+     	![mysql_a6.jpg](figures/mysql_a6.jpg)
+
+   7. From the **TASKS** dropdown menu, select **CONNECTORS**. Then, choose the **mysql-connector**. Place the **mysql-connector** box in the design area.
+      
+   8. Click the **mysql-connector** box. Then, click the **CONFIGURE CONNECTOR**
+      
+      ![mysql_a7.jpg](figures/mysql_a7.jpg)
+   
+   9. Set the configuration, as shown in the figure, in three steps:
+       * Leave the default values in the first step.
+       * In the second step, select **entities** to select a table.
+       * In the last step, set the table name, **SmartMeter**, as the **Entity**, and **Create** as the operation. The creation operation will insert new records into the table according to its primary key (**ID**).
+
+      ![mysql_a8.jpg](figures/mysql_a8.jpg)
+      
+   10. The format of the topic messages is incompatible with the format accepted by the MySQL connector. Drag and drop a **Data Mapping** box from the **TASKS** dropdown menu to make them compatible. Connect the different boxes as shown in the following figure.
+       ![mysql_a10.jpg](figures/mysql_a10.jpg)
+       
+   11. Select the **Data Mapping** box and click **OPEN DATA MAPPING EDITOR**. Drag and drop the **CloudPubSubMessage.data** as input and **connectorInputPayload \(mysql-connector\)** as output. Thus, only the **data** field will pass from the Pub/Sub into the MySQL connector.
+       
+       ![mysql_a9.jpg](figures/mysql_a9.jpg)
+   
+### 4. Test the integration and publish it
+1. To test the integration, we will get access to the Cloud Pub/Sub output from the interface by
+   * Click the **Cloud Pub/Sub Trigger** box.
+     
+   * Scroll down to **Trigger Output Variables**.
+     
+   * Edit the **CloudPubSubMessage** variable.
+     
+      ![mysql_t1.jpg](figures/mysql_t1.jpg)
+     
+   * Change the **Variable Type** to **Output from Integration**. Thus, we can test the integration by manually setting this variable.
+     
+      ![mysql_t2.jpg](figures/mysql_t2.jpg)
+     
+   * Save Variable.
+     
+2. Click on the design area to enable the test button. Click **test** and type the following JSON value into the **CloudPubSubMessage** textbox. This JSON file is the minimal subset of the JSON value produced from the Pub/Sub. You can find here [the format of the Pub/Sub messages](https://cloud.google.com/pubsub/docs/publisher#using-attributes). **Note**: as the **Create** operation configures the MySQL connector, you can't insert a record with an ID that already exists in the table.
+
+   ```JSON
+   { "data": "{\"ID\":-1, \"profile_name\":\"test\", \"temperature\":50, \"humidity\":60, \"pressure\": 1.0, \"time\": 1253145}"}
+   ```
+   
+4. To check the success of the integration, we will display the **SmartMeter** table
+   1. Log into the MySQL CLI.
+      
+      ```cmd
+      mysql -uusr -psofe4630u -h<IP-address>
+      ```
+      
+   2. display the **SmartMeter** table.
+
+      ```sql
+      use Readings; 
+      select * from SmartMeter; 
+      ```
+      
+   3. Exit the MySQL CLI, by running
+      ```sql
+      exit
+      ```
+
+5. To be able to use the integration, you have to publish (deploy) it first by click to the **publish** button.
+
+   ![mysql_t3.jpg](figures/mysql_t3.jpg)
+   
+### 5. Using MySQL Connector with Python Script 
+* In the folder [/MySQL-connector](/MySQL-connector) within the reposaitory, there is a python script code under the name **smartMeter.py**. The script is similar to the one used in the first milestone. The only difference is it publishes to the **smartMeterReadings** topic. As usual,
+   * Download the script to your computer.
+   * Set the project ID to variable at line 15.
+   * move the JSON key for the service account to the same directory as the **smartMeter.py** file
+* run the **smartMeter.py** script.
+* Check the table within the MySQL server to check that the integration is working.
+
+### 6. Clean up (important)
+
+It's required to <ins><b>unpublish</b></ins> the **mysql-integration** integration as it will consume your credit quickly.
+Also, <ins><b>Suspend</b></ins> the **mysql-connector** 
+
+## Create a Pub/Sub Sink Connector to The Redis Server
+This will be similar to the MySQL. Thus, a high-level instruction is given. One of the differences is that key/value pairs are needed. Those will be mapped to the Pub/Sub message's data and key.
+
+![sink connector](figures/cl3-16_v2.jpg)
+   
+### 1. Create an Integration Connectors to The Redis Server
+
+   1. Search for **Connectors** and choose **Connections / Integration Connectors**.
+      
+   2. Click **CREATE NEW**
+      1. Choose The location to be **northamerica-northeast2 (Toronto)**.
+      2. Click **NEXT**.
+      3. Search for **Redis** for the **connector** type in the **Connection Details**. Set the **Connection Name** to **redis-connector**. Leave everything else by its default value.
+      4. Click **NEXT**.
+      5. For the **destination**, set The Redis IP address obtained in the **host 1** text box and **6379** in the **port 1** text box.
+      6. within the credentials step, select **User Password**. To create the **password**, select **Create New Secret**. Name it **redis-password** and set its value to **sofe4630u** (check the edis.yaml file).
+      7. Grant any Necessary roles. Then Click **NEXT**.
+      8. Finally, review the summary and click **CREATE**.
+      9. Wait until the connector status changed to **Active**
     
-    𝑃(𝑝𝑠𝑖) = 𝑃(𝑘𝑃𝑎)/6.895
+### 2. Create the Pub/Sub Topic
+
+Create a new topic and name it **Image2Redis**, as you did in the first milestone.
+
+### 3. Set Up Application Integration
+   1. Search  for **Application Integration**.
+   2. Click **Create Integration**.  
+   3. Name The integration **redis-integration**. Then, click **Create**.
+   4. From the **triggers** dropdown menu, choose **Cloud Pub/Sub**. A box named **Cloud Pub/Sub Trigger** should appear. Place it in the design area.
+   5.	Click the **Cloud Pub/Sub Trigger** box to display the properties. Set the Pub/Sub topic text box with the full path of the topic. It should be in the following format: **projects/<project_id>/topics/<topic_id>**. **Note**: you can copy the full path of the topic from the Cloud Pub/Sub topics page. Fill the **Service account** textbox with the Service account you created in the first milestone with the Two Pub/Sub roles. Finally, if shown up, click the **GRANT** button to fix any missing role within the service account.
+   6. From the **TASKS** dropdown menu, select **CONNECTORS**. Then, choose the **redis-connector**. Place the **redis-connector** box in the design area.
+   7. Click the **redis-connector** box. Then, click the **CONFIGURE CONNECTOR**
+   8. Set the configuration as 
+       * Leave the default values in the first step.
+       * In the second step, select **Entity** to select a table.
+       * In the last step, set **Keys** as the **Entity** and **Create** as the operation.
+   9. To make the format of the topic messages compatible with the format accepted by the Redis connector. Drag and drop a **Data Mapping** box from the **TASKS** dropdown menu to make them compatible. Connect the different boxes as shown in the following figure.
+
+       ![mysql_a10.jpg](figures/redis_1.jpg)
+       
+   10. Select the **Data Mapping** box and click **OPEN DATA MAPPING EDITOR**. Finally, the data will be mapped, as shown in the following figure.
+       
+       ![mysql_a9.jpg](figures/redis_2.jpg)
+   
+### 4. Test the integration and publish it
     
-    𝑇(𝐹) = 𝑇(𝐶)∗1.8+32
-4. **Write to PubSub**: send the measurement back to another topic
- 
-## Deliverables
-1. A report that includes the discription of the second wordcount example (**wordcount2.py**) and the pipeline you used in the Design section. It should have snapshots of the job and results of the four examples (wordcount and mnist) as well as the design part.
-2. An audible video of about 4 minutes showing the created job and the results of the four examples (wordcount and mnist).
-3. Another audible video of about 3 minutes showing the design part.
+1. Click on the design area to enable the test button. Click **test** and type the following JSON value into the **CloudPubSubMessage** textbox.
+
+   ```JSON
+   { "data": "1234","orderingKey": "test" }
+   ```
+   
+4. To check the success of the integration, we will check the key within the Redis storage
+   1. Log into the Redis CLI.
+      
+      ```cmd
+      redis-cli -h <Redis-IP> -a sofe4630u
+      ```
+      
+   2. Try to run the following commands to get the.
+
+      ```sql
+      select 0
+      get test
+      ```
+      
+   3. Exit the Redis CLI by running
+      ```sql
+      exit
+      ```
+
+5. To use the integration, you have to publish (deploy) it first by clicking the **publish** button.
+
+   ![mysql_t3.jpg](figures/mysql_t3.jpg)
+   
+### 5. Using MySQL Connector with Python Script 
+* In the folder [/Redis-connector](/Redis-connector) within the repository, the **produceImage.py** script reads the **ontarioTech.jpg** image, serializes it to base64, and publishes it to the **Image2Redis** topic. As usual,
+   * Download the whole folder to your computer.
+   * Set the project ID to variable at line 15.
+   * move the JSON key for the service account to the same directory.
+* Run the **produceImage.py** script.
+* To check the success of the integration, the **ReceiveImage.py** script will access the Redis server, get the value associated with the key, **image**, deserialize it, and save it in the same folder by the name **recieved.jpg**.
+   * Set the IP of the Redis server in the 5th line
+   * Run the **ReceiveImage.py** script.
+* Finally, check the **received.jpg** and compare it with the **ontarioTech.jpg** image.
+### 6. Cleaning up (important)
+
+It's required to <ins><b>unpublish</b></ins> the **redis-integration** integration as it will consume your credit quickly.
+Also, <ins><b>Suspend</b></ins> the **redis-connector** 
+
+## Final Cleaning up (optional)
+
+you can delete the deployment and the services of the MySQL and Redis servers by executing 
+
+```cmd
+cd ~/SOFE4630U-MS2/mySQL
+kubectl delete -f mysql-deploy.yaml
+kubectl delete -f mysql-service.yaml
+cd ~/SOFE4630U-MS2/Redis
+kubectl delete -f redis.yaml
+```
+
+## Discussion: 
+* What's the different of Source and Sink connectors?
+* What's the applications of the connectors?
+
+## Design: 
+We will contine using the same dataset used in the first milestone. However, we will use the Whole dataset, not only the CSV file. The dataset:
+* can be accessed from  [https://github.com/GeorgeDaoud3/SOFE4630U-Design](https://github.com/GeorgeDaoud3/SOFE4630U-Design)
+* contains a folder, **Dataset_Occluded_Pedestrian**, of images
+* contains the **Labels.csv** file, you used in the first milestone.
+
+You needed to 
+* create two topics one for the records of the CSV file and the other for the images.
+* Deploy a MySQL server and create an empty table within it to accomidate the records of the CSV file.
+* Create an application integration to automatically store the records published in the topic into the MySQL database.
+* Use the same script, we written in the first milestone to publish the messages into the topic.
+* Deploy a Redis server to store the images.
+* Create an application integration to automatically store the images published in the other topic into the Redis datastorage.
+* Write a python script that will publish the images to the topic. The script should
+   * Read search for all the images in the folder.
+   * For each image
+      * Read the image.
+      * Serialize it.
+      * Publish the message into the topic using the image name as the message key and the serialized image as the message value.
+
+
+# Deliverables
+1. A GitHub link to the scripts used in the Design part.
+2. A report that includes the discussion and the design parts.
+3. An audible video of about 5 minutes showing the design part. The video should include proofs of the successful integration of the Cloud Pub/Sub with the connectors.
+
+Put the GitHub link and video links inside your report, and submit the report.
