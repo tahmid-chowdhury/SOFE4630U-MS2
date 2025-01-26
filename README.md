@@ -97,7 +97,7 @@ To set up Google Kubernetes Engine (**GKE**), open the console of the project yo
    1. The load Balancer service configuration is included in the [mysql-service.yaml](/mySQL/mysql-service.yaml) file from the cloned repo.
       
       ```cmd 
-      cd ~/SOFE4630U-MS2/mySQL
+      cd <your-working-directory>/SOFE4630U-MS2/mySQL
       kubectl create -f mysql-service.yaml
       ```
       
@@ -149,7 +149,7 @@ To set up Google Kubernetes Engine (**GKE**), open the console of the project yo
 1. The deployment and the load balancer service are in the same file. To deploy both to GKE, run the following commands 
 
    ```cmd
-   cd ~/SOFE4630U-MS2/Redis
+   cd <your-working-directory>/SOFE4630U-MS2/Redis
    kubectl create -f redis.yaml
    ```
 
@@ -475,10 +475,10 @@ Also, <ins><b>Suspend</b></ins> the **redis-connector**
 you can delete the deployment and the services of the MySQL and Redis servers by executing 
 
 ```cmd
-cd ~/SOFE4630U-MS2/mySQL
+cd <your-working-directory>/SOFE4630U-MS2/mySQL
 kubectl delete -f mysql-deploy.yaml
 kubectl delete -f mysql-service.yaml
-cd ~/SOFE4630U-MS2/Redis
+cd <your-working-directory>/SOFE4630U-MS2/Redis
 kubectl delete -f redis.yaml
 ```
 
