@@ -401,7 +401,7 @@ Application Integration offers a comprehensive set of core integration tools to 
       mysql -uusr -psofe4630u -h<IP-address>
       ```
       
-   2. display the **SmartMeter** table.
+   2. display the **SmartMeter** table. You will see a entry in the table, with an ID of **-1**.
 
       ```sql
       use Readings; 
