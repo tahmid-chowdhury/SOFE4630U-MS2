@@ -83,8 +83,12 @@ To set up Google Kubernetes Engine (**GKE**), open the console of the project yo
       ```cmd 
       kubectl get deployment 
       ```
-
-   4. While the following command can access the status of pods
+      A tip to make it easier is to add the **--watch** argument to the command. You can use this argument for the commands below as well, such as get pods, get service, etc. And if you would like to terminate the command, just press **CTRL+C**.
+      
+      ```cmd 
+      kubectl get deployment --watch
+      ```
+   5. While the following command can access the status of pods
       
       ```cmd 
       kubectl get pods  
@@ -109,7 +113,7 @@ To set up Google Kubernetes Engine (**GKE**), open the console of the project yo
      
             ![MS3 figure3](figures/cl3-3.jpg)      
    
-   2. To check the status of the service, use this command
+   2. To check the status of the service, use this command.
       
       ```cmd 
       kubectl get service 
@@ -118,12 +122,6 @@ To set up Google Kubernetes Engine (**GKE**), open the console of the project yo
       ![MS3 figure4](figures/cl3-4.jpg)      
    
       It may take some time until the external IP address is changed from pending to a valid IP address.
-
-      A great way to keep the command running to avoid having to rerun the command is to include **--watch** to the command.
-
-      ```cmd 
-      kubectl get service --watch
-      ```
       
 3. To access the MySQL using the IP address,
 
