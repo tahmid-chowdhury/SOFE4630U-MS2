@@ -117,7 +117,13 @@ To set up Google Kubernetes Engine (**GKE**), open the console of the project yo
    
       ![MS3 figure4](figures/cl3-4.jpg)      
    
-      It may take some time until the external IP address is changed from pending to a valid IP address. You may need to repeat the previous command.
+      It may take some time until the external IP address is changed from pending to a valid IP address.
+
+      A great way to keep the command running to avoid having to rerun the command is to include **--watch** to the command.
+
+      ```cmd 
+      kubectl get service --watch
+      ```
       
 3. To access the MySQL using the IP address,
 
