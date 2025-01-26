@@ -282,7 +282,17 @@ The sink connector is a service that automatically consumes from a topic(s) and 
 
       6. Finally, review the summary and click **CREATE**.
       7. Wait until the connector status changed to **Active**
-          
+      8. Click on the newly created connector.  
+         ![Connector Screenshot](https://github.com/user-attachments/assets/32846ca9-4b52-4686-a86c-aa89026dbdad)
+      
+      9. Click **Edit**.  
+         ![Edit Button Screenshot](https://github.com/user-attachments/assets/7e689862-aee7-4800-bb73-dce880c4ccc1)
+      
+      10. Change the **Max Number of Nodes** to 2, scroll down, and click **Save**.  
+          ![Max Nodes Setting Screenshot 1](https://github.com/user-attachments/assets/1383582f-dbf4-4a29-832c-22b79937c97f)  
+          ![Max Nodes Setting Screenshot 2](https://github.com/user-attachments/assets/ec332c06-28f4-4fa8-8b64-ea51669ec4e2)
+
+
 ### 2. Prepare the MySQL Server and the Pub/Sub Topic
    1. Login to the MySQL server
       
