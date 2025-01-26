@@ -10,6 +10,32 @@
 ## Repository:
 [https://github.com/zubxxr/SOFE4630U-MS2](https://github.com/zubxxr/SOFE4630U-MS2)
 
+## Table of Contents
+
+- [Introduction](#introduction)
+- [Setting Up Google Kubernetes Engine](#setting-up-google-kubernetes-engine)
+- [Deploy MySQL using GKE](#deploy-mysql-using-gke)
+- [Deploy Redis using GKE](#deploy-redis-using-gke)
+- [Create a Pub/Sub Sink Connector to MySQL Server](#create-a-pubsub-sink-connector-to-mysql-server)
+  - [1. Create an Integration Connectors to The MySQL Server](#1-create-an-integration-connectors-to-the-mysql-server)
+  - [2. Prepare the MySQL Server and the Pub/Sub Topic](#2-prepare-the-mysql-server-and-the-pubsub-topic)
+  - [3. Set Up Application Integration](#3-set-up-application-integration)
+  - [4. Test the Integration and Publish It](#4-test-the-integration-and-publish-it)
+  - [5. Using MySQL Connector with Python Script](#5-using-mysql-connector-with-python-script)
+  - [6. Clean Up (Important)](#6-clean-up-important)
+- [Create a Pub/Sub Sink Connector to The Redis Server](#create-a-pubsub-sink-connector-to-the-redis-server)
+  - [1. Create an Integration Connectors to The Redis Server](#1-create-an-integration-connectors-to-the-redis-server)
+  - [2. Create the Pub/Sub Topic](#2-create-the-pubsub-topic)
+  - [3. Set Up Application Integration](#3-set-up-application-integration-1)
+  - [4. Test the Integration and Publish It](#4-test-the-integration-and-publish-it-1)
+  - [5. Using MySQL Connector with Python Script](#5-using-mysql-connector-with-python-script-1)
+  - [6. Cleaning Up (Important)](#6-cleaning-up-important)
+- [Final Cleaning Up (Optional)](#final-cleaning-up-optional)
+- [Discussion](#discussion)
+- [Design](#design)
+- [Deliverables](#deliverables)
+
+
 ## Introduction:
 1. The video shows a case study of containerization in DevOps. The concept of Docker containerization is used extensively in the cloud world. Watch the video to familiarize yourself with [Docker](https://youtu.be/rOTqprHv1YE) terminologies. 
 2. We will use Kubernetes (**K8s**) to manage Docker images and applications. The following video covers [Kubernetes and its components](https://youtu.be/cC46cg5FFAM).
