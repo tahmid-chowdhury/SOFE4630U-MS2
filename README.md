@@ -342,33 +342,31 @@ Application Integration offers a comprehensive set of core integration tools to 
       > ![Error Screenshot](https://github.com/user-attachments/assets/b9cc77fe-f239-4452-b2df-7f6981a2df41)
 
 
-
-
-   6. From the **triggers** dropdown menu, choose **Cloud Pub/Sub**. A box named **Cloud Pub/Sub Trigger** should appear. Place it in the design area.
+   5. From the **triggers** dropdown menu, choose **Cloud Pub/Sub**. A box named **Cloud Pub/Sub Trigger** should appear. Place it in the design area.
 
       ![mysql_a5.jpg](figures/mysql_a5.jpg)
       
-   7.	Click the **Cloud Pub/Sub Trigger** box to display the properties. Set the Pub/Sub topic text box with the full path of the topic. It should be in the following format: **projects/<project_id>/topics/<topic_id>**. **Note**: you can copy the full path of the topic from the Cloud Pub/Sub topics page. Fill the **Service account** textbox with the Service account you created in the first milestone with the Two Pub/Sub roles. Finally, click the **GRANT** button to fix any missing role within the service account.
+   6.	Click the **Cloud Pub/Sub Trigger** box to display the properties. Set the Pub/Sub topic text box with the full path of the topic. It should be in the following format: **projects/<project_id>/topics/<topic_id>**. **Note**: you can copy the full path of the topic from the Cloud Pub/Sub topics page. Fill the **Service account** textbox with the Service account you created in the first milestone with the Two Pub/Sub roles. Finally, click the **GRANT** button to fix any missing role within the service account.
 
      	![mysql_a6.jpg](figures/mysql_a6.jpg)
 
-   8. From the **TASKS** dropdown menu, select **CONNECTORS**. Then, choose the **mysql-connector**. Place the **mysql-connector** box in the design area.
+   7. From the **TASKS** dropdown menu, select **CONNECTORS**. Then, choose the **mysql-connector**. Place the **mysql-connector** box in the design area.
       
-   9. Click the **mysql-connector** box. Then, click the **CONFIGURE CONNECTOR**
+   8. Click the **mysql-connector** box. Then, click the **CONFIGURE CONNECTOR**
       
       ![mysql_a7.jpg](figures/mysql_a7.jpg)
    
-   10. Set the configuration, as shown in the figure, in three steps:
+   9. Set the configuration, as shown in the figure, in three steps:
        * Leave the default values in the first step.
        * In the second step, select **entities** to select a table.
        * In the last step, set the table name, **SmartMeter**, as the **Entity**, and **Create** as the operation. The creation operation will insert new records into the table according to its primary key (**ID**).
 
       ![mysql_a8.jpg](figures/mysql_a8.jpg)
       
-   11. The format of the topic messages is incompatible with the format accepted by the MySQL connector. Drag and drop a **Data Mapping** box from the **TASKS** dropdown menu to make them compatible. Connect the different boxes as shown in the following figure.
+   10. The format of the topic messages is incompatible with the format accepted by the MySQL connector. Drag and drop a **Data Mapping** box from the **TASKS** dropdown menu to make them compatible. Connect the different boxes as shown in the following figure.
        ![mysql_a10.jpg](figures/mysql_a10.jpg)
        
-   12. Select the **Data Mapping** box and click **OPEN DATA MAPPING EDITOR**. Drag and drop the **CloudPubSubMessage.data** as input and **connectorInputPayload \(mysql-connector\)** as output. Thus, only the **data** field will pass from the Pub/Sub into the MySQL connector.
+   11. Select the **Data Mapping** box and click **OPEN DATA MAPPING EDITOR**. Drag and drop the **CloudPubSubMessage.data** as input and **connectorInputPayload \(mysql-connector\)** as output. Thus, only the **data** field will pass from the Pub/Sub into the MySQL connector.
        
        ![mysql_a9.jpg](figures/mysql_a9.jpg)
    
