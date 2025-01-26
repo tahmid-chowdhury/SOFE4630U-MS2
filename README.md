@@ -449,6 +449,7 @@ This will be similar to the MySQL. Thus, a high-level instruction is given. One 
       7. Grant any Necessary roles. Then Click **NEXT**.
       8. Finally, review the summary and click **CREATE**.
       9. Wait until the connector status changed to **Active**
+      10. Similarly to the MySQL connector, change the number of nodes for **redis-connector** to **2**.
     
 ### 2. Create the Pub/Sub Topic
 
