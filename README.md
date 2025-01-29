@@ -561,6 +561,7 @@ You needed to
 # Deliverables
 1. A GitHub link to the scripts used in the Design part.
 2. A report that includes the discussion and the design parts.
-3. An audible video of about 5 minutes showing the design part. The video should include proofs of the successful integration of the Cloud Pub/Sub with the connectors.
+3. An audible video of about 5 minutes showing the configuration, execution and outputs of the MySQL sink connector, MySQL source connector, and Redis Connectors. 
+4. An audible video of about 5 minutes showing the design part. The video should include proofs of the successful integration of the Cloud Pub/Sub with the connectors.
 
 Put the GitHub link and video links inside your report, and submit the report.
