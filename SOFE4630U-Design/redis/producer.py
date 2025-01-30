@@ -3,7 +3,7 @@ import os
 import glob
 import base64
 
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = r"C:\Users\tahmi\Documents\Cloud Computing\Project Milestone 2\SOFE4630U-MS2\SOFE4630U-Design\redis\tahmids-project-95921-bffa952bdc6d.json"
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = r"C:\Users\tahmi\Documents\Cloud Computing\Project Milestone 2\SOFE4630U-MS2\SOFE4630U-Design\redis\tahmids-project-95921-f2ecbcad550d.json"
 project_id = "tahmids-project-95921"
 images_topic_name = "images"
 
