@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "tahmids-project-95921",
+  "private_key_id": "bffa952bdc6d3147f44127903e5650b3c1c9dee5",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCg2yJTItKYF5Al\n6fHw1czORShqj5xYUICXBVwveYYihmuuKzQJ1nrqtEqfVwftzXLtXH23ps0V8CzJ\nL/d/RFnrdjT8e03s/pe0hPp6cQ86tfZmTQvEUmdZKt7EZPRtkAYUaXKeApJuFGDP\n5gjRR61l/KCxTHIc1ppcBR8KALievZf0NnVGsy8DqZOOJv1Y++IKReW2CWNBzMYu\nsTT0QCbcqZY64O3ra1DKQ7+IpaZgrciqlwUP0OFv5VUpbSxmrfHCcM0bMdFp4p86\noeu8l/3/9iUgYUVGWuhqCosnBFb6sw6vcLu5HTYJxVRmwN/UVaJ6wYjbpYYJgdSf\n7iV+jCvFAgMBAAECggEABc2yMNauS296M2v73ykPkRecrC+PP/5zjT9TwqC7Tq6T\n3v5PC9XRrHshwBr3PcSuU1MFdCVP++0k6INTBiP0rJKgucVHG/hZh9lOYjGHD6K2\nB53bAVPJx8VMsUBFM1jBZ2YgjQPhvZf9oDKX+dkAsA/LymnMKi8x9YT3yDgbcRqu\nYftoc/7xo4zAk/p37TrGRKTpjv1y8tHdlxkfqOmbQSSF5W+zaM11JC/73YerDPYf\nAgqcgdFAFXojbC6Vp8Pf/BDzE1ywwxxfuyYhPZ4ClZ8/ifgURr4M+/aNmbR7bXDy\nmzLD4cNcrDxXs5JoDJylvTaVY1Jjo23x8jFNzxq21wKBgQDVZRN6hBSVTad6gPrn\nr1V7w8gug/IHIPfnfGATYdjmpq54livfhoUf+GifeMr+LYsfDzsoOXL6bsHHKq0J\nTOMKWJODU7vKcKQW6Xgh0p5oN8yr1MSPtNu5KkfT3Yn0lOjhkkyUWgjNGKY2fDPD\nNVc5yKZWCvknM5LvsQQEcxjrHwKBgQDA+LiBPVpExnoLjA6zObusqI/9sFTBKt3P\n0Ei2YeysWABO9sOUs0y6CK4iVYVjHFOMhO8112vvC7mgCo0NWumgBF7C85sKn0I7\nELRiRkzuAY/uom4ueBKRLRSPTuHtsV/aDm5BMLbtZbmDltkoNCp9f5BxIjktbk/A\n61CM8aAwmwKBgF8OJCwZ87VCHw1RsPJNRu3Xmy8lNUV5qRQjcgSQPHcZ3nP2qNpr\n6JcCJ1CKFRo+HU+bkEVtucrWVVkrqGKRLj1okWUZgng9zsop+4pNcKSJ3pDYOSqu\nbIXB0LcOYypgvo/khFo89NivVzLEBqa49v7VY0rGno+YyKYemuSEhKAPAoGBAIIf\n9kLoPVO9RxU8R7lhyAVA0YAvhKeRoWt+N1oNJIx+9w5IZlCCq82TBuGOK9lOg6Rx\nC+GRt23FyVF7a+xCjuHhsIjjvnvmMsIjnI/cegnQsd8oVwYs39BXxtJwTfd7sXgY\nXQ7Gq8Pf4b4zXZI3wyNHfv5bJpVVGqCrzXCNiwjbAoGAEv/QdvJ1+xpUY0qRiWnm\noGOSRSfUvRF0y1c8/vAajMj95NCxME8RqYcrNMiVE2oMmM1/nRwyunu/xy+guaZQ\n8jOfuQPesw5ErMzrVffkqScnvFc4tiDvhbXR0PTV7sHCxc3IVFkW1XunfqKreirg\nTlGqpPglB1nkdeMJIyT5+mI=\n-----END PRIVATE KEY-----\n",
+  "client_email": "pubsub-system@tahmids-project-95921.iam.gserviceaccount.com",
+  "client_id": "115454907591870858013",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/pubsub-system%40tahmids-project-95921.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}
